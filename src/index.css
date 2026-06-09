@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+:root {
+  --accent: #cc4b1e;
+  --accent-deep: #a83a14;
+  --accent-tint: rgba(204, 75, 30, 0.10);
+  --accent-text: #b84016;
+
+  --paper: #f4f0e6;
+  --paper-rgb: 244, 240, 230;
+  --paper-raised: #faf7ef;
+  --ink: #17140d;
+  --ink-soft: #564f41;
+  --ink-faint: #6e6557;
+  --hairline: #e2dccb;
+  --hairline-soft: #ebe6d8;
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html.dark {
+  --accent: #e85d2c;
+  --accent-deep: #cc4b1e;
+  --accent-tint: rgba(232, 93, 44, 0.14);
+  --accent-text: #e85d2c;
+
+  --paper: #14110b;
+  --paper-rgb: 20, 17, 11;
+  --paper-raised: #1d1810;
+  --ink: #f3eee2;
+  --ink-soft: #b7ad99;
+  --ink-faint: #8a8170;
+  --hairline: #2c261b;
+  --hairline-soft: #241f15;
+}
+
+@theme {
+  --color-accent: var(--accent);
+  --color-accent-deep: var(--accent-deep);
+  --color-accent-tint: var(--accent-tint);
+  --color-accent-text: var(--accent-text);
+
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-hairline: var(--hairline);
+  --color-hairline-soft: var(--hairline-soft);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+/* Custom Base Elements */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--paper);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Grain overlay — subtle paper texture over the whole page */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Clean Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--paper);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--hairline);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Custom Selection style */
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Ticker Animation for Skills Marquee */
+.pmarquee-track {
+  display: flex;
+  gap: 1.25rem;
+  width: max-content;
+  animation: pmarquee 40s linear infinite;
+}
+
+.pmarquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes pmarquee {
+  to {
+    transform: translateX(calc(-50% - 0.625rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pmarquee-track {
+    animation: none;
+  }
+}
+
+/* Text effect characters */
+.hw-char {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}

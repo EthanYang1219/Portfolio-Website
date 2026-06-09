@@ -1,0 +1,6 @@
+{
+  "name": "Ethan Yang Portfolio",
+  "description": "An editorial-grade portfolio website for Ethan Yang, a Mathematical Physics student and builder at the University of Waterloo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
