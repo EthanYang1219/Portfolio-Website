@@ -458,6 +458,7 @@ export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
                       src="/assets/work-f1.jpg"
                       alt="F1 crash safety analysis"
                       className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+                      referrerPolicy="no-referrer"
                       onError={(e) => e.currentTarget.style.display = 'none'}
                     />
                     

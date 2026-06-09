@@ -12,7 +12,7 @@ This portfolio is built to reflect the high-precision mindset of **Mathematical 
 
 1. **100Hz PID Tuning Feedback Simulator**
    * Implemented a real-time Proportional-Integral-Derivative (PID) linear feedback controller. High-resolution math updates the correction loops dynamically.
-   * Users can tap directly inside the graphical canvas to set a new variable destination setpoint and watch the simulated inertia settle with real-time derivative overshoot dampening.
+   * Users can tap directly inside the graphical canvas to set a new variable destination setpoint ($r(t)$) and watch the simulated inertia settle with real-time derivative overshoot dampening.
 
 2. **Damped Organic WebGL Shader Backdrop**
    * High-performance floating background utilizing custom, theme-aware Fragment and Vertex GLSL shaders.

@@ -44,9 +44,10 @@ export default function About() {
             {/* Floating Photo Container with rounded corners */}
             <div className="about-photo w-[200px] sm:w-[260px] md:w-[320px] aspect-[4/5] rounded-3xl overflow-hidden border border-hairline bg-paper shadow-[0_30px_60px_-24px_rgba(0,0,0,0.3)] transition-all duration-500 hover:scale-[1.02]">
               <img 
-                src="/assets/profile.jpg" 
+                src="/assets/profile.png" 
                 alt="Ethan Yang portrait" 
                 className="w-full h-full object-cover object-center scale-102"
+                referrerPolicy="no-referrer"
                 onError={(e) => {
                   // Gracefully swap to an elegant monogram graphic if the image is missing
                   e.currentTarget.style.display = 'none';
