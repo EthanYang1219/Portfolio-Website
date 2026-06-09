@@ -2,29 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUpRight, Play, Terminal, HelpCircle, Code, Settings, Sparkles, BookOpen, Clock, Activity, Target } from 'lucide-react';
 import { Project } from '../types';
+import workF1Jpg from '../assets/images/work-f1.jpg';
 
 interface SelectedWorkProps {
   filteredSkill: string | null;
-}
-
-function getProjectReadingTime(proj: Project, includeDetails = false): string {
-  let textToCount = proj.description;
-  if (includeDetails && proj.details) {
-    textToCount += ' ' + proj.details.overview;
-    textToCount += ' ' + proj.details.challenges;
-    textToCount += ' ' + proj.details.highlights.join(' ');
-    textToCount += ' ' + proj.details.role;
-  }
-  const words = textToCount.split(/\s+/).filter(Boolean).length;
-  const wpm = 200; // Words per minute
-  const totalSeconds = Math.ceil((words / wpm) * 60);
-  
-  if (totalSeconds < 60) {
-    return `${totalSeconds}s`;
-  } else {
-    const mins = Math.ceil(totalSeconds / 60);
-    return `${mins} min`;
-  }
 }
 
 export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
@@ -244,7 +225,7 @@ export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
         <div className="section-head reveal">
           <span className="section-no">01 — Selected work</span>
           <h2 className="h2 font-display text-[2.7rem] leading-none tracking-tight">
-            Things I've <em>designed, broken,</em> and created.
+            Things I've <span className="text-accent italic font-normal">designed, broken,</span> and created.
           </h2>
         </div>
 
@@ -293,10 +274,6 @@ export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
                       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden px-4 pb-6"
                     >
-                      <div className="flex items-center gap-1.5 mb-2 text-xs font-mono text-ink-faint select-none">
-                        <Clock className="w-3.5 h-3.5 text-accent-text/60" />
-                        <span>Est. read: {getProjectReadingTime(proj, false)}</span>
-                      </div>
                       <p className="text-ink-soft text-[0.95rem] leading-relaxed max-w-[50ch] mb-4">
                         {proj.description}
                       </p>
@@ -479,7 +456,7 @@ export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
                     
                     {/* Direct image rendering (gracefully handles errors) */}
                     <img
-                      src="/assets/work-f1.jpg"
+                      src={workF1Jpg}
                       alt="F1 crash safety analysis"
                       className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
                       referrerPolicy="no-referrer"
@@ -583,9 +560,6 @@ export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
                     <span className="font-mono text-xs tracking-wider uppercase text-accent font-semibold flex items-center gap-1.5">
                       <Activity className="w-3.5 h-3.5 animate-pulse" /> {selectedProject.meta}
-                    </span>
-                    <span className="font-mono text-xs tracking-wider uppercase text-ink-faint flex items-center gap-1 select-none">
-                      <Clock className="w-3.5 h-3.5" /> Full Case study: {getProjectReadingTime(selectedProject, true)}
                     </span>
                   </div>
                 </div>

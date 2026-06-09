@@ -179,7 +179,7 @@ export default function App() {
               values="1 0 0 0 0
                       0 0.9803921568627451 0 0 0
                       0 0 0.9647058823529412 0 0
-                      0 0 0 0.8 0"
+                      0 0 0 0.20 0"
             />
             <feOffset
               in="color-0-blur"
@@ -194,7 +194,7 @@ export default function App() {
               values="0.8156862745098039 0 0 0 0
                       0 0.49411764705882355 0 0 0
                       0 0 0.2627450980392157 0 0
-                      0 0 0 1 0"
+                      0 0 0 0.12 0"
             />
             <feOffset
               in="color-1-blur"
@@ -209,7 +209,7 @@ export default function App() {
               values="1 0 0 0 0
                       0 0.6666666666666666 0 0 0
                       0 0 0.36470588235294116 0 0
-                      0 0 0 0.65 0"
+                      0 0 0 0.15 0"
             />
             <feOffset
               in="color-2-blur"
@@ -224,7 +224,7 @@ export default function App() {
               values="1 0 0 0 0
                       0 0.611764705882353 0 0 0
                       0 0 0.39215686274509803 0 0
-                      0 0 0 1 0"
+                      0 0 0 0.10 0"
             />
             <feOffset
               in="color-3-blur"
@@ -239,7 +239,7 @@ export default function App() {
               values="0.4549019607843137 0 0 0 0
                       0 0.16470588235294117 0 0 0
                       0 0 0 0 0
-                      0 0 0 1 0"
+                      0 0 0 0.08 0"
             />
             <feOffset
               in="color-4-blur"
@@ -254,7 +254,7 @@ export default function App() {
               values="0.4235294117647059 0 0 0 0
                       0 0.19607843137254902 0 0 0
                       0 0 0.11372549019607843 0 0
-                      0 0 0 1 0"
+                      0 0 0 0.04 0"
             />
             <feOffset
               in="color-5-blur"
@@ -269,7 +269,7 @@ export default function App() {
               values="0.21176470588235294 0 0 0 0
                       0 0.10980392156862745 0 0 0
                       0 0 0.07450980392156863 0 0
-                      0 0 0 1 0"
+                      0 0 0 0.04 0"
             />
             <feOffset
               in="color-6-blur"
@@ -284,7 +284,7 @@ export default function App() {
               values="0 0 0 0 0
                       0 0 0 0 0
                       0 0 0 0 0
-                      0 0 0 0.68 0"
+                      0 0 0 0.02 0"
             />
             <feOffset
               in="color-7-blur"

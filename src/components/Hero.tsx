@@ -1,24 +1,12 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
+import { Typewriter } from './ui/typewriter';
+
+const tags = ['Leading', 'Building', 'Coding', 'Creating', 'Learning'];
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [tagIdx, setTagIdx] = useState(0);
-
-  const tags = ['Leading', 'Building', 'Coding', 'Creating', 'Learning'];
-
-  // Infinite ticker for words
-  useEffect(() => {
-    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (isReduced) return;
-
-    const interval = setInterval(() => {
-      setTagIdx((prev) => (prev + 1) % tags.length);
-    }, 2400);
-
-    return () => clearInterval(interval);
-  }, []);
 
   // Hardware-accelerated scroll tracking for name zoom/reveal
   const { scrollYProgress } = useScroll({
@@ -69,28 +57,17 @@ export default function Hero() {
           </span>
 
           {/* Dynamic rotating subtitle tagline */}
-          <p className="hero-tagline font-sans font-semibold text-2xl md:text-3xl tracking-wide uppercase text-ink-soft select-none flex items-center justify-center gap-2">
-            I enjoy&nbsp;
-            <span className="relative inline-block h-[1.3em] overflow-hidden align-middle w-[150px] md:w-[180px] text-left">
-              {tags.map((tag, idx) => (
-                <motion.span
-                  key={tag}
-                  initial={{ opacity: 0, y: '100%', rotateX: -60 }}
-                  animate={
-                    idx === tagIdx
-                      ? { opacity: 1, y: 0, rotateX: 0 }
-                      : idx < tagIdx || (tagIdx === 0 && idx === tags.length - 1)
-                      ? { opacity: 0, y: '-100%', rotateX: 60 }
-                      : { opacity: 0, y: '100%', rotateX: -60 }
-                  }
-                  transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute left-0 top-0 w-full h-full text-accent font-bold italic block origin-left select-none"
-                >
-                  {tag}
-                </motion.span>
-              ))}
-            </span>
-          </p>
+          <div className="hero-tagline font-sans font-semibold text-2xl md:text-3xl lg:text-4xl tracking-wide uppercase text-ink-soft select-none flex flex-wrap items-center justify-center gap-x-3 gap-y-2 mt-2">
+            <span>I enjoy</span>
+            <Typewriter
+              text={tags}
+              speed={70}
+              className="text-accent font-black italic tracking-wider text-center"
+              waitTime={1500}
+              deleteSpeed={40}
+              cursorChar="_"
+            />
+          </div>
         </motion.div>
 
         {/* Center: Giant Display Name Parallax Zoom with Illuminated Glow Filter */}
@@ -114,7 +91,7 @@ export default function Hero() {
               </span>
               <span className="block h-2 sm:h-4" />
               <span 
-                className="name-line accent block text-[4.8rem] sm:text-[8vw] md:text-[11vw] tracking-tight text-accent italic font-normal relative inline-block before:absolute before:animate-[onloadopacity_1s_ease-out_forwards] before:opacity-0 before:content-[attr(data-text)] before:text-[#e85d2c] filter-[url(#glow-4)]"
+                className="name-line accent block text-[4.8rem] sm:text-[8vw] md:text-[11vw] tracking-tight text-accent italic font-normal relative inline-block before:absolute before:animate-[onloadopacity_1s_ease-out_forwards] before:opacity-0 before:content-[attr(data-text)] before:text-accent filter-[url(#glow-4)]"
                 data-text="YANG"
               >
                 YANG
@@ -199,7 +176,7 @@ export default function Hero() {
               values="1 0 0 0 0
                       0 0.9803921568627451 0 0 0
                       0 0 0.9647058823529412 0 0
-                      0 0 0 0.8 0"
+                      0 0 0 0.20 0"
             />
             <feOffset
               in="color-0-blur"
@@ -214,7 +191,7 @@ export default function Hero() {
               values="0.8156862745098039 0 0 0 0
                       0 0.49411764705882355 0 0 0
                       0 0 0.2627450980392157 0 0
-                      0 0 0 1 0"
+                      0 0 0 0.12 0"
             />
             <feOffset
               in="color-1-blur"
@@ -229,7 +206,7 @@ export default function Hero() {
               values="1 0 0 0 0
                       0 0.6666666666666666 0 0 0
                       0 0 0.36470588235294116 0 0
-                      0 0 0 0.65 0"
+                      0 0 0 0.15 0"
             />
             <feOffset
               in="color-2-blur"
@@ -244,7 +221,7 @@ export default function Hero() {
               values="1 0 0 0 0
                       0 0.611764705882353 0 0 0
                       0 0 0.39215686274509803 0 0
-                      0 0 0 1 0"
+                      0 0 0 0.10 0"
             />
             <feOffset
               in="color-3-blur"
@@ -259,7 +236,7 @@ export default function Hero() {
               values="0.4549019607843137 0 0 0 0
                       0 0.16470588235294117 0 0 0
                       0 0 0 0 0
-                      0 0 0 1 0"
+                      0 0 0 0.08 0"
             />
             <feOffset
               in="color-4-blur"
@@ -274,7 +251,7 @@ export default function Hero() {
               values="0.4235294117647059 0 0 0 0
                       0 0.19607843137254902 0 0 0
                       0 0 0.11372549019607843 0 0
-                      0 0 0 1 0"
+                      0 0 0 0.04 0"
             />
             <feOffset
               in="color-5-blur"
@@ -289,7 +266,7 @@ export default function Hero() {
               values="0.21176470588235294 0 0 0 0
                       0 0.10980392156862745 0 0 0
                       0 0 0.07450980392156863 0 0
-                      0 0 0 1 0"
+                      0 0 0 0.04 0"
             />
             <feOffset
               in="color-6-blur"
@@ -304,7 +281,7 @@ export default function Hero() {
               values="0 0 0 0 0
                       0 0 0 0 0
                       0 0 0 0 0
-                      0 0 0 0.68 0"
+                      0 0 0 0.02 0"
             />
             <feOffset
               in="color-7-blur"

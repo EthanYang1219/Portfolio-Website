@@ -26,10 +26,7 @@ export default function Contact() {
           className="h2 font-display text-[2.8rem] sm:text-[4.5vw] md:text-[5.4rem] leading-[1.05] tracking-tight text-ink max-w-[15ch] text-center select-none"
         >
           Let's make <em>something</em>{' '}
-          <span 
-            className="text-accent block italic relative inline-block before:absolute before:animate-[onloadopacity_1s_ease-out_forwards] before:opacity-0 before:content-[attr(data-text)] before:text-accent filter-[url(#glow-4)]"
-            data-text="SPECIAL"
-          >
+          <span className="text-accent block italic">
             SPECIAL
           </span>
         </motion.h2>

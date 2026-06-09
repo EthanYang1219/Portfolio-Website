@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BookOpen, Award, Compass, ArrowRight, Database, Code, Target, Landmark, Quote } from 'lucide-react';
+import profilePng from '../assets/images/profile.png';
 
 export default function About() {
   const [showModules, setShowModules] = useState(false);
@@ -44,7 +45,7 @@ export default function About() {
             {/* Floating Photo Container with rounded corners */}
             <div className="about-photo w-[200px] sm:w-[260px] md:w-[320px] aspect-[4/5] rounded-3xl overflow-hidden border border-hairline bg-paper shadow-[0_30px_60px_-24px_rgba(0,0,0,0.3)] transition-all duration-500 hover:scale-[1.02]">
               <img 
-                src="/assets/profile.png" 
+                src={profilePng} 
                 alt="Ethan Yang portrait" 
                 className="w-full h-full object-cover object-center scale-102"
                 referrerPolicy="no-referrer"
@@ -78,10 +79,7 @@ export default function About() {
             {/* Custom quote block */}
             <p className="about-lead font-display font-light text-2xl md:text-[1.95rem] leading-snug tracking-tight text-ink max-w-[28ch] border-l-2 border-accent pl-4 py-1 italic select-none">
               I'm happiest with{' '}
-              <span 
-                className="text-accent font-normal relative inline-block before:absolute before:animate-[onloadopacity_1s_ease-out_forwards] before:opacity-0 before:content-[attr(data-text)] before:text-accent filter-[url(#glow-4)] not-italic"
-                data-text="a half-finished idea"
-              >
+              <span className="text-accent font-normal">
                 a half-finished idea
               </span>{' '}
               and a deadline I set too optimistically.

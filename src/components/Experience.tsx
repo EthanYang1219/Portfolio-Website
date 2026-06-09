@@ -35,7 +35,7 @@ export default function Experience() {
         <div className="section-head reveal mb-16">
           <span className="section-no">02 — Experience</span>
           <h2 className="h2 font-display text-[2.7rem] leading-none tracking-tight">
-            Where I've <em>built, led,</em> and taught.
+            Where I've <span className="text-accent italic font-normal">built, led,</span> and taught.
           </h2>
         </div>
 
