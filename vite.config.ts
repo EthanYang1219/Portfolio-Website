@@ -6,7 +6,7 @@ import path from 'path';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/Portfolio-Website/', // 👈 Change this from '/' to your exact repo name
+  base: '/Portfolio-Website/', // 👈 This must match your exact repository name capitalization
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
