@@ -1,4 +1,37 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@keyframes onloadopacity {
+  24% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes onloadbgt {
+  0% {
+    translate: 0 -70%;
+    opacity: 0.3;
+  }
+  100% {
+    translate: 0 -64%;
+    opacity: 0.8;
+  }
+}
+
+@keyframes onloadbgb {
+  0% {
+    translate: 0 70%;
+    opacity: 0.3;
+  }
+  100% {
+    translate: 0 64%;
+    opacity: 0.8;
+  }
+}
+
 
 :root {
   --accent: #cc4b1e;

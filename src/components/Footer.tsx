@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, FileDown } from 'lucide-react';
+import { generateResumePDF } from '../lib/pdfGenerator';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -7,6 +8,11 @@ export default function Footer() {
   const handleScrollToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDownloadPDF = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    generateResumePDF();
   };
 
   return (
@@ -26,6 +32,17 @@ export default function Footer() {
             21st.dev ↗
           </a>
         </span>
+
+        {/* Dynamic PDF resume generator trigger */}
+        <button
+          onClick={handleDownloadPDF}
+          className="resume-download inline-flex items-center gap-1.5 text-accent hover:text-accent-deep border border-accent/20 hover:border-accent/60 py-1.5 px-4 rounded-full font-mono text-[0.72rem] font-bold transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer select-none bg-paper/40 shadow-sm"
+          data-cursor
+          title="Generate print-ready resume PDF of Ethan Yang"
+        >
+          <FileDown className="w-3.5 h-3.5 animate-pulse" />
+          <span>Download Resume</span>
+        </button>
 
         {/* Anchor link */}
         <a

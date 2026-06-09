@@ -8,7 +8,7 @@ export default function Contact() {
   ];
 
   return (
-    <section className="finale py-28 text-center bg-transparent relative overflow-hidden" id="contact">
+    <section className="finale pt-48 pb-28 text-center bg-transparent relative overflow-hidden" id="contact">
       {/* Dynamic Background Circle Accent */}
       <div 
         className="absolute -right-40 -bottom-40 w-96 h-96 rounded-full bg-accent-tint/10 blur-[80px] pointer-events-none"
@@ -25,7 +25,13 @@ export default function Contact() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="h2 font-display text-[2.8rem] sm:text-[4.5vw] md:text-[5.4rem] leading-[1.05] tracking-tight text-ink max-w-[15ch] text-center select-none"
         >
-          Let's make <em>something</em> <em className="text-accent block italic">SPECIAL</em>.
+          Let's make <em>something</em>{' '}
+          <span 
+            className="text-accent block italic relative inline-block before:absolute before:animate-[onloadopacity_1s_ease-out_forwards] before:opacity-0 before:content-[attr(data-text)] before:text-accent filter-[url(#glow-4)]"
+            data-text="SPECIAL"
+          >
+            SPECIAL
+          </span>
         </motion.h2>
 
         <div className="finale-contact mt-10 md:mt-16 flex flex-col items-center gap-6">
@@ -36,7 +42,7 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             href="mailto:e99yang@uwaterloo.ca" 
-            className="contact-mail font-display text-2xl sm:text-[4vw] md:text-[3.2rem] text-ink hover:text-accent font-semibold tracking-tight relative pb-1 overflow-hidden select-all after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:scale-x-0 group-hover:after:scale-x-100 after:h-[2px] after:bg-accent after:transition-all after:duration-400"
+            className="contact-mail font-display text-2xl sm:text-[4vw] md:text-[3.2rem] text-ink hover:text-accent font-semibold tracking-tight relative pb-1 overflow-hidden select-all after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:scale-x-0 hover:after:scale-x-100 after:h-[2px] after:bg-accent after:transition-all after:duration-400"
             data-cursor
           >
             e99yang@uwaterloo.ca
