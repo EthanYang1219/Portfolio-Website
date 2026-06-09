@@ -455,7 +455,7 @@ export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
                     
                     {/* Direct image rendering (gracefully handles errors) */}
                     <img
-                      src="/assets/work-f1.jpg"
+                      src={`${import.meta.env.BASE_URL}assets/work-f1.jpg`}
                       alt="F1 crash safety analysis"
                       className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
                       referrerPolicy="no-referrer"
