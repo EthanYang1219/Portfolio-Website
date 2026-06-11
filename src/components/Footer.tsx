@@ -1,6 +1,5 @@
 import React from 'react';
 import { ArrowUp, FileDown } from 'lucide-react';
-import { generateResumePDF } from '../lib/pdfGenerator';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -10,8 +9,11 @@ export default function Footer() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleDownloadPDF = (e: React.MouseEvent<HTMLButtonElement>) => {
+  // jspdf is heavy (~150 kB), so the PDF generator is loaded on demand
+  // instead of shipping it in the initial bundle
+  const handleDownloadPDF = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    const { generateResumePDF } = await import('../lib/pdfGenerator');
     generateResumePDF();
   };
 

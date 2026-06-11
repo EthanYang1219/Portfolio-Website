@@ -189,6 +189,11 @@ export default function ShaderBackground() {
     let animationFrameId: number;
     const startTime = performance.now();
 
+    // Reusable uniform buffers — avoids allocating 3 Float32Arrays per frame
+    const c1Buf = new Float32Array(3);
+    const c2Buf = new Float32Array(3);
+    const c3Buf = new Float32Array(3);
+
     const render = (now: number) => {
       // Lerp custom coordinate drag values smoothly
       mouseX += (targetMouseX - mouseX) * 0.03;
@@ -201,9 +206,12 @@ export default function ShaderBackground() {
       gl!.uniform1f(uniforms.time, timeSec);
       gl!.uniform2f(uniforms.mouse, mouseX, mouseY);
 
-      gl!.uniform3fv(uniforms.c1, new Float32Array(palette.c1));
-      gl!.uniform3fv(uniforms.c2, new Float32Array(palette.c2));
-      gl!.uniform3fv(uniforms.c3, new Float32Array(palette.c3));
+      c1Buf.set(palette.c1);
+      c2Buf.set(palette.c2);
+      c3Buf.set(palette.c3);
+      gl!.uniform3fv(uniforms.c1, c1Buf);
+      gl!.uniform3fv(uniforms.c2, c2Buf);
+      gl!.uniform3fv(uniforms.c3, c3Buf);
       gl!.uniform1f(uniforms.grain, palette.grain);
 
       gl!.drawArrays(gl!.TRIANGLES, 0, 3);

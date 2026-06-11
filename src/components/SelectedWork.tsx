@@ -148,8 +148,24 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
     }
   ];
 
+  // Pause the live simulations while the work section is scrolled offscreen
+  // so the 55ms PID loop doesn't re-render the section the whole session
+  const [simVisible, setSimVisible] = useState(true);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(
+      ([entry]) => setSimVisible(entry.isIntersecting),
+      { rootMargin: '100px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   // PID feedback loop logic
   useEffect(() => {
+    if (!simVisible) return;
     const timer = setInterval(() => {
       const Kp = 0.12;
       const Ki = 0.003;
@@ -181,7 +197,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
     }, 55);
 
     return () => clearInterval(timer);
-  }, [pidSetpoint]);
+  }, [pidSetpoint, simVisible]);
 
   // Click handler inside the interactive plot to set standard setpoint
   const handlePlotClick = (e: React.MouseEvent<SVGSVGElement>) => {
@@ -235,7 +251,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
   };
 
   return (
-    <section className="section" id="work">
+    <section className="section" id="work" ref={sectionRef}>
       <div className="w-full max-w-[var(--maxw)] mx-auto px-5 md:px-[var(--gutter)]">
         
         {/* Header */}
@@ -502,6 +518,8 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                     <img
                       src={workF1Jpg}
                       alt="F1 crash safety analysis"
+                      loading="lazy"
+                      decoding="async"
                       className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
                       referrerPolicy="no-referrer"
                       onError={(e) => e.currentTarget.style.display = 'none'}

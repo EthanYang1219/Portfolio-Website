@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BookOpen, Award, Compass, ArrowRight, Database, Code, Target, Landmark, Quote } from 'lucide-react';
-import profilePng from '../assets/images/profile.png';
+import profileImg from '../assets/images/profile.jpg';
 
 export default function About() {
   const [showModules, setShowModules] = useState(false);
@@ -45,9 +45,11 @@ export default function About() {
             {/* Floating Photo Container with rounded corners */}
             <div className="about-photo w-[200px] sm:w-[260px] md:w-[320px] aspect-[4/5] rounded-3xl overflow-hidden border border-hairline bg-paper shadow-[0_30px_60px_-24px_rgba(0,0,0,0.3)] transition-all duration-500 hover:scale-[1.02]">
               <img 
-                src={profilePng} 
-                alt="Ethan Yang portrait" 
+                src={profileImg}
+                alt="Ethan Yang portrait"
                 className="w-full h-full object-cover object-center scale-102"
+                loading="lazy"
+                decoding="async"
                 referrerPolicy="no-referrer"
                 onError={(e) => {
                   // Gracefully swap to an elegant monogram graphic if the image is missing

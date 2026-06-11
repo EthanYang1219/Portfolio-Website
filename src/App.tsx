@@ -34,10 +34,22 @@ export default function App() {
       }
     };
 
-    window.addEventListener('scroll', handleScrollIntersection, { passive: true });
+    // rAF-throttle: the handler reads layout (getBoundingClientRect) for five
+    // sections, so coalesce scroll events to at most one read per frame
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        handleScrollIntersection();
+        ticking = false;
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
     handleScrollIntersection();
 
-    return () => window.removeEventListener('scroll', handleScrollIntersection);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   // Skills that belong to the Experience timeline rather than a project
