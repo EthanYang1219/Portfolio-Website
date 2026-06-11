@@ -173,10 +173,10 @@ export default function App() {
           <filter
             id="glow-4"
             colorInterpolationFilters="sRGB"
-            x="-50%"
-            y="-200%"
-            width="200%"
-            height="500%"
+            x="-100%"
+            y="-400%"
+            width="300%"
+            height="900%"
           >
             <feGaussianBlur
               in="SourceGraphic"

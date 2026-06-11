@@ -14,6 +14,10 @@ export default function CustomCursor() {
 
     setIsVisible(true);
 
+    // Hide the native OS cursor while the custom dot is active. Scoped to a
+    // class so touch / reduced-motion users (no dot) keep the normal cursor.
+    document.documentElement.classList.add('native-cursor-off');
+
     let currentX = window.innerWidth / 2;
     let currentY = window.innerHeight / 2;
     let targetX = currentX;
@@ -65,6 +69,7 @@ export default function CustomCursor() {
     window.addEventListener('mouseover', onMouseOver, { passive: true });
 
     return () => {
+      document.documentElement.classList.remove('native-cursor-off');
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseover', onMouseOver);
       cancelAnimationFrame(animationId);

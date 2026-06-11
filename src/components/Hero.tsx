@@ -32,7 +32,10 @@ export default function Hero() {
       className="hero relative h-[150svh] text-center" 
       id="hero"
     >
-      <div className="hero-sticky sticky top-0 h-[100svh] overflow-hidden grid grid-rows-[auto_1fr_auto] items-center gap-6 pt-28 pb-10 px-5 md:px-[var(--gutter)]">
+      {/* No overflow-hidden here: the name's ambient halo paints past the
+          container bottom, and clipping it leaves a hard horizontal edge
+          below the CTA buttons. Horizontal overflow is guarded by body/main. */}
+      <div className="hero-sticky sticky top-0 h-[100svh] grid grid-rows-[auto_1fr_auto] items-center gap-6 pt-28 pb-10 px-5 md:px-[var(--gutter)]">
         
         {/* Soft Warm Glow Backdrop (Fills space behind text softly) */}
         <div 
@@ -144,10 +147,10 @@ export default function Hero() {
           <filter
             id="glow-4"
             colorInterpolationFilters="sRGB"
-            x="-50%"
-            y="-200%"
-            width="200%"
-            height="500%"
+            x="-100%"
+            y="-400%"
+            width="300%"
+            height="900%"
           >
             <feGaussianBlur
               in="SourceGraphic"

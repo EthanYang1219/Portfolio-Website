@@ -93,6 +93,14 @@ html.dark {
   --font-mono: var(--font-mono);
 }
 
+/* Hide the native OS cursor while the custom orange dot is active
+   (CustomCursor adds this class only on fine-pointer, non-reduced-motion
+   devices; !important beats per-element cursor-pointer utilities) */
+html.native-cursor-off,
+html.native-cursor-off * {
+  cursor: none !important;
+}
+
 /* Custom Base Elements */
 body {
   font-family: var(--font-sans);
