@@ -22,22 +22,21 @@ export default function Experience({ filteredSkill, onClearFilter }: ExperienceP
       role: 'Formula Electric — Chassis & Carbon',
       org: 'University of Waterloo (UWFE)',
       when: 'Sept 2025 – Present',
-      desc: 'Designing, modeling, and fabricating safety-critical chassis components and composite layups (carbon fiber reinforced polymer, CFRP) for Waterloo\'s Formula SAE electric vehicle. Integrating finite element analyses (FEA) to confirm stiffness ratios and coordinating dimensional limits across suspension configurations.'
+      desc: 'Design, prototype, and fabricate safety-critical structural chassis components for the Formula SAE vehicle using CAD modelling, precision machining, and composite layup techniques. Collaborate cross-functionally with engineering leads across multiple subsystems to implement performance-driven design improvements and ensure track reliability'
     },
     {
       id: 'wpra',
       role: 'Robotics Control Systems Instructor',
       org: 'Western Pacific Robotics Academy',
       when: 'Sept 2023 – Present',
-      desc: 'Coached and instructed junior and senior secondary high school groups in mechanical layout strategies and C++ firmware. Taught odometry, integrated PID tracking systems, and managed machine shop facilities, which successfully expanded active tournament enrollment by over 60%.'
+      desc: 'Coached and mentored junior and senior high school competitors on core VEX robotics concepts, including CAD design, C++ programming, and control system troubleshooting. Managed workshop drop-in sessions and spearheaded parent/customer communications, driving a 60% increase in active membership enrollment.'
     },
     {
       id: 'vex',
       role: 'Team Captain & Mechanical Lead',
       org: 'VEX Robotics · Teams 604X / 886W',
       when: '2019 – 2025',
-      desc: 'Directed structural fabrication and firmware designs across 6 national and international seasons. Captured over 40 design and excellence accolades, finished as a 2020 VEX Worlds Division Semifinalist (top 6.4% of 20,000+ teams), and qualified for the World Championships in every active season.'
-    }
+      desc: 'Captained a multidisciplinary team through 6 competitive seasons, directing the mechanical design, prototyping, and firmware layout for VEX V5 robots. Secured over 40 accolades for engineering excellence, finished as a 2020 VEX Worlds Division Finalist (top 0.4% globally), and scaled WPRA into a top-ranked regional academy managing 15+ active teams.'
   ];
 
   // True when the active filter is one of the experience-mapped skills
