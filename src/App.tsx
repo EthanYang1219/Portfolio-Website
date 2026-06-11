@@ -9,7 +9,6 @@ import SkillsMarquee from './components/SkillsMarquee';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ShaderBackground from './components/ShaderBackground';
-import CustomCursor from './components/CustomCursor';
 
 export default function App() {
   const [currentSection, setCurrentSection] = useState('top');
@@ -100,9 +99,6 @@ export default function App() {
     <>
       {/* Full-Page Interactive WebGL shader (Behind all nodes) */}
       <ShaderBackground />
-
-      {/* Inertia custom hover-receptive pointer cursor */}
-      <CustomCursor />
 
       {/* Content wrapper with correct flow */}
       <Header currentSection={currentSection} />

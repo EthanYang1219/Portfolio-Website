@@ -132,18 +132,19 @@ export default function ShaderBackground() {
       grain: gl.getUniformLocation(program, 'u_grain'),
     };
 
-    // Low-contrast editorial palettes
+    // Editorial palettes — c2 deepened so the ripple pattern reads clearly
+    // while staying calm (drift speed unchanged)
     const LIGHT_PALETTE = {
       c1: [0.957, 0.922, 0.882], // #f4f0e6 primary paper ivory
-      c2: [0.824, 0.714, 0.549], // soft tan
-      c3: [0.910, 0.847, 0.749], // paper shading accent
+      c2: [0.769, 0.616, 0.420], // richer sienna-tan
+      c3: [0.882, 0.800, 0.671], // deeper paper shading accent
       grain: 0.020,
     };
 
     const DARK_PALETTE = {
       c1: [0.078, 0.067, 0.043], // #14110b primary dark charcoal
-      c2: [0.220, 0.184, 0.118], // sienna/gold-brushed highlight
-      c3: [0.137, 0.114, 0.075], // soft elevation charcoal
+      c2: [0.298, 0.243, 0.149], // brighter sienna/gold-brushed highlight
+      c3: [0.165, 0.137, 0.090], // soft elevation charcoal
       grain: 0.028,
     };
 

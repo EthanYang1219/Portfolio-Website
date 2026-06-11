@@ -49,12 +49,12 @@ export default function Experience({ filteredSkill, onClearFilter }: ExperienceP
     <section className="section py-20 bg-transparent" id="experience">
       <div className="w-full max-w-[var(--maxw)] mx-auto px-5 md:px-[var(--gutter)]">
 
-        {/* Shared column: header and timeline align on the same left edge */}
-        <div className="max-w-3xl mx-auto">
+        {/* Shared column, left-aligned to the container edge so the section
+            starts parallel with Selected Work */}
+        <div className="max-w-3xl">
 
-        {/* Header — same left padding as the timeline so the heading and
-            quote line up with the bullet text */}
-        <div className="section-head reveal mb-16 pl-6 md:pl-10">
+        {/* Header */}
+        <div className="section-head reveal mb-16">
           <span className="section-no">02 — Experience</span>
           <h2 className="h2 font-display text-[2.7rem] leading-none tracking-tight">
             Where I've <span className="text-accent italic font-normal">built, led,</span> and taught.
@@ -69,7 +69,7 @@ export default function Experience({ filteredSkill, onClearFilter }: ExperienceP
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25 }}
-              className="flex items-center gap-2.5 mb-6 pl-6 md:pl-10 font-mono text-xs uppercase tracking-wider text-ink-soft"
+              className="flex items-center gap-2.5 mb-6 font-mono text-xs uppercase tracking-wider text-ink-soft"
             >
               Showing: <span className="text-accent font-semibold">{filteredSkill}</span>
               <button
