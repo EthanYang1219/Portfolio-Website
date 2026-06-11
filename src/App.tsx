@@ -40,23 +40,37 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScrollIntersection);
   }, []);
 
-  // Connect Skills marquee triggers to relevant work portfolios
+  // Skills that belong to the Experience timeline rather than a project
+  // (Composite layup + Mentorship come from Formula Electric / WPRA work)
+  const experienceOnlySkills = ['Composite layup', 'Mentorship'];
+
+  // Connect Skills marquee triggers to the work dashboard or experience timeline
   const handleSkillClick = (skillName: string) => {
+    // Clicking the active skill again clears the filter
+    if (activeFilteredSkill === skillName) {
+      setActiveFilteredSkill(null);
+      return;
+    }
     setActiveFilteredSkill(skillName);
-    
-    // Find the relative portfolio element and click it
+
+    // Experience-only skills scroll to the timeline instead of the dashboard
+    const targetSection = experienceOnlySkills.includes(skillName) ? 'experience' : 'work';
+    document.getElementById(targetSection)?.scrollIntoView({ behavior: 'smooth' });
+    if (targetSection === 'experience') return;
+
+    // Open the matching project's inline description in SelectedWork
     setTimeout(() => {
       let targetProjIdx = 0; // default to python
       const normalName = skillName.toLowerCase();
 
-      if (normalName.includes('cpp') || normalName.includes('pid') || normalName.includes('odometry')) {
+      if (normalName.includes('cpp') || normalName.includes('c++') || normalName.includes('pid') || normalName.includes('odometry')) {
         targetProjIdx = 2; // PID and Odometry
       } else if (normalName.includes('fusion') || normalName.includes('onshape') || normalName.includes('docs') || normalName.includes('notebook')) {
         targetProjIdx = 4; // VEX Engineering Notebook
       } else if (normalName.includes('resolve') || normalName.includes('davinci') || normalName.includes('video')) {
         targetProjIdx = 3; // F1 Safety Video
-      } else if (normalName.includes('climb') || normalName.includes('delta') || normalName.includes('full-stack') || normalName.includes('python')) {
-        targetProjIdx = 1; // DeltaV Climbing Companion
+      } else if (normalName.includes('climb') || normalName.includes('delta') || normalName.includes('full-stack') || normalName.includes('print')) {
+        targetProjIdx = 1; // DeltaV Climbing Companion (also tagged 3D printing)
       }
 
       // Simulate hovering or tapping on list items inside SelectedWork
@@ -99,7 +113,7 @@ export default function App() {
           viewport={{ once: true, margin: "-120px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <SelectedWork filteredSkill={activeFilteredSkill} />
+          <SelectedWork filteredSkill={activeFilteredSkill} onClearFilter={() => setActiveFilteredSkill(null)} />
         </motion.div>
 
         {/* Technical timeline */}
@@ -109,7 +123,7 @@ export default function App() {
           viewport={{ once: true, margin: "-120px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <Experience />
+          <Experience filteredSkill={activeFilteredSkill} onClearFilter={() => setActiveFilteredSkill(null)} />
         </motion.div>
 
         {/* Biography spotlight with credentials curricula drawer */}

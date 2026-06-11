@@ -1,8 +1,21 @@
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Briefcase, Calendar, Building, Landmark } from 'lucide-react';
 import { Experience as ExpType } from '../types';
 
-export default function Experience() {
+interface ExperienceProps {
+  filteredSkill?: string | null;
+  onClearFilter?: () => void;
+}
+
+// Skills from the ticker that map to experience entries rather than projects:
+// composite layup / 3D printing come from Formula Electric, mentorship from WPRA
+const experienceSkills: Record<string, string[]> = {
+  uwfe: ['Composite layup', '3D printing'],
+  wpra: ['Mentorship'],
+  vex: [],
+};
+
+export default function Experience({ filteredSkill, onClearFilter }: ExperienceProps) {
   const experiencesList: ExpType[] = [
     {
       id: 'uwfe',
@@ -27,20 +40,51 @@ export default function Experience() {
     }
   ];
 
+  // True when the active filter is one of the experience-mapped skills
+  const expMatchesSkill = filteredSkill
+    ? Object.values(experienceSkills).some((skills) => skills.includes(filteredSkill))
+    : false;
+
   return (
     <section className="section py-20 bg-transparent" id="experience">
       <div className="w-full max-w-[var(--maxw)] mx-auto px-5 md:px-[var(--gutter)]">
-        
-        {/* Header */}
-        <div className="section-head reveal mb-16">
+
+        {/* Shared column: header and timeline align on the same left edge */}
+        <div className="max-w-3xl mx-auto">
+
+        {/* Header — same left padding as the timeline so the heading and
+            quote line up with the bullet text */}
+        <div className="section-head reveal mb-16 pl-6 md:pl-10">
           <span className="section-no">02 — Experience</span>
           <h2 className="h2 font-display text-[2.7rem] leading-none tracking-tight">
             Where I've <span className="text-accent italic font-normal">built, led,</span> and taught.
           </h2>
         </div>
 
+        {/* Active skill filter chip */}
+        <AnimatePresence>
+          {filteredSkill && expMatchesSkill && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              className="flex items-center gap-2.5 mb-6 pl-6 md:pl-10 font-mono text-xs uppercase tracking-wider text-ink-soft"
+            >
+              Showing: <span className="text-accent font-semibold">{filteredSkill}</span>
+              <button
+                onClick={onClearFilter}
+                className="inline-flex items-center gap-1 text-ink-faint hover:text-accent border border-hairline hover:border-accent rounded-full px-2.5 py-0.5 transition-colors cursor-pointer"
+                data-cursor
+              >
+                ✕ clear
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Timeline Stack */}
-        <div className="relative border-l border-hairline pl-6 md:pl-10 space-y-12 max-w-3xl mx-auto select-none">
+        <div className="relative border-l border-hairline pl-6 md:pl-10 space-y-12 select-none">
           {experiencesList.map((exp, idx) => (
             <motion.div
               key={exp.id}
@@ -48,7 +92,11 @@ export default function Experience() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: '0px 0px -100px 0px' }}
               transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative group pr-4"
+              className={`relative group pr-4 transition-all duration-400 ${
+                filteredSkill && expMatchesSkill && !(experienceSkills[exp.id] ?? []).includes(filteredSkill)
+                  ? 'opacity-30 saturate-50'
+                  : ''
+              }`}
             >
               {/* Timeline Connector node indicator */}
               <span className="absolute -left-[31px] md:-left-[47px] top-1.5 flex h-4 w-4 md:h-5 md:w-5 items-center justify-center rounded-full bg-paper border-2 border-hairline group-hover:border-accent transition-colors duration-350 shadow-sm">
@@ -76,6 +124,8 @@ export default function Experience() {
               </div>
             </motion.div>
           ))}
+        </div>
+
         </div>
 
       </div>

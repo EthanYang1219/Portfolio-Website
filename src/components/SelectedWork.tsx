@@ -6,11 +6,28 @@ import workF1Jpg from '../assets/images/work-f1.jpg';
 
 interface SelectedWorkProps {
   filteredSkill: string | null;
+  onClearFilter?: () => void;
 }
 
-export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
+// Which skills (from the SkillsMarquee ticker) each project demonstrates.
+// Used to dim non-matching projects when a skill filter is active.
+const projectSkills: Record<string, string[]> = {
+  python: ['Python'],
+  deltav: ['Python', '3D printing', 'Web development'],
+  pid: ['C++'],
+  f1: ['DaVinci Resolve'],
+  docs: ['Fusion 360', 'Onshape', 'Engineering Docs'],
+};
+
+export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedWorkProps) {
   const [activeIdx, setActiveIdx] = useState<number>(0);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  // True when the active filter is a project skill (experience-only skills
+  // like Composite layup / Mentorship are handled by the Experience section)
+  const projectMatchesSkill = filteredSkill
+    ? Object.values(projectSkills).some((skills) => skills.includes(filteredSkill))
+    : false;
 
   // PID Simulator States
   const [pidSetpoint, setPidSetpoint] = useState<number>(50);
@@ -76,7 +93,7 @@ export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
       id: 'pid',
       title: 'PID & Odometry',
       meta: 'C++ · controls — 2024 VEX Worlds',
-      url: '#',
+      url: 'https://github.com/EthanYang1219/604X_Provies',
       description: "A highly-tuned proportional-integral-derivative C++ positioning chassis tracking real-time field coordinates utilizing dual-wheel odometry.",
       gradient: 'linear-gradient(140deg, #7a7060, #352d20)',
       type: 'plot',
@@ -234,11 +251,38 @@ export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
           
           {/* Left panel: List of project headers */}
           <div className="hw-col flex flex-col border-t border-hairline">
+
+            {/* Active skill filter chip */}
+            <AnimatePresence>
+              {filteredSkill && projectMatchesSkill && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25 }}
+                  className="flex items-center gap-2.5 py-3 px-4 font-mono text-xs uppercase tracking-wider text-ink-soft border-b border-hairline"
+                >
+                  Showing: <span className="text-accent font-semibold">{filteredSkill}</span>
+                  <button
+                    onClick={onClearFilter}
+                    className="inline-flex items-center gap-1 text-ink-faint hover:text-accent border border-hairline hover:border-accent rounded-full px-2.5 py-0.5 transition-colors cursor-pointer"
+                    data-cursor
+                  >
+                    ✕ clear
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {projects.map((proj, idx) => (
-              <div 
-                key={proj.id} 
-                className={`hw-item border-b border-hairline group cursor-pointer transition-colors duration-400 ${
+              <div
+                key={proj.id}
+                className={`hw-item border-b border-hairline group cursor-pointer transition-all duration-400 ${
                   activeIdx === idx ? 'bg-accent-tint/5' : ''
+                } ${
+                  filteredSkill && projectMatchesSkill && !(projectSkills[proj.id] ?? []).includes(filteredSkill)
+                    ? 'opacity-30 saturate-50'
+                    : ''
                 }`}
                 onMouseEnter={() => setActiveIdx(idx)}
               >

@@ -18,14 +18,12 @@ export default function SkillsMarquee({ onSkillClick }: SkillsMarqueeProps) {
     { id: 'mentor', name: 'Mentorship', category: 'Tooling', symbolId: 'ic-mentor' },
   ];
 
+  // App.tsx decides where to scroll (work dashboard or experience timeline)
+  // based on which section the clicked skill maps to
   const handleScrollToWork = (e: React.MouseEvent<HTMLAnchorElement>, skillName: string) => {
     e.preventDefault();
     if (onSkillClick) {
       onSkillClick(skillName);
-    }
-    const el = document.getElementById('work');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -95,7 +93,7 @@ export default function SkillsMarquee({ onSkillClick }: SkillsMarqueeProps) {
         </defs>
       </svg>
 
-      <section className="pmarquee relative overflow-hidden py-10 border-t border-b border-hairline mt-12 bg-transparent select-none" aria-label="Skills ticker">
+      <section className="pmarquee relative overflow-hidden py-10 mt-12 bg-transparent select-none" aria-label="Skills ticker">
         <p className="pmarquee-label relative z-10 text-center mb-6 font-mono text-xs uppercase tracking-widest text-[#8a8170]">
           Skills · click to filter work dashboard <span className="text-accent ml-1 font-sans">↘</span>
         </p>
