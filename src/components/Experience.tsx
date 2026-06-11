@@ -40,7 +40,7 @@ export default function Experience() {
         </div>
 
         {/* Timeline Stack */}
-        <div className="relative border-l border-hairline pl-6 md:pl-10 space-y-12 max-w-3xl ml-1 select-none">
+        <div className="relative border-l border-hairline pl-6 md:pl-10 space-y-12 max-w-3xl mx-auto select-none">
           {experiencesList.map((exp, idx) => (
             <motion.div
               key={exp.id}

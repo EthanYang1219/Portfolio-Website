@@ -34,6 +34,11 @@
 
 
 :root {
+  /* Section layout: containers use max-w-[var(--maxw)] + md:px-[var(--gutter)] —
+     these MUST be defined or sections render full-bleed with no side padding */
+  --maxw: 1240px;
+  --gutter: clamp(2.5rem, 6vw, 5.5rem);
+
   --accent: #cc4b1e;
   --accent-deep: #a83a14;
   --accent-tint: rgba(204, 75, 30, 0.10);

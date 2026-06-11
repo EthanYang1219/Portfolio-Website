@@ -230,7 +230,7 @@ export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
         </div>
 
         {/* Dashboard Grid */}
-        <div className="hw-grid mt-12 grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-[4.5rem] items-start">
+        <div className="hw-grid mt-12 grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-[4.5rem] items-start">
           
           {/* Left panel: List of project headers */}
           <div className="hw-col flex flex-col border-t border-hairline">
@@ -306,7 +306,7 @@ export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
           <div className="hw-panel-col flex flex-col lg:items-end gap-6 select-none">
             
             {/* Simulation Card Wrapper */}
-            <div className="hw-panel w-full max-w-[480px] aspect-[4/3] rounded-3xl border border-hairline bg-paper-raised p-5 shadow-[0_24px_50px_-20px_rgba(0,0,0,0.15)] dark:shadow-[0_24px_50px_-20px_rgba(0,0,0,0.5)] overflow-hidden relative">
+            <div className="hw-panel w-full max-w-[560px] aspect-[4/3] rounded-3xl border border-hairline bg-paper-raised p-5 shadow-[0_24px_50px_-20px_rgba(0,0,0,0.15)] dark:shadow-[0_24px_50px_-20px_rgba(0,0,0,0.5)] overflow-hidden relative">
               
               <div 
                 className="absolute inset-0 w-full h-full opacity-10 pointer-events-none -z-10"
@@ -518,7 +518,7 @@ export default function SelectedWork({ filteredSkill }: SelectedWorkProps) {
             </div>
 
             {/* Description placeholder matching selected items */}
-            <p className="text-ink-soft text-right text-[0.88rem] max-w-[480px] italic pr-2">
+            <p className="text-ink-soft text-right text-[0.88rem] max-w-[560px] italic pr-2">
               {projects[activeIdx].title} — {projects[activeIdx].meta}
             </p>
           </div>
