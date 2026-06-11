@@ -14,7 +14,6 @@ export default function CustomCursor() {
 
     setIsVisible(true);
 
-    const dot = dotRef.current;
     let currentX = window.innerWidth / 2;
     let currentY = window.innerHeight / 2;
     let targetX = currentX;
@@ -33,6 +32,9 @@ export default function CustomCursor() {
       currentX += (targetX - currentX) * 0.18;
       currentY += (targetY - currentY) * 0.18;
 
+      // Read the ref every frame: the div mounts AFTER this effect runs
+      // (isVisible starts false), so a captured const would stay null forever
+      const dot = dotRef.current;
       if (dot) {
         dot.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
       }
