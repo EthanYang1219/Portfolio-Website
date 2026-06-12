@@ -37,6 +37,7 @@ export default function Experience({ filteredSkill, onClearFilter }: ExperienceP
       org: 'VEX Robotics · Teams 604X / 886W',
       when: '2019 – 2025',
       desc: 'Captained a multidisciplinary team through 6 competitive seasons, directing the mechanical design, prototyping, and firmware layout for VEX V5 robots. Secured over 40 accolades for engineering excellence, finished as a 2020 VEX Worlds Division Finalist (top 0.4% globally), and scaled WPRA into a top-ranked regional academy managing 15+ active teams.'
+    }
   ];
 
   // True when the active filter is one of the experience-mapped skills
