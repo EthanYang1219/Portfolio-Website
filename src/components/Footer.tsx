@@ -9,13 +9,6 @@ export default function Footer() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // jspdf is heavy (~150 kB), so the PDF generator is loaded on demand
-  // instead of shipping it in the initial bundle
-  const handleDownloadPDF = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const { generateResumePDF } = await import('../lib/pdfGenerator');
-    generateResumePDF();
-  };
 
   return (
     <footer className="footer border-t border-hairline py-8 mt-12 bg-transparent select-none">
@@ -35,16 +28,17 @@ export default function Footer() {
           </a>
         </span>
 
-        {/* Dynamic PDF resume generator trigger */}
-        <button
-          onClick={handleDownloadPDF}
+        {/* Résumé download (real PDF served from public/) */}
+        <a
+          href={`${import.meta.env.BASE_URL}resume.pdf`}
+          download="Ethan_Yang_Resume.pdf"
           className="resume-download inline-flex items-center gap-1.5 text-accent hover:text-accent-deep border border-accent/20 hover:border-accent/60 py-1.5 px-4 rounded-full font-mono text-[0.72rem] font-bold transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer select-none bg-paper/40 shadow-sm"
           data-cursor
-          title="Generate print-ready resume PDF of Ethan Yang"
+          title="Download Ethan Yang's résumé (PDF)"
         >
           <FileDown className="w-3.5 h-3.5 animate-pulse" />
           <span>Download Resume</span>
-        </button>
+        </a>
 
         {/* Anchor link */}
         <a

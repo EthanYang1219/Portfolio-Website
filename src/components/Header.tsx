@@ -52,7 +52,7 @@ export default function Header({ currentSection }: HeaderProps) {
     { label: 'Experience', href: '#experience', idx: '02' },
     { label: 'About', href: '#about', idx: '03' },
     { label: 'Contact', href: '#contact', idx: '04' },
-    { label: 'RÉSUMÉ', href: '#', isResume: true, idx: '05' },
+    { label: 'RÉSUMÉ', href: `${import.meta.env.BASE_URL}resume.pdf`, isResume: true, idx: '05' },
   ];
 
   return (
@@ -92,14 +92,9 @@ export default function Header({ currentSection }: HeaderProps) {
                     <a
                       key={link.label}
                       href={link.href}
-                      onClick={(e) => {
-                        if (link.isResume) {
-                          e.preventDefault();
-                          const el = document.getElementById('contact');
-                          if (el) el.scrollIntoView({ behavior: 'smooth' });
-                        }
-                        setIsMenuOpen(false);
-                      }}
+                      target={link.isResume ? '_blank' : undefined}
+                      rel={link.isResume ? 'noopener' : undefined}
+                      onClick={() => setIsMenuOpen(false)}
                       className={`flex items-center gap-[0.9rem] font-display font-medium text-lg tracking-tight px-3 py-2 rounded-xl text-ink hover:text-accent hover:bg-accent-tint hover:pl-4 transition-all ${
                         currentSection === link.href.replace('#', '') ? 'text-accent' : ''
                       }`}
