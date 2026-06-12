@@ -93,18 +93,18 @@ html.dark {
   --font-mono: var(--font-mono);
 }
 
-/* Themed mouse cursor: an italic-leaning arrow (sheared ~14deg, echoing
-   the Fraunces italic accents). Inverts with the theme like ink/paper:
-   light = sienna arrow w/ paper outline, dark = ivory arrow w/ accent
-   outline; interactive elements swap fill and outline. Pure CSS = native
-   cursor speed; fine-pointer only; !important beats cursor utilities.
-   NOTE: rules must stay in this order (light default, light pointer,
-   dark default, dark pointer) — specificity + order make the cascade work. */
+/* Themed mouse cursor — "teardrop terminal" from the Living Ink study
+   (cursor-design/cursor-specimens.png): an arrowhead whose tail thins to
+   a hairline and pools into Fraunces' signature ball terminal. Inverts
+   with the theme like ink/paper; interactive elements get the hollow
+   variant. Pure CSS = native speed; fine-pointer only; !important beats
+   per-element cursor utilities. Rules must stay in this order (light
+   default, light pointer, dark default, dark pointer) for the cascade. */
 @media (pointer: fine) {
   html,
   body,
   * {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M5 2L9.5 20L13.2 16.2L17.4 22.4L20.2 21.1L16.1 15.1L22.2 14.7Z' fill='%23cc4b1e' stroke='%23faf7ef' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 5 2, default !important;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M5 2L9.5 20L13.4 16.1L16.1 15.1L22.2 14.7Z' fill='%23cc4b1e' stroke='%23faf7ef' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M13.6 16.6C15 18.2 16 19.4 17.2 20.6' fill='none' stroke='%23cc4b1e' stroke-width='2.3' stroke-linecap='round'/%3E%3Ccircle cx='18.8' cy='22' r='2.7' fill='%23cc4b1e' stroke='%23faf7ef' stroke-width='1.1'/%3E%3C/svg%3E") 5 2, default !important;
   }
 
   a, a *,
@@ -112,13 +112,13 @@ html.dark {
   [role='button'], [role='button'] *,
   [data-cursor], [data-cursor] *,
   label, select, summary {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M5 2L9.5 20L13.2 16.2L17.4 22.4L20.2 21.1L16.1 15.1L22.2 14.7Z' fill='%23faf7ef' stroke='%23cc4b1e' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 5 2, pointer !important;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M5 2L9.5 20L13.4 16.1L16.1 15.1L22.2 14.7Z' fill='%23faf7ef' stroke='%23cc4b1e' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M13.6 16.6C15 18.2 16 19.4 17.2 20.6' fill='none' stroke='%23cc4b1e' stroke-width='2.3' stroke-linecap='round'/%3E%3Ccircle cx='18.8' cy='22' r='2.7' fill='%23faf7ef' stroke='%23cc4b1e' stroke-width='1.1'/%3E%3C/svg%3E") 5 2, pointer !important;
   }
 
   html.dark,
   html.dark body,
   html.dark * {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M5 2L9.5 20L13.2 16.2L17.4 22.4L20.2 21.1L16.1 15.1L22.2 14.7Z' fill='%23f3eee2' stroke='%23e85d2c' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 5 2, default !important;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M5 2L9.5 20L13.4 16.1L16.1 15.1L22.2 14.7Z' fill='%23f3eee2' stroke='%23e85d2c' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M13.6 16.6C15 18.2 16 19.4 17.2 20.6' fill='none' stroke='%23f3eee2' stroke-width='2.3' stroke-linecap='round'/%3E%3Ccircle cx='18.8' cy='22' r='2.7' fill='%23f3eee2' stroke='%23e85d2c' stroke-width='1.1'/%3E%3C/svg%3E") 5 2, default !important;
   }
 
   html.dark a, html.dark a *,
@@ -126,7 +126,7 @@ html.dark {
   html.dark [role='button'], html.dark [role='button'] *,
   html.dark [data-cursor], html.dark [data-cursor] *,
   html.dark label, html.dark select, html.dark summary {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M5 2L9.5 20L13.2 16.2L17.4 22.4L20.2 21.1L16.1 15.1L22.2 14.7Z' fill='%23e85d2c' stroke='%23f3eee2' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 5 2, pointer !important;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M5 2L9.5 20L13.4 16.1L16.1 15.1L22.2 14.7Z' fill='%23e85d2c' stroke='%23f3eee2' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M13.6 16.6C15 18.2 16 19.4 17.2 20.6' fill='none' stroke='%23e85d2c' stroke-width='2.3' stroke-linecap='round'/%3E%3Ccircle cx='18.8' cy='22' r='2.7' fill='%23e85d2c' stroke='%23f3eee2' stroke-width='1.1'/%3E%3C/svg%3E") 5 2, pointer !important;
   }
 }
 
