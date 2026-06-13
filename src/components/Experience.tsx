@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { Briefcase, Calendar, Building, Landmark } from 'lucide-react';
+import { Calendar, Landmark, ArrowUpRight } from 'lucide-react';
 import { Experience as ExpType } from '../types';
 
 interface ExperienceProps {
@@ -13,6 +13,12 @@ const experienceSkills: Record<string, string[]> = {
   uwfe: ['Composite layup', '3D printing'],
   wpra: ['Mentorship'],
   vex: [],
+};
+
+// Org websites — clicking a role title opens the team/program site in a new tab
+const experienceLinks: Record<string, string> = {
+  uwfe: 'https://www.uwfsae.ca/',
+  wpra: 'https://orionwpra.ca/',
 };
 
 export default function Experience({ filteredSkill, onClearFilter }: ExperienceProps) {
@@ -107,7 +113,20 @@ export default function Experience({ filteredSkill, onClearFilter }: ExperienceP
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
                   <h3 className="font-display font-medium text-xl md:text-2xl text-ink tracking-tight group-hover:text-accent transition-colors">
-                    {exp.role}
+                    {experienceLinks[exp.id] ? (
+                      <a
+                        href={experienceLinks[exp.id]}
+                        target="_blank"
+                        rel="noopener"
+                        className="inline-flex items-center gap-1.5 hover:text-accent transition-colors"
+                        data-cursor
+                      >
+                        {exp.role}
+                        <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                      </a>
+                    ) : (
+                      exp.role
+                    )}
                   </h3>
                   <span className="font-mono text-xs text-ink-faint flex items-center gap-1">
                     <Calendar className="w-3.5 h-3.5" /> {exp.when}

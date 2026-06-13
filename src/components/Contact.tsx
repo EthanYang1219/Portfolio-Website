@@ -8,7 +8,7 @@ export default function Contact() {
   ];
 
   return (
-    <section className="finale pt-48 pb-28 text-center bg-transparent relative overflow-hidden" id="contact">
+    <section className="finale pt-48 md:pt-[50vh] pb-28 text-center bg-transparent relative overflow-hidden" id="contact">
       {/* Dynamic Background Circle Accent */}
       <div 
         className="absolute -right-40 -bottom-40 w-96 h-96 rounded-full bg-accent-tint/10 blur-[80px] pointer-events-none"

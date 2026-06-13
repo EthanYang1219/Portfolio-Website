@@ -135,7 +135,9 @@ body {
   font-family: var(--font-sans);
   background-color: var(--paper);
   color: var(--ink);
-  overflow-x: hidden;
+  /* clip (not hidden) so body doesn't become a scroll container that would
+     break position:sticky on the Selected Work simulator panel */
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }

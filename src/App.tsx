@@ -103,7 +103,7 @@ export default function App() {
       {/* Content wrapper with correct flow */}
       <Header currentSection={currentSection} />
 
-      <main className="relative z-10 w-full flex flex-col overflow-x-hidden">
+      <main className="relative z-10 w-full flex flex-col overflow-x-clip">
         {/* Landing viewport */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

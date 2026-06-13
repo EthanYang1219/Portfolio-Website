@@ -360,8 +360,10 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
             ))}
           </div>
 
-          {/* Right panel: Live Interactive Illustrators/Simulators! */}
-          <div className="hw-panel-col flex flex-col lg:items-end gap-6 select-none">
+          {/* Right panel: Live Interactive Illustrators/Simulators!
+              Sticky on desktop so it rides up with the scroll and stays fully
+              in view alongside the project list instead of clipping at the fold */}
+          <div className="hw-panel-col flex flex-col lg:items-end gap-6 select-none lg:sticky lg:top-24 lg:self-start">
             
             {/* Simulation Card Wrapper */}
             <div className="hw-panel w-full max-w-[560px] aspect-[4/3] rounded-3xl border border-hairline bg-paper-raised p-5 shadow-[0_24px_50px_-20px_rgba(0,0,0,0.15)] dark:shadow-[0_24px_50px_-20px_rgba(0,0,0,0.5)] overflow-hidden relative">
