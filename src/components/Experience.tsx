@@ -19,14 +19,14 @@ export default function Experience({ filteredSkill, onClearFilter }: ExperienceP
   const experiencesList: ExpType[] = [
     {
       id: 'uwfe',
-      role: 'Formula Electric — Chassis & Carbon',
+      role: 'Formula Electric — Chassis Subteam',
       org: 'University of Waterloo (UWFE)',
       when: 'Sept 2025 – Present',
       desc: 'Design, prototype, and fabricate safety-critical structural chassis components for the Formula SAE vehicle using CAD modelling, precision machining, and composite layup techniques. Collaborate cross-functionally with engineering leads across multiple subsystems to implement performance-driven design improvements and ensure track reliability'
     },
     {
       id: 'wpra',
-      role: 'Robotics Control Systems Instructor',
+      role: 'Robotics Instructor',
       org: 'Western Pacific Robotics Academy',
       when: 'Sept 2023 – Present',
       desc: 'Coached and mentored junior and senior high school competitors on core VEX robotics concepts, including CAD design, C++ programming, and control system troubleshooting. Managed workshop drop-in sessions and spearheaded parent/customer communications, driving a 60% increase in active membership enrollment.'
@@ -36,7 +36,7 @@ export default function Experience({ filteredSkill, onClearFilter }: ExperienceP
       role: 'Team Captain & Mechanical Lead',
       org: 'VEX Robotics · Teams 604X / 886W',
       when: '2019 – 2025',
-      desc: 'Captained a multidisciplinary team through 6 competitive seasons, directing the mechanical design, prototyping, and firmware layout for VEX V5 robots. Secured over 40 accolades for engineering excellence, finished as a 2020 VEX Worlds Division Finalist (top 0.4% globally), and scaled WPRA into a top-ranked regional academy managing 15+ active teams.'
+      desc: 'Captained a multidisciplinary team through 6 competitive seasons, directing the mechanical design, prototyping, and firmware layout for VEX V5 robots. Secured over 40 accolades for engineering excellence, and finished as a 2020 VEX Worlds Division Finalist (top 0.4% globally), and scaled WPRA into a top-ranked regional academy managing 15+ active teams.'
     }
   ];
 
