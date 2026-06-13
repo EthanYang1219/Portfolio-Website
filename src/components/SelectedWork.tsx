@@ -51,79 +51,79 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
   const [aiSequence, setAiSequence] = useState<number[]>([0, 1, 2, 3, 4]);
 
   const projects: Project[] = [
-    {
+  {
       id: 'python',
       title: 'Python Projects',
       meta: 'Python · GitHub Sandbox',
       url: 'https://github.com/EthanYang1219/Python-Projects',
-      description: "A growing collection of small Python scripts and sandbox experiments. Built to prototype complex math systems rapidly and maintain speed and fluency.",
+      description: "A growing repository of Python projects and foundational exercises developed throughout Summer 2026, currently focusing on Object-Oriented Programming (OOP) fundamentals.",
       gradient: 'linear-gradient(140deg, #c9a06a, #7a4f2a)',
       type: 'code',
       details: {
-        role: 'Solo Developer & Author',
-        overview: 'A dedicated test sandbox containing modular tools, file systems, graph sorting trees, and experimental control theory loops. Used to validate mechanical calculations before C++ implementation.',
-        challenges: 'Designing custom utilities without bloated external dependencies. Solved by writing raw linear algebraic solvers, array manipulations, and terminal animation engines from first-principles.',
+        role: 'Solo Developer',
+        overview: 'A personal learning sandbox used to practice writing clean, organized Python code. Built to transition from basic scripting into structured, object-oriented applications.',
+        challenges: 'Learning how to properly structure code into reusable classes and modules rather than writing everything in single, messy scripts.',
         highlights: [
-          'Linear algebra and matrix transformations from scratch',
-          'Coordinate scaling algorithms for raw vector plotter feeds',
-          'Mathematical physics gravity orbit modeling engines'
+          'Implementing core OOP concepts like classes, inheritance, and methods',
+          'Breaking down larger logic into modular, organized file systems',
+          'Building small, foundational console-based applications from scratch.'
         ]
       }
     },
     {
-      id: 'deltav',
+        id: 'deltav',
       title: 'DeltaV',
       meta: 'Climbing Companion · full-stack + AI',
       url: '#',
-      description: "A full-stack, AI-powered bouldering companion that logs training, maps hold layouts via computer vision, and outputs optimal topological climb plans.",
+      description: "A full-stack bouldering companion app that tracks training metrics, logs hold layouts, and maps climber center-of-mass telemetry.",
       gradient: 'linear-gradient(140deg, #e0b894, #b8431e)',
       type: 'phone',
       details: {
-        role: 'Sole Architect / Developer',
-        overview: 'DeltaV processes high-density training coordinates into actionable graphs. By mapping coordinates on a custom Canvas layout, it models hold vectors and advises resting pacing.',
-        challenges: 'Translating noisy canvas touches into structured vector nodes that recommend relative body positions. Solved by fitting custom spline chains.',
+        role: 'Front-End Developer',
+        overview: 'DeltaV captures real-time climbing metrics by tracking a user\'s hip positioning—the critical baseline for calculating balance, wall proximity, and core stability during a dynamic climb.',
+        challenges: 'Translating raw IMU sensor tracking and casual canvas screen touches into clean, reliable path data without over-complicating the user interface.',
         highlights: [
-          'Real-time computer vision hold positioning engine',
-          'Damped spring animations with motion/react structures',
-          'Heuristic climbing node sorting and dynamic pacing'
+          'Prototyped a wearable hardware sensor to capture live hip stability and tracking telemetry',
+          'Designed a clean, minimal interface featuring real-time data visualizers for tracking climbing routes',
+          'Built standard climbing features including custom route logging, project status tags, and historical session tracking'
         ]
       }
     },
     {
       id: 'pid',
-      title: 'PID & Odometry',
-      meta: 'C++ · controls — 2024 VEX Worlds',
-      url: 'https://github.com/EthanYang1219/604X_Provies',
-      description: "A highly-tuned proportional-integral-derivative C++ positioning chassis tracking real-time field coordinates utilizing dual-wheel odometry.",
-      gradient: 'linear-gradient(140deg, #7a7060, #352d20)',
-      type: 'plot',
-      details: {
-        role: 'Lead Programmer & Control Systems Engineer',
-        overview: 'Implemented dual-encoder odometry that constantly integrates wheel encoder ticks to compute absolute position (X, Y) and theta heading orientations at 100Hz on VEX processors.',
-        challenges: 'Accounting for severe wheel-skid and drift errors during fast accelerations. Solved by implementing dual tracking omnicourses and PID heading dampening hooks.',
-        highlights: [
-          'Sub-millimeter tracking accuracy across complex auto paths',
-          'Proportional, Integral, Derivative loop driving 4 motor groupings',
-          'Odometry angle resolution resolving local heading errors'
+          title: 'PID & Odometry',
+          meta: 'C++ · LemLib — 2024 VEX Worlds',
+          url: 'https://github.com/EthanYang1219/604X_Provies',
+          description: "An autonomous tracking and positioning system configured in C++ utilizing LemLib's dual-wheel odometry and PID chassis controls.",
+          gradient: 'linear-gradient(140deg, #7a7060, #352d20)',
+          type: 'plot',
+          details: {
+            role: 'Lead Programmer & Control Systems Engineer',
+            overview: 'Configured and tuned a dual-encoder LemLib tracking setup to calculate absolute coordinates (X, Y) and heading orientations in real-time during competitive matches.',
+            challenges: 'Overcoming wheel slippage and drift caused by rapid acceleration profiles. Solved by tuning LemLib’s PID gains and adjusting mechanical tracking wheel geometry.',
+            highlights: [
+              'Tuned custom PID constants to optimize chassis acceleration and deceleration limits',
+              'Built consistent autonomous routes using absolute field coordinate tracking',
+              'Reduced positioning errors to keep the robot accurately aligned with match objectives'
         ]
       }
     },
     {
       id: 'f1',
       title: 'F1 Safety Video',
-      meta: 'Resolve · Documentary editing',
+      meta: 'Resolve · Documentary Editing',
       url: 'https://www.youtube.com/watch?v=qGy1c3SvTlU',
-      description: "A professional documentary-style piece explaining the evolution of mechanical active safety systems inside F1 cockpits, edited in DaVinci Resolve.",
+      description: "A documentary-style video explaining the history and evolution of Formula 1 safety systems, edited in DaVinci Resolve.",
       gradient: 'linear-gradient(140deg, #d2632e, #4a2c1a)',
       type: 'image',
       details: {
-        role: 'Content Producer, Scriptwriter & Sound Editor',
-        overview: 'Researched, scripted, tracked, and mastered sound editing for a high-intensity documentary investigating survivability limits in high-speed crashes (from Monza structure failures to modern halos).',
-        challenges: 'Pacing technical engineering concepts alongside fast-action raw race audio elements. Solved by executing sub-frame multi-cam sequences, custom keyframe transitions, and audio filters.',
+        role: 'Content Producer, Scriptwriter & Editor',
+        overview: 'Researched, scripted, and edited a video essay investigating how driver safety mechanics evolved across different eras of Formula 1.',
+        challenges: 'Translating technical racing engineering into an engaging story for casual viewers, while sourcing copyright-compliant historical footage and keeping the pacing tight.',
         highlights: [
-          'DaVinci Resolve color sweeps and multitrack mixing',
-          'Deep forensic safety systems timeline research documentation',
-          '38k+ views validating digital narrative engagement strategies'
+          'Hand-wrote and narrated a comprehensive 600+ word script designed for a general audience',
+          'Conducted deep historical research into the evolution of racing safety devices and regulations',
+          'Managed end-to-end video editing, including clip splicing, pacing, background music, and visual transitions'
         ]
       }
     },
@@ -132,17 +132,15 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
       title: 'VEX Notebook',
       meta: 'Engineering management · 300pg logs',
       url: 'https://docs.google.com/presentation/d/1X4aPTVQ4PRyfuGO5HmuRzZQHJE9-RQF6r9ISsCX0SpE/edit?usp=sharing',
-      description: "A 300+ page design diary detailing architectural iterations, budget sheets, and structural calculus that secured numerous Excellence and Design accolades.",
-      gradient: 'linear-gradient(140deg, #5a4f40, #17140d)',
-      type: 'doc',
+      description: "A comprehensive 300+ page engineering notebook documenting the iterative design, testing, and prototyping phases for each mechanical subsystem.",
       details: {
-        role: 'Chief Documentarian & Project Manager',
-        overview: 'Directed the structural process logs from initial prototyping phases, detailed matrix trade-off arrays, through continuous pathing iterations. Adhered strictly to aerospace design guidelines.',
-        challenges: 'Maintaining rigorous records across dynamic 6-month mechanical development sprints. Solved by establishing strict weekly Git-like documentation frameworks.',
+        role: 'Mechanical Lead',
+        overview: 'Managed the end-to-end engineering documentation, from initial prototyping and component trade-off analysis to final mechanism iterations, ensuring compliance with competition design standards.',
+        challenges: 'Maintaining rigorous, consistent records across a dynamic 6-month build cycle. Solved by implementing a structured weekly logging system to keep all sub-team updates synchronized.',
         highlights: [
-          'Aerospace-standard design trade matrix frameworks',
-          'Comprehensive budgeting sheets mapping cost-to-performance ratio',
-          '40+ design, construction, and overall tournament excellence titles'
+          'Data-driven design matrices evaluating reliability, weight, and performance trade-offs',
+          'Detailed subsystem documentation tracking mechanical revisions and test results',
+          'Contributed to winning over 40 technical design, construction, and tournament excellence awards'
         ]
       }
     }
