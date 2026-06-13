@@ -591,31 +591,29 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
 
       </div>
 
-      {/* DETAILED CASE STUDY BOTTOM DRAWER (Slide in dynamically) */}
+      {/* DETAILED CASE STUDY POPOUT MODAL (centered, fully visible) */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-[#17140d]/40 backdrop-blur-md flex items-end justify-center py-0"
+            className="fixed inset-0 z-50 bg-[#17140d]/40 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
             role="dialog"
             aria-modal="true"
           >
             {/* Dark back-overlay trigger */}
             <div className="absolute inset-0" onClick={() => setSelectedProject(null)} />
 
-            {/* Bottom Slider Drawer sheet */}
+            {/* Centered popout window — floats with margin all around, scrolls
+                internally so the whole card is always visible on screen */}
             <motion.div
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 28, stiffness: 220 }}
-              className="relative w-full max-w-2xl bg-paper border-t border-hairline rounded-t-3xl p-6 md:p-8 shadow-[0_-20px_50px_rgba(0,0,0,0.15)] z-10 max-h-[85vh] overflow-y-auto scroller"
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-3xl bg-paper border border-hairline rounded-3xl p-6 md:p-8 shadow-[0_30px_80px_-24px_rgba(0,0,0,0.5)] z-10 max-h-[88vh] overflow-y-auto scroller"
             >
-              {/* Little drag handle bar */}
-              <div className="w-12 h-1 bg-hairline-soft rounded-full mx-auto mb-6 cursor-pointer" onClick={() => setSelectedProject(null)} />
-
               <div className="flex justify-between items-start mb-6">
                 <div className="flex flex-col gap-1">
                   <h3 className="font-display text-3xl md:text-4xl text-ink tracking-tight font-medium">
@@ -699,7 +697,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
               )}
 
               {/* Bottom footer links */}
-              <div className="mt-8 pt-4 border-t border-hairline flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="mt-8 pt-4 border-t border-hairline flex flex-col sm:flex-row justify-end items-center gap-4">
                 {selectedProject.url !== '#' ? (
                   <a
                     href={selectedProject.url}
@@ -722,12 +720,6 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                     Collaborate On DeltaV
                   </button>
                 )}
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  className="font-mono text-xs uppercase tracking-wider text-ink-faint hover:text-ink transition-colors cursor-pointer"
-                >
-                  Dismiss Detailed sheet
-                </button>
               </div>
 
             </motion.div>
