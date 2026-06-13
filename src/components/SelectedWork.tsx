@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUpRight, Play, Terminal, HelpCircle, Code, Settings, Sparkles, BookOpen, Clock, Activity, Target } from 'lucide-react';
 import { Project } from '../types';
@@ -591,8 +592,11 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
 
       </div>
 
-      {/* DETAILED CASE STUDY POPOUT MODAL (centered, fully visible) */}
-      <AnimatePresence>
+      {/* DETAILED CASE STUDY POPOUT MODAL (centered, fully visible).
+          Portaled to <body> so position:fixed always resolves against the
+          viewport, never a transformed motion ancestor (which would offset it). */}
+      {createPortal(
+        <AnimatePresence>
         {selectedProject && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -725,7 +729,9 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
     </section>
   );
 }
