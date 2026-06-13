@@ -133,6 +133,8 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
       meta: 'Engineering management · 300pg logs',
       url: 'https://docs.google.com/presentation/d/1X4aPTVQ4PRyfuGO5HmuRzZQHJE9-RQF6r9ISsCX0SpE/edit?usp=sharing',
       description: "A comprehensive 300+ page engineering notebook documenting the iterative design, testing, and prototyping phases for each mechanical subsystem.",
+      gradient: 'linear-gradient(140deg, #5a4f40, #17140d)',
+      type: 'doc',
       details: {
         role: 'Mechanical Lead',
         overview: 'Managed the end-to-end engineering documentation, from initial prototyping and component trade-off analysis to final mechanism iterations, ensuring compliance with competition design standards.',
