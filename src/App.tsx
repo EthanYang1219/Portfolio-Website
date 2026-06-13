@@ -114,12 +114,14 @@ export default function App() {
           <Hero />
         </motion.div>
 
-        {/* Selected Projects with real control theory simulations */}
+        {/* Selected Projects with real control theory simulations.
+            Gentle, early fade-up so it eases in as the hero dissolves rather
+            than popping in after a gap. */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-120px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
         >
           <SelectedWork filteredSkill={activeFilteredSkill} onClearFilter={() => setActiveFilteredSkill(null)} />
         </motion.div>

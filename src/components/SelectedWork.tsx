@@ -252,7 +252,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
   };
 
   return (
-    <section className="section pt-[12vh] md:pt-[16vh]" id="work" ref={sectionRef}>
+    <section className="section pt-[7vh] md:pt-[9vh]" id="work" ref={sectionRef}>
       <div className="w-full max-w-[var(--maxw)] mx-auto px-5 md:px-[var(--gutter)]">
         
         {/* Header */}

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { Typewriter } from './ui/typewriter';
@@ -6,10 +6,7 @@ import { Typewriter } from './ui/typewriter';
 const tags = ['Leading', 'Building', 'Coding', 'Creating', 'Learning'];
 
 export default function Hero() {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
-  // Track viewport height so the fade range scales with the screen. The hero
-  // inner panel pins for the first ~50svh; we finish the fade just before that.
+  // Track viewport height so the fade range scales with the screen.
   const [vh, setVh] = useState<number>(typeof window !== 'undefined' ? window.innerHeight : 800);
   useEffect(() => {
     const onResize = () => setVh(window.innerHeight);
@@ -18,12 +15,12 @@ export default function Hero() {
   }, []);
 
   // Elegant scroll-linked fade (no zoom): the whole intro — badge, tagline,
-  // name, and buttons — fades out together over the first ~0.42 of a screen
-  // height, while the name is still pinned and centered, and fades back in on
-  // scroll up. Driven off raw window scroll (px) because target/offset progress
-  // is non-monotonic over the sticky child. Pure opacity, fully to 0.
+  // name, and buttons — dissolves together over the first ~0.45 of a screen
+  // height as you scroll, and fades back in on scroll up. The hero is a single
+  // 100svh section (no sticky tail), so Selected Work follows directly
+  // underneath for a continuous, gradual handoff — not a long empty scroll-out.
   const { scrollY } = useScroll();
-  const heroOpacity = useTransform(scrollY, [0, vh * 0.42], [1, 0]);
+  const heroOpacity = useTransform(scrollY, [0, vh * 0.45], [1, 0]);
 
   const handleWorkScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -32,9 +29,8 @@ export default function Hero() {
   };
 
   return (
-    <section 
-      ref={containerRef}
-      className="hero relative h-[150svh] text-center" 
+    <section
+      className="hero relative h-[100svh] text-center"
       id="hero"
     >
       {/* No overflow-hidden here: the name's ambient halo paints past the
@@ -42,7 +38,7 @@ export default function Hero() {
           below the CTA buttons. Horizontal overflow is guarded by body/main. */}
       <motion.div
         style={{ opacity: heroOpacity }}
-        className="hero-sticky sticky top-0 h-[100svh] grid grid-rows-[auto_1fr_auto] items-center gap-6 pt-28 pb-10 px-5 md:px-[var(--gutter)]"
+        className="hero-inner h-[100svh] grid grid-rows-[auto_1fr_auto] items-center gap-6 pt-28 pb-10 px-5 md:px-[var(--gutter)]"
       >
         
         {/* Soft Warm Glow Backdrop (Fills space behind text softly) */}
