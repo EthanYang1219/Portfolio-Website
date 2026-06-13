@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { Typewriter } from './ui/typewriter';
@@ -8,17 +8,22 @@ const tags = ['Leading', 'Building', 'Coding', 'Creating', 'Learning'];
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Hardware-accelerated scroll tracking for name zoom/reveal
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end start']
-  });
+  // Track viewport height so the fade range scales with the screen. The hero
+  // inner panel pins for the first ~50svh; we finish the fade just before that.
+  const [vh, setVh] = useState<number>(typeof window !== 'undefined' ? window.innerHeight : 800);
+  useEffect(() => {
+    const onResize = () => setVh(window.innerHeight);
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
-  // Adjust transition ranges for scroll trigger
-  const nameScale = useTransform(scrollYProgress, [0, 0.45], [1, 0.38]);
-  const nameOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0.15]);
-  const bottomTranslateY = useTransform(scrollYProgress, [0, 0.35], [0, 20]);
-  const bottomOpacity = useTransform(scrollYProgress, [0, 0.30], [1, 0]);
+  // Elegant scroll-linked fade (no zoom): the whole intro — badge, tagline,
+  // name, and buttons — fades out together over the first ~0.42 of a screen
+  // height, while the name is still pinned and centered, and fades back in on
+  // scroll up. Driven off raw window scroll (px) because target/offset progress
+  // is non-monotonic over the sticky child. Pure opacity, fully to 0.
+  const { scrollY } = useScroll();
+  const heroOpacity = useTransform(scrollY, [0, vh * 0.42], [1, 0]);
 
   const handleWorkScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -35,7 +40,10 @@ export default function Hero() {
       {/* No overflow-hidden here: the name's ambient halo paints past the
           container bottom, and clipping it leaves a hard horizontal edge
           below the CTA buttons. Horizontal overflow is guarded by body/main. */}
-      <div className="hero-sticky sticky top-0 h-[100svh] grid grid-rows-[auto_1fr_auto] items-center gap-6 pt-28 pb-10 px-5 md:px-[var(--gutter)]">
+      <motion.div
+        style={{ opacity: heroOpacity }}
+        className="hero-sticky sticky top-0 h-[100svh] grid grid-rows-[auto_1fr_auto] items-center gap-6 pt-28 pb-10 px-5 md:px-[var(--gutter)]"
+      >
         
         {/* Soft Warm Glow Backdrop (Fills space behind text softly) */}
         <div 
@@ -73,9 +81,9 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* Center: Giant Display Name Parallax Zoom with Illuminated Glow Filter */}
-        <motion.div 
-          style={{ opacity: nameOpacity, scale: nameScale }}
+        {/* Center: Giant Display Name with Illuminated Glow Filter
+            (fades with the rest of the intro via the parent's heroOpacity) */}
+        <div
           className="hero-center relative z-10 flex items-center justify-center pointer-events-none"
         >
           <div className="hero-name-wrap select-none relative">
@@ -101,11 +109,10 @@ export default function Hero() {
               </span>
             </h1>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Bottom: Floating actions */}
-        <motion.div 
-          style={{ translateY: bottomTranslateY, opacity: bottomOpacity }}
+        {/* Bottom: Floating actions (fade with the intro via parent heroOpacity) */}
+        <div
           className="relative z-10 flex flex-col items-center gap-6"
         >
           <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center items-center">
@@ -131,9 +138,9 @@ export default function Hero() {
               Get in touch
             </a>
           </div>
-        </motion.div>
+        </div>
 
-      </div>
+      </motion.div>
 
       {/* Embedded SVG filter definitions for the illuminated glow text effect */}
       <svg
