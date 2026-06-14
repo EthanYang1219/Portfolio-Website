@@ -89,8 +89,15 @@ export default function Experience({ filteredSkill, onClearFilter }: ExperienceP
           )}
         </AnimatePresence>
 
-        {/* Timeline Stack */}
-        <div className="relative border-l border-hairline pl-6 md:pl-10 space-y-12 select-none">
+        {/* Timeline Stack — the left padding lives on each item (not the
+            container) so the nodes, positioned relative to their item, land
+            exactly on the rail. */}
+        <div className="relative space-y-12 select-none">
+          {/* Elegant vertical rail: a hairline that dissolves at both ends */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute left-[7px] md:left-[9px] top-1 bottom-1 w-px bg-gradient-to-b from-transparent via-hairline to-transparent"
+          />
           {experiencesList.map((exp, idx) => (
             <motion.div
               key={exp.id}
@@ -98,16 +105,15 @@ export default function Experience({ filteredSkill, onClearFilter }: ExperienceP
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: '0px 0px -100px 0px' }}
               transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className={`relative group pr-4 transition-all duration-400 ${
+              className={`relative group pl-8 md:pl-12 pr-4 transition-all duration-400 ${
                 filteredSkill && expMatchesSkill && !(experienceSkills[exp.id] ?? []).includes(filteredSkill)
                   ? 'opacity-30 saturate-50'
                   : ''
               }`}
             >
-              {/* Timeline Connector node indicator */}
-              <span className="absolute -left-[31px] md:-left-[47px] top-1.5 flex h-4 w-4 md:h-5 md:w-5 items-center justify-center rounded-full bg-paper border-2 border-hairline group-hover:border-accent transition-colors duration-350 shadow-sm">
-                <span className="h-1.5 w-1.5 rounded-full bg-ink-faint group-hover:bg-accent transition-colors" />
-              </span>
+              {/* Node — centered on the rail (left == rail x, -translate-x-1/2),
+                  paper ring keeps a clean gap, fills with accent on hover */}
+              <span className="absolute left-[7px] md:left-[9px] top-[0.55rem] -translate-x-1/2 h-2.5 w-2.5 rounded-full bg-hairline ring-4 ring-paper group-hover:bg-accent group-hover:scale-110 transition-all duration-300" />
 
               {/* Box */}
               <div className="flex flex-col gap-2">

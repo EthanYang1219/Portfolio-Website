@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { ArrowUpRight, Play, Terminal, HelpCircle, Code, Settings, Sparkles, BookOpen, Clock, Activity, Target } from 'lucide-react';
 import { Project } from '../types';
 import workF1Jpg from '../assets/images/work-f1.jpg';
@@ -164,6 +164,36 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
     return () => io.disconnect();
   }, []);
 
+  // Desktop-only: fade the right-hand mini window out as you scroll down past
+  // the projects (instead of pinning it, which felt like it tracked the page).
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+  // Anchor the fade to the section's absolute top, then drive it off raw window
+  // scroll (useScroll target/offset progress is non-monotonic once the element
+  // scrolls far past the viewport — same quirk hit in the hero).
+  const [sectionTop, setSectionTop] = useState(0);
+  useEffect(() => {
+    const measure = () => {
+      const el = sectionRef.current;
+      if (el) setSectionTop(el.getBoundingClientRect().top + window.scrollY);
+    };
+    measure();
+    window.addEventListener('resize', measure, { passive: true });
+    const t = setTimeout(measure, 500); // re-measure once fonts/layout settle
+    return () => {
+      window.removeEventListener('resize', measure);
+      clearTimeout(t);
+    };
+  }, []);
+  const { scrollY } = useScroll();
+  const panelFade = useTransform(scrollY, [sectionTop, sectionTop + 320], [1, 0]);
+
   // PID feedback loop logic
   useEffect(() => {
     if (!simVisible) return;
@@ -267,7 +297,10 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
         <div className="hw-grid mt-12 grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-[4.5rem] items-start">
           
           {/* Left panel: List of project headers */}
-          <div className="hw-col flex flex-col border-t border-hairline">
+          <div className="hw-col flex flex-col">
+
+            {/* Top divider matching the row separators */}
+            <span aria-hidden className="block h-px bg-gradient-to-r from-transparent via-hairline to-transparent" />
 
             {/* Active skill filter chip */}
             <AnimatePresence>
@@ -294,7 +327,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
             {projects.map((proj, idx) => (
               <div
                 key={proj.id}
-                className={`hw-item border-b border-hairline group cursor-pointer transition-all duration-400 ${
+                className={`hw-item group cursor-pointer transition-all duration-400 ${
                   activeIdx === idx ? 'bg-accent-tint/5' : ''
                 } ${
                   filteredSkill && projectMatchesSkill && !(projectSkills[proj.id] ?? []).includes(filteredSkill)
@@ -303,8 +336,8 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                 }`}
                 onMouseEnter={() => setActiveIdx(idx)}
               >
-                <div 
-                  className="hw-link grid grid-cols-[1fr_auto] items-center gap-4 py-8 px-4 cursor-pointer select-none"
+                <div
+                  className="hw-link grid grid-cols-[1fr_auto] items-center gap-4 py-7 px-4 cursor-pointer select-none"
                   onClick={() => setSelectedProject(proj)}
                 >
                   <div className="flex flex-col gap-1.5">
@@ -317,7 +350,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                       {proj.meta}
                     </span>
                   </div>
-                  
+
                   <div className={`hw-arrow text-accent text-2xl transition-all duration-300 ${
                     activeIdx === idx ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-3 pointer-events-none'
                   }`}>
@@ -325,48 +358,19 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                   </div>
                 </div>
 
-                {/* Inline description (collapsible/expandable dynamically based on active selection) */}
-                <AnimatePresence initial={false}>
-                  {activeIdx === idx && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                      className="overflow-hidden px-4 pb-6"
-                    >
-                      <p className="text-ink-soft text-[0.95rem] leading-relaxed max-w-[50ch] mb-4">
-                        {proj.description}
-                      </p>
-                      <div className="flex items-center gap-3">
-                        <button 
-                          onClick={() => setSelectedProject(proj)}
-                          className="flex items-center gap-1.5 font-mono text-xs tracking-wider uppercase text-accent font-semibold hover:text-accent-deep transition-colors cursor-pointer"
-                        >
-                          <BookOpen className="w-3.5 h-3.5" /> Read Case Studies
-                        </button>
-                        {proj.url !== '#' && (
-                          <a 
-                            href={proj.url}
-                            target="_blank"
-                            rel="noopener"
-                            className="flex items-center gap-1 font-mono text-xs tracking-wider uppercase text-ink-soft hover:text-ink transition-colors"
-                          >
-                            Source Link ↗
-                          </a>
-                        )}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Elegant divider — a hairline that dissolves at both ends */}
+                <span aria-hidden className="block h-px bg-gradient-to-r from-transparent via-hairline to-transparent" />
               </div>
             ))}
           </div>
 
           {/* Right panel: Live Interactive Illustrators/Simulators!
-              Sticky on desktop so it rides up with the scroll and stays fully
-              in view alongside the project list instead of clipping at the fold */}
-          <div className="hw-panel-col flex flex-col lg:items-end gap-6 select-none lg:sticky lg:top-24 lg:self-start">
+              Not pinned — it fades out (desktop) as you scroll past the
+              projects, like the hero intro, rather than tracking the page. */}
+          <motion.div
+            style={{ opacity: isDesktop ? panelFade : 1 }}
+            className="hw-panel-col flex flex-col lg:items-end gap-6 select-none"
+          >
             
             {/* Simulation Card Wrapper */}
             <div className="hw-panel w-full max-w-[560px] aspect-[4/3] rounded-3xl border border-hairline bg-paper-raised p-5 shadow-[0_24px_50px_-20px_rgba(0,0,0,0.15)] dark:shadow-[0_24px_50px_-20px_rgba(0,0,0,0.5)] overflow-hidden relative">
@@ -582,11 +586,45 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
 
             </div>
 
-            {/* Description placeholder matching selected items */}
-            <p className="text-ink-soft text-right text-[0.88rem] max-w-[560px] italic pr-2">
-              {projects[activeIdx].title} — {projects[activeIdx].meta}
-            </p>
-          </div>
+            {/* Active project blurb + actions — moved out of the list so
+                hovering a project updates this panel instead of expanding an
+                inline row (which reflowed and snapped the list). Crossfades
+                between projects. */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIdx}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="w-full max-w-[560px] flex flex-col gap-3 lg:items-end lg:text-right"
+              >
+                <p className="text-ink-soft text-[0.92rem] leading-relaxed max-w-[48ch]">
+                  {projects[activeIdx].description}
+                </p>
+                <div className="flex items-center gap-4 lg:justify-end">
+                  <button
+                    onClick={() => setSelectedProject(projects[activeIdx])}
+                    className="inline-flex items-center gap-1.5 font-mono text-xs tracking-wider uppercase text-accent font-semibold hover:text-accent-deep transition-colors cursor-pointer"
+                    data-cursor
+                  >
+                    <BookOpen className="w-3.5 h-3.5" /> Read Case Studies
+                  </button>
+                  {projects[activeIdx].url !== '#' && (
+                    <a
+                      href={projects[activeIdx].url}
+                      target="_blank"
+                      rel="noopener"
+                      className="inline-flex items-center gap-1 font-mono text-xs tracking-wider uppercase text-ink-soft hover:text-ink transition-colors"
+                      data-cursor
+                    >
+                      Source ↗
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
 
         </div>
 
