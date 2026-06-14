@@ -148,11 +148,6 @@ export default function ShaderBackground() {
       grain: 0.028,
     };
 
-    const getPalette = () => {
-      const isDark = document.documentElement.classList.contains('dark');
-      return isDark ? DARK_PALETTE : LIGHT_PALETTE;
-    };
-
     let width = 0;
     let height = 0;
 
@@ -160,12 +155,17 @@ export default function ShaderBackground() {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const w = Math.max(1, Math.floor(window.innerWidth * dpr));
       const h = Math.max(1, Math.floor(window.innerHeight * dpr));
+      // ResizeObserver(body) also fires when page content height changes
+      // (inline expands, the modal, the PID sim). Bail unless the viewport-
+      // derived size actually changed, to avoid needless canvas reallocations.
+      if (w === width && h === height) return;
       width = w;
       height = h;
-      
+
       canvas.width = w;
       canvas.height = h;
       gl!.viewport(0, 0, w, h);
+      gl!.uniform2f(uniforms.res, w, h); // resolution only changes here
     };
 
     resize();
@@ -195,18 +195,11 @@ export default function ShaderBackground() {
     const c2Buf = new Float32Array(3);
     const c3Buf = new Float32Array(3);
 
-    const render = (now: number) => {
-      // Lerp custom coordinate drag values smoothly
-      mouseX += (targetMouseX - mouseX) * 0.03;
-      mouseY += (targetMouseY - mouseY) * 0.03;
-
-      const timeSec = (now - startTime) * 0.00018;
-      const palette = getPalette();
-
-      gl!.uniform2f(uniforms.res, width, height);
-      gl!.uniform1f(uniforms.time, timeSec);
-      gl!.uniform2f(uniforms.mouse, mouseX, mouseY);
-
+    // Palette/grain uniforms only change on theme switch — upload them once and
+    // then only when the theme flips, instead of every frame.
+    let lastIsDark: boolean | null = null;
+    const applyPalette = (isDark: boolean) => {
+      const palette = isDark ? DARK_PALETTE : LIGHT_PALETTE;
       c1Buf.set(palette.c1);
       c2Buf.set(palette.c2);
       c3Buf.set(palette.c3);
@@ -214,10 +207,32 @@ export default function ShaderBackground() {
       gl!.uniform3fv(uniforms.c2, c2Buf);
       gl!.uniform3fv(uniforms.c3, c3Buf);
       gl!.uniform1f(uniforms.grain, palette.grain);
+    };
 
-      gl!.drawArrays(gl!.TRIANGLES, 0, 3);
+    // Cap the ambient drift at ~30fps. It's a slow background, so halving the
+    // draw rate roughly halves its GPU/battery cost with no perceptible change.
+    // (Real-time-based u_time keeps the drift speed identical regardless.)
+    const FRAME_INTERVAL = 1000 / 30;
+    let lastFrame = -Infinity;
 
+    const render = (now: number) => {
       animationFrameId = requestAnimationFrame(render);
+      if (now - lastFrame < FRAME_INTERVAL) return;
+      lastFrame = now;
+
+      // Lerp the cursor pull (0.06 ≈ the previous 0.03 per frame at 60fps)
+      mouseX += (targetMouseX - mouseX) * 0.06;
+      mouseY += (targetMouseY - mouseY) * 0.06;
+
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark !== lastIsDark) {
+        applyPalette(isDark);
+        lastIsDark = isDark;
+      }
+
+      gl!.uniform1f(uniforms.time, (now - startTime) * 0.00018);
+      gl!.uniform2f(uniforms.mouse, mouseX, mouseY);
+      gl!.drawArrays(gl!.TRIANGLES, 0, 3);
     };
 
     animationFrameId = requestAnimationFrame(render);
