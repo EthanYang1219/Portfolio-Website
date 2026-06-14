@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import { ArrowUpRight, Play, Terminal, HelpCircle, Code, Settings, Sparkles, BookOpen, Clock, Activity, Target } from 'lucide-react';
 import { Project } from '../types';
 import workF1Jpg from '../assets/images/work-f1.jpg';
@@ -193,6 +193,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
   }, []);
   const { scrollY } = useScroll();
   const panelFade = useTransform(scrollY, [sectionTop, sectionTop + 320], [1, 0]);
+  const prefersReduced = useReducedMotion();
 
   // PID feedback loop logic
   useEffect(() => {
@@ -337,8 +338,18 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                 onMouseEnter={() => setActiveIdx(idx)}
               >
                 <div
-                  className="hw-link grid grid-cols-[1fr_auto] items-center gap-4 py-7 px-4 cursor-pointer select-none"
+                  className="hw-link grid grid-cols-[1fr_auto] items-center gap-4 py-7 px-4 cursor-pointer select-none rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Open ${proj.title} case study`}
                   onClick={() => setSelectedProject(proj)}
+                  onFocus={() => setActiveIdx(idx)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedProject(proj);
+                    }
+                  }}
                 >
                   <div className="flex flex-col gap-1.5">
                     <h3 className={`hw-title font-display font-medium text-2xl sm:text-3.5xl tracking-tight transition-colors duration-300 ${
@@ -368,7 +379,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
               Not pinned — it fades out (desktop) as you scroll past the
               projects, like the hero intro, rather than tracking the page. */}
           <motion.div
-            style={{ opacity: isDesktop ? panelFade : 1 }}
+            style={{ opacity: isDesktop && !prefersReduced ? panelFade : 1 }}
             className="hw-panel-col flex flex-col lg:items-end gap-6 select-none"
           >
             

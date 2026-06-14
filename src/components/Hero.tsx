@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { Typewriter } from './ui/typewriter';
 
@@ -20,7 +20,10 @@ export default function Hero() {
   // 100svh section (no sticky tail), so Selected Work follows directly
   // underneath for a continuous, gradual handoff — not a long empty scroll-out.
   const { scrollY } = useScroll();
-  const heroOpacity = useTransform(scrollY, [0, vh * 0.45], [1, 0]);
+  const heroOpacityMV = useTransform(scrollY, [0, vh * 0.45], [1, 0]);
+  // Respect reduced-motion: keep the intro fully visible instead of fading on scroll
+  const prefersReduced = useReducedMotion();
+  const heroOpacity = prefersReduced ? 1 : heroOpacityMV;
 
   const handleWorkScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
