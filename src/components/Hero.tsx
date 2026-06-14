@@ -59,7 +59,7 @@ export default function Hero() {
             href="#contact"
             onClick={(e) => {
               e.preventDefault();
-              document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
             }}
             className="hero-status group inline-flex items-center gap-2.5 font-mono text-xs md:text-sm tracking-wider uppercase text-ink-soft hover:text-ink border border-hairline hover:border-accent rounded-full py-2.5 px-5 bg-paper-raised hover:-translate-y-0.5 hover:shadow-[0_10px_22px_-12px_var(--accent)] transition-all cursor-pointer"
             data-cursor
