@@ -54,14 +54,23 @@ export default function Hero() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="relative z-10 flex flex-col items-center gap-4"
         >
-          {/* Availability badge */}
-          <span className="hero-status inline-flex items-center gap-2.5 font-mono text-xs md:text-sm tracking-wider uppercase text-ink-soft border border-hairline rounded-full py-2.5 px-5 bg-paper-raised">
+          {/* Availability badge — links to the contact section */}
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="hero-status group inline-flex items-center gap-2.5 font-mono text-xs md:text-sm tracking-wider uppercase text-ink-soft hover:text-ink border border-hairline hover:border-accent rounded-full py-2.5 px-5 bg-paper-raised hover:-translate-y-0.5 hover:shadow-[0_10px_22px_-12px_var(--accent)] transition-all cursor-pointer"
+            data-cursor
+          >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
             </span>
             Open to internships &amp; collaborations
-          </span>
+            <ArrowUpRight className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+          </a>
 
           {/* Dynamic rotating subtitle tagline */}
           <div className="hero-tagline font-sans font-semibold text-2xl md:text-3xl lg:text-4xl tracking-wide uppercase text-ink-soft select-none flex flex-wrap items-center justify-center gap-x-3 gap-y-2 mt-2">
