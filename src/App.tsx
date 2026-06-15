@@ -5,6 +5,7 @@ import Hero from './components/Hero';
 import SelectedWork from './components/SelectedWork';
 import Experience from './components/Experience';
 import About from './components/About';
+import Testimonials from './components/Testimonials';
 import SkillsMarquee from './components/SkillsMarquee';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -144,6 +145,16 @@ export default function App() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <About />
+        </motion.div>
+
+        {/* Social proof */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-120px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <Testimonials />
         </motion.div>
 
         {/* Skills endless marquee (Positioned beautifully as a divider before finale) */}

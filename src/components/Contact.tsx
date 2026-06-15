@@ -1,7 +1,46 @@
+import { useState, type FormEvent } from 'react';
 import { motion } from 'motion/react';
-import { Mail, Github, Linkedin, ArrowUpRight } from 'lucide-react';
+import { Github, Linkedin, ArrowUpRight, Send } from 'lucide-react';
+
+// ⚠️ Get a free access key at https://web3forms.com (enter your email, no
+// account needed) and paste it here. It's a public key — safe to commit.
+const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
 
 export default function Contact() {
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    setStatus('submitting');
+    setErrorMsg('');
+
+    const data = new FormData(form);
+    data.append('access_key', WEB3FORMS_ACCESS_KEY);
+    data.append('subject', 'New message from your portfolio');
+    data.append('from_name', 'Portfolio contact form');
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: data,
+      });
+      const json = await res.json();
+      if (json.success) {
+        setStatus('success');
+        form.reset();
+      } else {
+        setStatus('error');
+        setErrorMsg(json.message || 'Something went wrong — please email me directly.');
+      }
+    } catch {
+      setStatus('error');
+      setErrorMsg('Network error — please email me directly.');
+    }
+  };
+
   const socials = [
     { label: 'GitHub', href: 'https://github.com/EthanYang1219', icon: <Github className="w-3.5 h-3.5" /> },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ethan-yang-9a29a633a/', icon: <Linkedin className="w-3.5 h-3.5" /> }
@@ -68,6 +107,79 @@ export default function Contact() {
               </a>
             ))}
           </motion.div>
+
+          {/* Contact form (Web3Forms — static, no server) */}
+          <motion.form
+            onSubmit={handleSubmit}
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="contact-form w-full max-w-xl mx-auto mt-14 flex flex-col gap-4 text-left"
+          >
+            {/* honeypot — hidden from people, catches bots */}
+            <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="cf-name" className="font-mono text-[0.66rem] uppercase tracking-widest text-ink-faint">Name</label>
+                <input
+                  id="cf-name"
+                  name="name"
+                  type="text"
+                  required
+                  autoComplete="name"
+                  placeholder="Your name"
+                  className="w-full bg-paper-raised border border-hairline focus:border-accent rounded-xl px-4 py-3 text-ink text-sm placeholder:text-ink-faint font-sans outline-none focus:ring-2 focus:ring-accent/25 transition-colors"
+                  data-cursor
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="cf-email" className="font-mono text-[0.66rem] uppercase tracking-widest text-ink-faint">Email</label>
+                <input
+                  id="cf-email"
+                  name="email"
+                  type="email"
+                  required
+                  autoComplete="email"
+                  placeholder="you@email.com"
+                  className="w-full bg-paper-raised border border-hairline focus:border-accent rounded-xl px-4 py-3 text-ink text-sm placeholder:text-ink-faint font-sans outline-none focus:ring-2 focus:ring-accent/25 transition-colors"
+                  data-cursor
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="cf-message" className="font-mono text-[0.66rem] uppercase tracking-widest text-ink-faint">Message</label>
+              <textarea
+                id="cf-message"
+                name="message"
+                required
+                rows={4}
+                placeholder="What would you like to build, ask, or talk about?"
+                className="w-full bg-paper-raised border border-hairline focus:border-accent rounded-xl px-4 py-3 text-ink text-sm placeholder:text-ink-faint font-sans outline-none focus:ring-2 focus:ring-accent/25 transition-colors resize-none"
+                data-cursor
+              />
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-1">
+              <button
+                type="submit"
+                disabled={status === 'submitting'}
+                className="inline-flex items-center justify-center gap-2 bg-ink text-paper border border-ink py-3.5 px-7 rounded-full font-semibold text-[0.92rem] hover:bg-accent-deep hover:border-accent-deep hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait disabled:translate-y-0"
+                data-cursor
+              >
+                {status === 'submitting' ? 'Sending…' : 'Send message'}
+                <Send className="w-4 h-4" />
+              </button>
+              <p aria-live="polite" className="font-mono text-xs tracking-wide">
+                {status === 'success' && (
+                  <span className="text-accent font-semibold">Thanks — I'll get back to you soon.</span>
+                )}
+                {status === 'error' && <span className="text-[#c0392b]">{errorMsg}</span>}
+              </p>
+            </div>
+          </motion.form>
         </div>
 
       </div>
