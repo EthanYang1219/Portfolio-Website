@@ -2,9 +2,9 @@ import { useState, type FormEvent } from 'react';
 import { motion } from 'motion/react';
 import { Github, Linkedin, ArrowUpRight, Send } from 'lucide-react';
 
-// ⚠️ Get a free access key at https://web3forms.com (enter your email, no
-// account needed) and paste it here. It's a public key — safe to commit.
-const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
+// Web3Forms access key (public by design — safe to commit). Submissions are
+// delivered to the email registered with this key at https://web3forms.com.
+const WEB3FORMS_ACCESS_KEY = 'e9930a8f-d414-4a4a-b013-fc230f2ed2cc';
 
 export default function Contact() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
