@@ -1,9 +1,6 @@
 import { motion } from 'motion/react';
 import { Quote } from 'lucide-react';
 
-// ⚠️ PLACEHOLDER testimonials — replace `quote`, `name`, and `role` with real
-// ones (e.g. a WPRA parent, a Formula Electric lead, a teammate/coach).
-// Keep each quote to ~2–3 sentences for a clean, punchy card.
 const testimonials = [
   {
     quote:
