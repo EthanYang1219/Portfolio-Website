@@ -16,9 +16,9 @@ const testimonials = [
   },
   {
     quote:
-      'A coach, mentor, or competitor on Ethan’s robotics leadership and mentorship — what changed because he was in the room.',
-    name: 'Their Name',
-    role: 'Coach · VEX Robotics',
+      'Working with Ethan has been a pleasure. ',
+    name: 'Jun Ma',
+    role: 'Teammate · VEX Robotics Team 604X',
   },
 ];
 
