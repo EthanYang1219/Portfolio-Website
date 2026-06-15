@@ -4,7 +4,7 @@ import { Github, Linkedin, ArrowUpRight, Send } from 'lucide-react';
 
 // Web3Forms access key (public by design — safe to commit). Submissions are
 // delivered to the email registered with this key at https://web3forms.com.
-const WEB3FORMS_ACCESS_KEY = 'e9930a8f-d414-4a4a-b013-fc230f2ed2cc';
+const WEB3FORMS_ACCESS_KEY = '5c2399cc-5367-432d-a511-330fe826986e';
 
 export default function Contact() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
