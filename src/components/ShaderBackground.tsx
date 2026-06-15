@@ -165,7 +165,6 @@ export default function ShaderBackground() {
       canvas.width = w;
       canvas.height = h;
       gl!.viewport(0, 0, w, h);
-      gl!.uniform2f(uniforms.res, w, h); // resolution only changes here
     };
 
     resize();
@@ -195,9 +194,6 @@ export default function ShaderBackground() {
     const c2Buf = new Float32Array(3);
     const c3Buf = new Float32Array(3);
 
-    // Palette/grain uniforms only change on theme switch — upload them once and
-    // then only when the theme flips, instead of every frame.
-    let lastIsDark: boolean | null = null;
     const applyPalette = (isDark: boolean) => {
       const palette = isDark ? DARK_PALETTE : LIGHT_PALETTE;
       c1Buf.set(palette.c1);
@@ -209,9 +205,8 @@ export default function ShaderBackground() {
       gl!.uniform1f(uniforms.grain, palette.grain);
     };
 
-    // Cap the ambient drift at ~30fps. It's a slow background, so halving the
-    // draw rate roughly halves its GPU/battery cost with no perceptible change.
-    // (Real-time-based u_time keeps the drift speed identical regardless.)
+    // Cap the ambient drift at ~30fps (slow background → ~half the GPU cost,
+    // no perceptible change since u_time is real-time-based).
     const FRAME_INTERVAL = 1000 / 30;
     let lastFrame = -Infinity;
 
@@ -224,12 +219,11 @@ export default function ShaderBackground() {
       mouseX += (targetMouseX - mouseX) * 0.06;
       mouseY += (targetMouseY - mouseY) * 0.06;
 
-      const isDark = document.documentElement.classList.contains('dark');
-      if (isDark !== lastIsDark) {
-        applyPalette(isDark);
-        lastIsDark = isDark;
-      }
-
+      // Re-upload palette + resolution every frame so the theme is always
+      // current. (A prior "only upload on theme change" micro-opt could leave
+      // the background stuck on the old palette after toggling on some GPUs.)
+      applyPalette(document.documentElement.classList.contains('dark'));
+      gl!.uniform2f(uniforms.res, width, height);
       gl!.uniform1f(uniforms.time, (now - startTime) * 0.00018);
       gl!.uniform2f(uniforms.mouse, mouseX, mouseY);
       gl!.drawArrays(gl!.TRIANGLES, 0, 3);
