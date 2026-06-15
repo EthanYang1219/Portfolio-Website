@@ -134,17 +134,19 @@ export default function ShaderBackground() {
 
     // Editorial palettes — c2 deepened so the ripple pattern reads clearly
     // while staying calm (drift speed unchanged)
+    // Terracotta-deepened palettes: ivory/charcoal base → warm terracotta →
+    // deep rust-red, for higher contrast and a clear (but cohesive) red warmth.
     const LIGHT_PALETTE = {
-      c1: [0.957, 0.922, 0.882], // #f4f0e6 primary paper ivory
-      c2: [0.769, 0.616, 0.420], // richer sienna-tan
-      c3: [0.882, 0.800, 0.671], // deeper paper shading accent
+      c1: [0.957, 0.922, 0.882], // paper ivory (dominant light base)
+      c2: [0.855, 0.560, 0.395], // soft warm clay
+      c3: [0.720, 0.360, 0.235], // terracotta depth (warm accent, not a wash)
       grain: 0.020,
     };
 
     const DARK_PALETTE = {
-      c1: [0.078, 0.067, 0.043], // #14110b primary dark charcoal
-      c2: [0.298, 0.243, 0.149], // brighter sienna/gold-brushed highlight
-      c3: [0.165, 0.137, 0.090], // soft elevation charcoal
+      c1: [0.078, 0.067, 0.043], // dark charcoal (base)
+      c2: [0.420, 0.200, 0.102], // ember terracotta
+      c3: [0.200, 0.082, 0.055], // oxblood depth
       grain: 0.028,
     };
 

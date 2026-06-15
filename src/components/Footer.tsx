@@ -11,7 +11,7 @@ export default function Footer() {
 
 
   return (
-    <footer className="footer border-t border-hairline py-8 mt-12 bg-transparent select-none">
+    <footer className="footer border-t border-hairline py-8 mt-2 bg-transparent select-none">
       <div className="w-full max-w-[var(--maxw)] mx-auto px-5 md:px-[var(--gutter)] flex flex-col sm:flex-row flex-wrap gap-4 items-center justify-between font-mono text-[0.74rem] text-ink-faint tracking-wider uppercase">
         
         {/* Credits */}

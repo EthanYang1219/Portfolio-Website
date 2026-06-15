@@ -179,11 +179,15 @@ body::before {
   display: flex;
   gap: 1.25rem;
   width: max-content;
-  animation: pmarquee 40s linear infinite;
+  animation: pmarquee 70s linear infinite;
 }
 
-.pmarquee-track:hover {
-  animation-play-state: paused;
+/* Pause on hover only where hover is real. On touch screens :hover sticks
+   after a tap and would freeze the ticker permanently. */
+@media (hover: hover) {
+  .pmarquee-track:hover {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes pmarquee {

@@ -47,7 +47,7 @@ export default function Contact() {
   ];
 
   return (
-    <section className="finale pt-48 md:pt-[50vh] pb-28 text-center bg-transparent relative overflow-hidden" id="contact">
+    <section className="finale pt-48 md:pt-[50vh] pb-8 text-center bg-transparent relative overflow-hidden" id="contact">
       {/* Dynamic Background Circle Accent */}
       <div 
         className="absolute -right-40 -bottom-40 w-96 h-96 rounded-full bg-accent-tint/10 blur-[80px] pointer-events-none"
@@ -115,7 +115,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="contact-form w-full max-w-xl mx-auto mt-14 flex flex-col gap-4 text-left"
+            className="contact-form w-full max-w-xl mx-auto mt-10 flex flex-col gap-4 text-left"
           >
             {/* honeypot — hidden from people, catches bots */}
             <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
