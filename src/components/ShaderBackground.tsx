@@ -132,17 +132,8 @@ export default function ShaderBackground() {
       grain: gl.getUniformLocation(program, 'u_grain'),
     };
 
-    // Editorial palettes — c2 deepened so the ripple pattern reads clearly
-    // while staying calm (drift speed unchanged)
-    // Terracotta-deepened palettes: ivory/charcoal base → warm terracotta →
-    // deep rust-red, for higher contrast and a clear (but cohesive) red warmth.
-    const LIGHT_PALETTE = {
-      c1: [0.957, 0.922, 0.882], // paper ivory (dominant light base)
-      c2: [0.855, 0.560, 0.395], // soft warm clay
-      c3: [0.720, 0.360, 0.235], // terracotta depth (warm accent, not a wash)
-      grain: 0.020,
-    };
-
+    // Dark-only palette: charcoal base → ember terracotta → oxblood depth,
+    // for high contrast and a clear red warmth.
     const DARK_PALETTE = {
       c1: [0.078, 0.067, 0.043], // dark charcoal (base)
       c2: [0.420, 0.200, 0.102], // ember terracotta
@@ -196,8 +187,8 @@ export default function ShaderBackground() {
     const c2Buf = new Float32Array(3);
     const c3Buf = new Float32Array(3);
 
-    const applyPalette = (isDark: boolean) => {
-      const palette = isDark ? DARK_PALETTE : LIGHT_PALETTE;
+    const applyPalette = () => {
+      const palette = DARK_PALETTE;
       c1Buf.set(palette.c1);
       c2Buf.set(palette.c2);
       c3Buf.set(palette.c3);
@@ -221,10 +212,9 @@ export default function ShaderBackground() {
       mouseX += (targetMouseX - mouseX) * 0.06;
       mouseY += (targetMouseY - mouseY) * 0.06;
 
-      // Re-upload palette + resolution every frame so the theme is always
-      // current. (A prior "only upload on theme change" micro-opt could leave
-      // the background stuck on the old palette after toggling on some GPUs.)
-      applyPalette(document.documentElement.classList.contains('dark'));
+      // Re-upload palette + resolution every frame (cheap, and self-heals if
+      // a buffer reallocation drops the uniforms on some GPUs).
+      applyPalette();
       gl!.uniform2f(uniforms.res, width, height);
       gl!.uniform1f(uniforms.time, (now - startTime) * 0.00018);
       gl!.uniform2f(uniforms.mouse, mouseX, mouseY);

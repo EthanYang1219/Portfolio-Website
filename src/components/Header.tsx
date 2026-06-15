@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 interface HeaderProps {
   currentSection: string;
@@ -9,42 +9,15 @@ interface HeaderProps {
 export default function Header({ currentSection }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    // Scroll detection
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 24);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-
-    // Theme initialization
-    const theme = localStorage.getItem('theme') || 
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    
-    const darkState = theme === 'dark';
-    setIsDark(darkState);
-    if (darkState) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const toggleTheme = () => {
-    const nextDark = !isDark;
-    setIsDark(nextDark);
-    if (nextDark) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
 
   const navLinks = [
     { label: 'Home', href: '#top', idx: '00' },
@@ -122,27 +95,9 @@ export default function Header({ currentSection }: HeaderProps) {
             EY
           </a>
 
-          {/* Theme Toggle Button */}
-          <button
-            onClick={toggleTheme}
-            className="theme-toggle relative w-[58px] h-[30px] rounded-full bg-hairline border border-hairline-soft cursor-pointer transition-colors"
-            role="switch"
-            aria-label="Toggle visual theme mode"
-            aria-checked={isDark}
-            data-cursor
-          >
-            <motion.span
-              animate={{ x: isDark ? 28 : 2 }}
-              transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-              className="absolute top-[2px] left-[2px] w-6 h-6 rounded-full bg-ink flex items-center justify-center shadow-sm"
-            >
-              {isDark ? (
-                <Moon className="w-3.5 h-3.5 text-[#f4f0e6]" fill="currentColor" />
-              ) : (
-                <Sun className="w-3.5 h-3.5 text-[#f4f0e6]" />
-              )}
-            </motion.span>
-          </button>
+          {/* Spacer — balances the menu button so the EY monogram stays
+              centered (the light/dark toggle was removed; site is dark-only). */}
+          <div className="w-11 h-11" aria-hidden="true" />
         </div>
       </header>
     </>
