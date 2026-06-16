@@ -341,7 +341,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
 
               {/* SIMULATOR: Python — "Living Syntax" snake illustration */}
               {projects[activeIdx].id === 'python' && (
-                <div className="w-full h-full flex flex-col bg-ink text-[#f3eee2] rounded-2xl border border-white/5 font-mono relative overflow-hidden">
+                <div className="w-full h-full flex flex-col bg-[#14110b] text-[#f3eee2] rounded-2xl border border-white/5 font-mono relative overflow-hidden">
                   {/* terminal chrome */}
                   <div className="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
                     <span className="flex items-center gap-1.5 text-accent font-bold text-xs">
@@ -364,34 +364,36 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                     <svg viewBox="0 0 400 230" className="w-full h-full" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
                       <defs>
                         <linearGradient id="snakeBody" x1="0" y1="1" x2="1" y2="0">
-                          <stop offset="0" stopColor="#7a2410" />
-                          <stop offset="0.45" stopColor="#cc4b1e" />
-                          <stop offset="0.8" stopColor="#ff5e26" />
-                          <stop offset="1" stopColor="#e8a24e" />
+                          <stop offset="0" stopColor="#6e1d10" />
+                          <stop offset="0.5" stopColor="#b8341a" />
+                          <stop offset="1" stopColor="#d8451c" />
                         </linearGradient>
-                        <pattern id="snakeScales" width="12" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(6)">
-                          <path d="M0 7 Q6 -1 12 7" fill="none" stroke="#e8c489" strokeWidth="1" />
+                        <pattern id="snakeScales" width="14" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(4)">
+                          <path d="M0 9 Q7 -1 14 9" fill="none" stroke="#f4f1ea" strokeWidth="1.1" />
                         </pattern>
                       </defs>
 
-                      {/* body: gradient base, then gold scale texture, then a faint scute highlight */}
-                      <path d="M 34 168 C 78 96, 120 220, 184 158 C 232 112, 268 210, 318 150 C 342 122, 356 150, 346 106"
-                        stroke="url(#snakeBody)" strokeWidth="23" strokeLinecap="round" />
-                      <path d="M 34 168 C 78 96, 120 220, 184 158 C 232 112, 268 210, 318 150 C 342 122, 356 150, 346 106"
-                        stroke="url(#snakeScales)" strokeWidth="21" strokeLinecap="round" opacity="0.55" />
-                      <path d="M 34 168 C 78 96, 120 220, 184 158 C 232 112, 268 210, 318 150 C 342 122, 356 150, 346 106"
-                        stroke="#ffd9a8" strokeWidth="2" strokeLinecap="round" strokeDasharray="1 13" opacity="0.5" />
+                      {/* deep-red body, white scale linework, white belly scutes */}
+                      <path d="M 96 150 C 64 134, 52 166, 82 180 C 114 194, 154 196, 188 160 C 218 130, 250 198, 300 160 C 336 132, 356 150, 344 106"
+                        stroke="url(#snakeBody)" strokeWidth="24" strokeLinecap="round" />
+                      <path d="M 96 150 C 64 134, 52 166, 82 180 C 114 194, 154 196, 188 160 C 218 130, 250 198, 300 160 C 336 132, 356 150, 344 106"
+                        stroke="url(#snakeScales)" strokeWidth="22" strokeLinecap="round" opacity="0.8" />
+                      <path d="M 96 150 C 64 134, 52 166, 82 180 C 114 194, 154 196, 188 160 C 218 130, 250 198, 300 160 C 336 132, 356 150, 344 106"
+                        stroke="#f4f1ea" strokeWidth="2.2" strokeLinecap="round" strokeDasharray="1.5 12" opacity="0.6" />
 
-                      {/* ornate head */}
-                      <ellipse cx="346" cy="106" rx="17" ry="11.5" transform="rotate(-52 346 106)" fill="#cc4b1e" stroke="#e8c489" strokeWidth="1.4" />
-                      <path d="M 337 99 Q 346 92 357 98" fill="none" stroke="#e8c489" strokeWidth="1.2" />
-                      <ellipse cx="350" cy="101" rx="3.1" ry="2.2" transform="rotate(-52 350 101)" fill="#f4f1ea" stroke="#caa45f" strokeWidth="0.7" />
-                      <circle cx="350.5" cy="100.5" r="1" fill="#1a120a" />
+                      {/* decorative white tail swirl */}
+                      <path d="M 96 150 C 82 142, 84 126, 100 128 C 112 130, 112 144, 100 146" fill="none" stroke="#f4f1ea" strokeWidth="1.6" opacity="0.85" strokeLinecap="round" />
+
+                      {/* ornate head with white markings */}
+                      <ellipse cx="344" cy="106" rx="18" ry="12" transform="rotate(-50 344 106)" fill="#b8341a" stroke="#f4f1ea" strokeWidth="1.3" />
+                      <path d="M 334 98 Q 344 90 356 97" fill="none" stroke="#f4f1ea" strokeWidth="1.3" />
+                      <ellipse cx="349" cy="101" rx="3.2" ry="2.3" transform="rotate(-50 349 101)" fill="#f4f1ea" />
+                      <circle cx="349.5" cy="100.5" r="1.1" fill="#1a0e08" />
                       {/* forked tongue */}
-                      <g stroke="#ff5e26" strokeWidth="1.5" strokeLinecap="round">
-                        <path d="M 356 92 L 362 78" />
-                        <path d="M 362 78 L 366 71" />
-                        <path d="M 362 78 L 359 70" />
+                      <g stroke="#d8451c" strokeWidth="1.6" strokeLinecap="round">
+                        <path d="M 356 92 L 364 76" />
+                        <path d="M 364 76 L 369 69" />
+                        <path d="M 364 76 L 361 68" />
                       </g>
                     </svg>
 
@@ -409,7 +411,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
 
               {/* SIMULATOR: Mathematical PID controller visualizer */}
               {projects[activeIdx].id === 'pid' && (
-                <div className="w-full h-full flex flex-col bg-ink text-[#f3eee2] rounded-2xl border border-white/5 font-mono p-3 relative">
+                <div className="w-full h-full flex flex-col bg-[#14110b] text-[#f3eee2] rounded-2xl border border-white/5 font-mono p-3 relative">
                   
                   <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2">
                     <span className="flex items-center gap-1.5 text-accent text-[0.72rem] font-bold">
