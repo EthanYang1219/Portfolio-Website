@@ -72,7 +72,8 @@ export default function App() {
 
     // Open the matching project's inline description in SelectedWork
     setTimeout(() => {
-      let targetProjIdx = 0; // default to python
+      // Project order: 0 DeltaV, 1 Python, 2 PID, 3 F1, 4 Notebook
+      let targetProjIdx = 1; // default to Python
       const normalName = skillName.toLowerCase();
 
       if (normalName.includes('cpp') || normalName.includes('c++') || normalName.includes('pid') || normalName.includes('odometry')) {
@@ -82,7 +83,7 @@ export default function App() {
       } else if (normalName.includes('resolve') || normalName.includes('davinci') || normalName.includes('video')) {
         targetProjIdx = 3; // F1 Safety Video
       } else if (normalName.includes('climb') || normalName.includes('delta') || normalName.includes('full-stack') || normalName.includes('print')) {
-        targetProjIdx = 1; // DeltaV Climbing Companion (also tagged 3D printing)
+        targetProjIdx = 0; // DeltaV Climbing Companion (also tagged 3D printing)
       }
 
       // Simulate hovering or tapping on list items inside SelectedWork

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'motion/react';
-import { ArrowUpRight, Play, Terminal, HelpCircle, Code, Settings, Sparkles, BookOpen, Clock, Activity, Target } from 'lucide-react';
+import { ArrowUpRight, Play, Terminal, Settings, BookOpen, Clock, Activity, Target } from 'lucide-react';
 import { Project } from '../types';
 import workF1Jpg from '../assets/images/work-f1.jpg';
+import DeltaVRibbon from './DeltaVRibbon';
 
 interface SelectedWorkProps {
   filteredSkill: string | null;
@@ -23,6 +24,7 @@ const projectSkills: Record<string, string[]> = {
 export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedWorkProps) {
   const [activeIdx, setActiveIdx] = useState<number>(0);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [videoOpen, setVideoOpen] = useState(false);
 
   // True when the active filter is a project skill (experience-only skills
   // like Composite layup / Mentorship are handled by the Experience section)
@@ -45,14 +47,27 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
   ]);
   const [isCompiling, setIsCompiling] = useState(false);
 
-  // DeltaV climbing routes
-  const [climbingHolds, setClimbingHolds] = useState<[number, number][]>([
-    [25, 85], [45, 70], [30, 50], [60, 35], [50, 15]
-  ]);
-  const [aiSequence, setAiSequence] = useState<number[]>([0, 1, 2, 3, 4]);
-
   const projects: Project[] = [
   {
+      id: 'deltav',
+      title: 'DeltaV',
+      meta: 'Climbing Companion · full-stack + AI',
+      url: '#',
+      description: "A full-stack bouldering companion app that tracks training metrics, logs hold layouts, and maps climber center-of-mass telemetry.",
+      gradient: 'linear-gradient(140deg, #e0b894, #b8431e)',
+      type: 'phone',
+      details: {
+        role: 'Front-End Developer',
+        overview: 'DeltaV captures real-time climbing metrics by tracking a user\'s hip positioning—the critical baseline for calculating balance, wall proximity, and core stability during a dynamic climb.',
+        challenges: 'Translating raw IMU sensor tracking and casual canvas screen touches into clean, reliable path data without over-complicating the user interface.',
+        highlights: [
+          'Prototyped a wearable hardware sensor to capture live hip stability and tracking telemetry',
+          'Designed a clean, minimal interface featuring real-time data visualizers for tracking climbing routes',
+          'Built standard climbing features including custom route logging, project status tags, and historical session tracking'
+        ]
+      }
+    },
+    {
       id: 'python',
       title: 'Python Projects',
       meta: 'Python · GitHub Sandbox',
@@ -68,25 +83,6 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
           'Implementing core OOP concepts like classes, inheritance, and methods',
           'Breaking down larger logic into modular, organized file systems',
           'Building small, foundational console-based applications from scratch.'
-        ]
-      }
-    },
-    {
-        id: 'deltav',
-      title: 'DeltaV',
-      meta: 'Climbing Companion · full-stack + AI',
-      url: '#',
-      description: "A full-stack bouldering companion app that tracks training metrics, logs hold layouts, and maps climber center-of-mass telemetry.",
-      gradient: 'linear-gradient(140deg, #e0b894, #b8431e)',
-      type: 'phone',
-      details: {
-        role: 'Front-End Developer',
-        overview: 'DeltaV captures real-time climbing metrics by tracking a user\'s hip positioning—the critical baseline for calculating balance, wall proximity, and core stability during a dynamic climb.',
-        challenges: 'Translating raw IMU sensor tracking and casual canvas screen touches into clean, reliable path data without over-complicating the user interface.',
-        highlights: [
-          'Prototyped a wearable hardware sensor to capture live hip stability and tracking telemetry',
-          'Designed a clean, minimal interface featuring real-time data visualizers for tracking climbing routes',
-          'Built standard climbing features including custom route logging, project status tags, and historical session tracking'
         ]
       }
     },
@@ -269,19 +265,6 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
     }, 450);
   };
 
-  // Toggle climber hold AI sequencers
-  const handleHoldClick = (holdIdx: number) => {
-    setClimbingHolds(prev => {
-      const next = [...prev];
-      // Randomly offset click coordinates slightly
-      next[holdIdx] = [
-        next[holdIdx][0] + (Math.random() - 0.5) * 6,
-        next[holdIdx][1] + (Math.random() - 0.5) * 6
-      ];
-      return next;
-    });
-  };
-
   return (
     <section className="section pt-[7vh] md:pt-[9vh]" id="work" ref={sectionRef}>
       <div className="w-full max-w-[var(--maxw)] mx-auto px-5 md:px-[var(--gutter)]">
@@ -391,8 +374,8 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='h'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23h)'/%3E%3C/svg%3E")` }}
               />
 
-              {/* SIMULATOR 1️⃣: python compiler / sandbox */}
-              {activeIdx === 0 && (
+              {/* SIMULATOR: python compiler / sandbox */}
+              {projects[activeIdx].id === 'python' && (
                 <div className="w-full h-full flex flex-col bg-ink text-[#f3eee2] rounded-2xl border border-white/5 font-mono p-4 text-[0.72rem] md:text-xs relative">
                   <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-3">
                     <span className="flex items-center gap-1.5 text-accent font-bold">
@@ -421,49 +404,13 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                 </div>
               )}
 
-              {/* SIMULATOR 2️⃣: DeltaV climbing routing UI */}
-              {activeIdx === 1 && (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1c140c] to-[#0a0703] rounded-2xl relative p-3">
-                  <div className="absolute top-3 left-4 flex items-center gap-1 text-[0.65rem] font-mono text-amber-500/80 bg-amber-950/40 border border-amber-900/30 rounded py-0.5 px-2">
-                    <Sparkles className="w-3 h-3 animate-pulse" /> Climber Plan AI Loop
-                  </div>
-
-                  {/* Wireframe Phone Mock */}
-                  <div className="w-[120px] md:w-[130px] h-[210px] bg-ink border border-white/15 rounded-[22px] relative p-3 flex flex-col gap-2.5 shadow-[0_12px_24px_rgba(0,0,0,0.4)]">
-                    <span className="w-10 h-1.5 bg-white/20 rounded-full mx-auto" />
-                    
-                    {/* Bouldering Canvas Wall */}
-                    <div className="flex-1 border border-white/5 bg-[#201812] rounded-xl relative overflow-hidden">
-                      {/* Climbing joints vector connections */}
-                      <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                        <polyline
-                          points={aiSequence.map(i => `${climbingHolds[i][0]}%,${climbingHolds[i][1]}%`).join(' ')}
-                          fill="none"
-                          stroke="#ffb366"
-                          strokeWidth="2.5"
-                          strokeDasharray="4 3"
-                        />
-                      </svg>
-
-                      {/* Holds */}
-                      {climbingHolds.map((hold, hidx) => (
-                        <button
-                          key={hidx}
-                          onClick={() => handleHoldClick(hidx)}
-                          className="absolute w-3.5 h-3.5 -translate-x-[7px] -translate-y-[7px] rounded-full border border-[rgb(255,164,104)] cursor-pointer hover:scale-125 transition-transform duration-200"
-                          style={{ left: `${hold[0]}%`, top: `${hold[1]}%`, backgroundColor: hidx === 4 ? '#e85d2c' : '#2a1a0e' }}
-                        >
-                          <span className="absolute inset-0.5 rounded-full bg-[rgb(255,179,104)] animate-ping opacity-25" />
-                        </button>
-                      ))}
-                    </div>
-                    <span className="font-mono text-[0.48rem] text-center text-ink-faint">AI ROUTE: V5 COMPLETED</span>
-                  </div>
-                </div>
+              {/* SIMULATOR: DeltaV 3D Ribbon path visualizer (ported from the app) */}
+              {projects[activeIdx].id === 'deltav' && (
+                <DeltaVRibbon paused={!simVisible} />
               )}
 
-              {/* SIMULATOR 3️⃣: Mathematical PID controller visualizer */}
-              {activeIdx === 2 && (
+              {/* SIMULATOR: Mathematical PID controller visualizer */}
+              {projects[activeIdx].id === 'pid' && (
                 <div className="w-full h-full flex flex-col bg-ink text-[#f3eee2] rounded-2xl border border-white/5 font-mono p-3 relative">
                   
                   <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2">
@@ -525,9 +472,17 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                 </div>
               )}
 
-              {/* SIMULATOR 4️⃣: multimedia F1 poster graphic */}
-              {activeIdx === 3 && (
-                <div className="w-full h-full rounded-2xl overflow-hidden relative group">
+              {/* SIMULATOR: F1 video poster — click to play in a lightbox */}
+              {projects[activeIdx].id === 'f1' && (
+                <div
+                  className="w-full h-full rounded-2xl overflow-hidden relative group cursor-pointer"
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Play the F1 safety video"
+                  onClick={() => setVideoOpen(true)}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setVideoOpen(true); } }}
+                  data-cursor
+                >
                   <div className="absolute inset-0 bg-ink-faint flex flex-col justify-center items-center">
                     {/* Background silhouette fallback gradient of high-intensity speed */}
                     <div className="absolute inset-0 bg-gradient-to-br from-red-950/40 via-transparent to-red-900/10" />
@@ -555,43 +510,70 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                 </div>
               )}
 
-              {/* SIMULATOR 5️⃣: Gantt Engineering Documentation Diagram */}
-              {activeIdx === 4 && (
-                <div className="w-full h-full flex flex-col bg-white text-ink rounded-2xl p-4 shadow-sm border border-[#ebe6d8] font-sans">
-                  <div className="flex items-center gap-1.5 border-b border-hairline pb-2.5 mb-3">
-                    <span className="p-1 rounded-md bg-accent/10 border border-accent/20">
-                      <Code className="w-4 h-4 text-accent" />
-                    </span>
-                    <div className="flex flex-col">
-                      <h4 className="text-xs font-semibold leading-none text-ink">Notebook Timeline Planning</h4>
-                      <span className="text-[0.62rem] text-ink-faint">Sprint 12 Schedule Matrix</span>
-                    </div>
+              {/* SIMULATOR: stylized engineering-notebook page */}
+              {projects[activeIdx].id === 'docs' && (
+                <div
+                  className="w-full h-full rounded-2xl overflow-hidden relative bg-[#f4f1ea] text-[#2a2620]"
+                  style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent 0 23px, rgba(60,80,90,0.09) 23px 24px), repeating-linear-gradient(90deg, transparent 0 23px, rgba(60,80,90,0.05) 23px 24px)' }}
+                >
+                  {/* red margin rule + punch holes */}
+                  <div className="absolute left-9 top-0 bottom-0 w-px bg-[#d2734c]/45" />
+                  <div className="absolute left-2.5 top-0 bottom-0 flex flex-col justify-around py-6 pointer-events-none">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#e7e1d2] border border-[#cfc8b6]" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#e7e1d2] border border-[#cfc8b6]" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#e7e1d2] border border-[#cfc8b6]" />
                   </div>
 
-                  <div className="flex-1 flex flex-col gap-3">
-                    {/* Row 1 */}
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono text-[0.6rem] w-[70px] uppercase tracking-wider text-ink-faint">Odometry Math</span>
-                      <div className="flex-1 h-3.5 bg-hairline rounded-sm relative overflow-hidden select-none">
-                        <div className="absolute left-[5%] w-[45%] h-full bg-accent/80 hover:bg-accent rounded-sm transition-all" />
+                  <div className="h-full pl-12 pr-4 py-3.5 flex flex-col">
+                    {/* title block */}
+                    <div className="flex items-end justify-between border-b border-[#cfc8b6] pb-2">
+                      <div className="flex flex-col">
+                        <h4 className="font-display font-semibold text-base leading-none">Engineering Notebook</h4>
+                        <span className="font-mono text-[0.55rem] tracking-[0.2em] uppercase text-[#8a8170] mt-1">604X · VEX V5 · Design Log</span>
+                      </div>
+                      <span className="font-mono text-[0.55rem] text-[#8a8170]">PG&nbsp;147</span>
+                    </div>
+
+                    {/* annotated sketch + notes */}
+                    <div className="flex-1 grid grid-cols-[1.15fr_1fr] gap-3 pt-2.5 min-h-0">
+                      <div className="relative flex flex-col min-h-0">
+                        <svg viewBox="0 0 160 120" className="w-full flex-1 min-h-0" fill="none" preserveAspectRatio="xMidYMid meet">
+                          <g stroke="#2a2620" strokeOpacity="0.4" strokeWidth="0.8" strokeDasharray="3 2">
+                            <path d="M52 22 V74 M52 74 H128 M52 74 L28 92" />
+                          </g>
+                          <g stroke="#2a2620" strokeWidth="1.4" strokeLinejoin="round">
+                            <rect x="28" y="40" width="76" height="52" />
+                            <path d="M28 40 L52 22 H128 L104 40" />
+                            <path d="M104 40 L128 22 V74 L104 92" />
+                          </g>
+                          <g stroke="#2a2620" strokeWidth="1.2">
+                            <circle cx="48" cy="80" r="7.5" />
+                            <circle cx="84" cy="80" r="7.5" />
+                          </g>
+                          <circle cx="48" cy="80" r="1.3" fill="#2a2620" />
+                          <circle cx="84" cy="80" r="1.3" fill="#2a2620" />
+                          <line x1="18" y1="80" x2="100" y2="80" stroke="#d2734c" strokeWidth="0.7" strokeDasharray="6 2 1 2" opacity="0.7" />
+                          <g stroke="#8a8170" strokeWidth="0.7">
+                            <line x1="28" y1="104" x2="104" y2="104" />
+                            <line x1="28" y1="100" x2="28" y2="108" />
+                            <line x1="104" y1="100" x2="104" y2="108" />
+                          </g>
+                          <text x="66" y="116" textAnchor="middle" fontSize="7" fill="#8a8170" fontFamily="monospace">356 mm</text>
+                        </svg>
+                        <span className="font-mono text-[0.5rem] uppercase tracking-wider text-[#8a8170] mt-0.5">Fig. 12 — drivetrain</span>
+                      </div>
+
+                      <div className="flex flex-col gap-1.5 font-mono text-[0.6rem] text-[#4a463c] leading-snug min-w-0">
+                        <span className="font-semibold text-[#2a2620] tracking-wide">Trade study</span>
+                        <span className="flex items-start gap-1.5"><span className="text-[#2e7d5b]">✓</span> 6-motor, 600 rpm</span>
+                        <span className="flex items-start gap-1.5"><span className="text-[#2e7d5b]">✓</span> CF baseplate</span>
+                        <span className="flex items-start gap-1.5"><span className="text-[#2e7d5b]">✓</span> 2.75&quot; omni wheels</span>
+                        <span className="flex items-start gap-1.5"><span className="text-[#d2734c]">→</span> retune odom offset</span>
                       </div>
                     </div>
-                    {/* Row 2 */}
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono text-[0.6rem] w-[70px] uppercase tracking-wider text-ink-faint">PID Debugging</span>
-                      <div className="flex-1 h-3.5 bg-hairline rounded-sm relative overflow-hidden select-none">
-                        <div className="absolute left-[35%] w-[55%] h-full bg-accent-deep/80 hover:bg-accent-deep rounded-sm transition-all" />
-                      </div>
-                    </div>
-                    {/* Row 3 */}
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono text-[0.6rem] w-[70px] uppercase tracking-wider text-ink-faint">Documentation</span>
-                      <div className="flex-1 h-3.5 bg-hairline rounded-sm relative overflow-hidden select-none">
-                        <div className="absolute left-[15%] w-[75%] h-full bg-[#5b6b7b] hover:bg-[#485664] rounded-sm transition-all" />
-                      </div>
-                    </div>
+
+                    <span className="font-mono text-[0.5rem] text-right tracking-[0.18em] uppercase text-[#8a8170] border-t border-[#cfc8b6] pt-1.5 mt-1">Design · Build · Test · Iterate</span>
                   </div>
-                  <span className="text-[0.6rem] text-right text-ink-faint font-mono">Status: 100% Comprehensive Logged</span>
                 </div>
               )}
 
@@ -778,6 +760,50 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
             </motion.div>
           </motion.div>
         )}
+        </AnimatePresence>,
+        document.body
+      )}
+
+      {/* F1 video lightbox — portaled to body so position:fixed is viewport-anchored */}
+      {createPortal(
+        <AnimatePresence>
+          {videoOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+              role="dialog"
+              aria-modal="true"
+              aria-label="F1 safety video"
+              onClick={() => setVideoOpen(false)}
+            >
+              <button
+                onClick={() => setVideoOpen(false)}
+                aria-label="Close video"
+                className="absolute top-5 right-6 text-white/70 hover:text-white text-3xl leading-none cursor-pointer"
+                data-cursor
+              >
+                ✕
+              </button>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="relative w-full max-w-4xl aspect-video rounded-xl overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <iframe
+                  className="w-full h-full"
+                  src="https://www.youtube-nocookie.com/embed/qGy1c3SvTlU?autoplay=1&rel=0"
+                  title="F1 Safety Video — Ethan Yang"
+                  allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                  allowFullScreen
+                />
+              </motion.div>
+            </motion.div>
+          )}
         </AnimatePresence>,
         document.body
       )}
