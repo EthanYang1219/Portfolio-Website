@@ -38,15 +38,6 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
   const [pidPlotData, setPidPlotData] = useState<number[]>(new Array(60).fill(100));
   const pidStateRef = useRef({ current: 100, errorSum: 0, lastError: 0 });
 
-  // Python Terminal States
-  const [terminalLines, setTerminalLines] = useState<string[]>([
-    '>>> import vex_control',
-    '>>> robot = vex_control.OdomChassis()',
-    '>>> robot.get_coordinates()',
-    'Chassis positioned at (0.00, 0.00), angular error = 0.00rad'
-  ]);
-  const [isCompiling, setIsCompiling] = useState(false);
-
   const projects: Project[] = [
   {
       id: 'deltav',
@@ -238,33 +229,6 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
     setPidSetpoint(clampedY);
   };
 
-  // Compile Python console simulator
-  const runPythonCompiler = () => {
-    if (isCompiling) return;
-    setIsCompiling(true);
-    
-    const consoleCommands = [
-      '>>> robot.drive_to_point(45.0, 120.5)',
-      'Running 2D PID driving controllers...',
-      'Tick 01: delta=128.5cm, correcting angles...',
-      'Tick 12: delta=14.2cm, heading stabilized',
-      'Tick 24: delta=0.04cm, target converged!',
-      '>>> robot.log_data()',
-      'Log saved: current(45.0, 120.5), heading=1.21rad'
-    ];
-
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i < consoleCommands.length) {
-        setTerminalLines(prev => [...prev, consoleCommands[i]]);
-        i++;
-      } else {
-        clearInterval(interval);
-        setIsCompiling(false);
-      }
-    }, 450);
-  };
-
   return (
     <section className="section pt-[7vh] md:pt-[9vh]" id="work" ref={sectionRef}>
       <div className="w-full max-w-[var(--maxw)] mx-auto px-5 md:px-[var(--gutter)]">
@@ -374,33 +338,61 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='h'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23h)'/%3E%3C/svg%3E")` }}
               />
 
-              {/* SIMULATOR: python compiler / sandbox */}
+              {/* SIMULATOR: Python — "Living Syntax" snake illustration */}
               {projects[activeIdx].id === 'python' && (
-                <div className="w-full h-full flex flex-col bg-ink text-[#f3eee2] rounded-2xl border border-white/5 font-mono p-4 text-[0.72rem] md:text-xs relative">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-3">
-                    <span className="flex items-center gap-1.5 text-accent font-bold">
-                      <Terminal className="w-3.5 h-3.5 animate-pulse" /> shell.py
+                <div className="w-full h-full flex flex-col bg-ink text-[#f3eee2] rounded-2xl border border-white/5 font-mono relative overflow-hidden">
+                  {/* terminal chrome */}
+                  <div className="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
+                    <span className="flex items-center gap-1.5 text-accent font-bold text-xs">
+                      <Terminal className="w-3.5 h-3.5" /> shell.py
                     </span>
-                    <button 
-                      onClick={runPythonCompiler}
-                      disabled={isCompiling}
-                      className="px-3 py-1 rounded bg-[#3c2912] hover:bg-[#52381a] border border-accent/20 hover:border-accent text-accent font-semibold flex items-center gap-1 cursor-pointer transition-all disabled:opacity-50 select-none text-[0.62rem]"
-                    >
-                      <Play className="w-2.5 h-2.5" /> {isCompiling ? 'Running' : 'Run Vector Sandbox'}
-                    </button>
+                    <div className="flex gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-white/15" />
+                      <span className="w-2 h-2 rounded-full bg-white/15" />
+                      <span className="w-2 h-2 rounded-full bg-accent/70" />
+                    </div>
                   </div>
-                  
-                  <div className="flex-1 overflow-y-auto space-y-1.5 leading-relaxed scroller max-h-[160px]">
-                    {terminalLines.map((line, lidx) => (
-                      <p 
-                        key={lidx} 
-                        className={line.startsWith('>>>') ? 'text-[#e2dccb]' : line.startsWith('Tick') ? 'text-accent-text/80' : 'text-[#8a8170]'}
-                      >
-                        {line}
-                      </p>
-                    ))}
+
+                  {/* snake illustration */}
+                  <div className="flex-1 relative">
+                    <div className="absolute top-3 left-4 leading-relaxed pointer-events-none">
+                      <p className="text-[0.62rem] text-[#8a8170]">&gt;&gt;&gt; import this</p>
+                      <p className="text-[0.62rem] font-sans italic text-[#6e6557]">Beautiful is better than ugly.</p>
+                    </div>
+
+                    <svg viewBox="0 0 400 230" className="w-full h-full" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                      <defs>
+                        <linearGradient id="snakeBody" x1="0" y1="1" x2="1" y2="0">
+                          <stop offset="0" stopColor="#6e2a10" />
+                          <stop offset="0.5" stopColor="#cc4b1e" />
+                          <stop offset="1" stopColor="#ff5e26" />
+                        </linearGradient>
+                      </defs>
+                      {/* body */}
+                      <path
+                        d="M 44 176 C 104 112, 138 214, 196 162 C 246 117, 290 104, 326 138 C 344 155, 356 126, 346 104"
+                        stroke="url(#snakeBody)" strokeWidth="18" strokeLinecap="round"
+                      />
+                      {/* scale sheen */}
+                      <path
+                        d="M 44 176 C 104 112, 138 214, 196 162 C 246 117, 290 104, 326 138 C 344 155, 356 126, 346 104"
+                        stroke="#ff9a6b" strokeWidth="2" strokeLinecap="round" strokeDasharray="1 11" opacity="0.5"
+                      />
+                      {/* head */}
+                      <ellipse cx="346" cy="103" rx="13" ry="9.5" transform="rotate(-58 346 103)" fill="#ff5e26" />
+                      <circle cx="350" cy="100" r="1.9" fill="#14110b" />
+                      {/* forked tongue */}
+                      <g stroke="#ff7a45" strokeWidth="1.6" strokeLinecap="round">
+                        <path d="M 351 92 L 356 80" />
+                        <path d="M 356 80 L 360 74" />
+                        <path d="M 356 80 L 353 73" />
+                      </g>
+                    </svg>
+
+                    <span className="absolute bottom-3 left-4 font-display italic font-semibold text-2xl text-[#f3eee2]/90 select-none">Python</span>
                   </div>
-                  <span className="absolute bottom-2 right-3 text-[0.55rem] text-[#6e6557]">Python 3.11</span>
+
+                  <span className="absolute bottom-2 right-3 text-[0.55rem] text-[#6e6557] pointer-events-none">Python 3.11</span>
                 </div>
               )}
 
