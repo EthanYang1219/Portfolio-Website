@@ -3,7 +3,7 @@ import { Quote } from 'lucide-react';
 
 const testimonials = [
   {
-    quote:'For the eight years I've known Ethan, he's always been a diligent, outgoing, and personable friend whom I can depend on. I have many cherished memories together with him, but what stands out to me the most is his honesty and willingness to learn. While I may not necessarily see him in an academic/engineering context, his discipline, reliability, and curiosity make him a valued member of any team he is a part of.',
+    quote:'For the eight years I have known Ethan, he has always been a diligent, outgoing, and personable friend whom I can depend on. I have many cherished memories together with him, but what stands out to me the most is his honesty and willingness to learn. While I may not necessarily see him in an academic/engineering context, his discipline, reliability, and curiosity make him a valued member of any team he is a part of.',
     name: 'Raymond Feng',
     role: 'Undergraduate Anatomy and Cell Biology Student at McGill University',
   },
