@@ -3,22 +3,21 @@ import { Quote } from 'lucide-react';
 
 const testimonials = [
   {
-    quote:
-      'A short, specific quote about working with Ethan goes here — what he built, how he led, and the impact it had. Two or three sentences keeps it punchy.',
-    name: 'Their Name',
-    role: 'Parent · WPRA',
+    quote:'For the eight years I've known Ethan, he's always been a diligent, outgoing, and personable friend whom I can depend on. I have many cherished memories together with him, but what stands out to me the most is his honesty and willingness to learn. While I may not necessarily see him in an academic/engineering context, his discipline, reliability, and curiosity make him a valued member of any team he is a part of.',
+    name: 'Raymond Feng',
+    role: 'Undergraduate Anatomy and Cell Biology Student at McGill University',
   },
   {
     quote:
-      'A teammate or Formula Electric lead on Ethan’s engineering — the problem, his contribution, and the result. Specific beats generic every time.',
-    name: 'Their Name',
-    role: 'Lead · Waterloo Formula Electric',
+      'Never worked together, but I can tell that Ethan has a thing for seeing and expressing appreciation for the skills he sees in others. In a workplace that’ll translate to being very analytical. Also a goat.',
+    name: 'Steven Zhang',
+    role: 'Family Friend',
   },
   {
     quote:
       'Working with Ethan has been a pleasure. ',
     name: 'Jun Ma',
-    role: 'Teammate · VEX Robotics Team 604X',
+    role: 'Teammate, VEX Robotics Team 604X',
   },
 ];
 
