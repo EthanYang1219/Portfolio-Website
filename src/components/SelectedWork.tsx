@@ -183,9 +183,11 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
   const panelFade = useTransform(scrollY, [sectionTop, sectionTop + 320], [1, 0]);
   const prefersReduced = useReducedMotion();
 
-  // PID feedback loop logic
+  // PID feedback loop logic — only runs while the PID card is the active,
+  // on-screen simulator, so it doesn't re-render the whole section ~18×/sec
+  // while other cards (DeltaV ribbon, snake, etc.) are showing.
   useEffect(() => {
-    if (!simVisible) return;
+    if (!simVisible || projects[activeIdx].id !== 'pid') return;
     const timer = setInterval(() => {
       const Kp = 0.12;
       const Ki = 0.003;
@@ -217,7 +219,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
     }, 55);
 
     return () => clearInterval(timer);
-  }, [pidSetpoint, simVisible]);
+  }, [pidSetpoint, simVisible, activeIdx]);
 
   // Click handler inside the interactive plot to set standard setpoint
   const handlePlotClick = (e: React.MouseEvent<SVGSVGElement>) => {

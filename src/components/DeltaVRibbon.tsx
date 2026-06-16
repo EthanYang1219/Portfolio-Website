@@ -198,7 +198,15 @@ export default function DeltaVRibbon({ paused = false }: { paused?: boolean }) {
     };
     R.startClimb(false); // open with the demo climb
 
-    const loop = () => {
+    // Cap at ~40fps — the auto-orbit redraws the wireframe + ribbon every frame
+    // forever, so throttling cuts its GPU/CPU cost with no perceptible change.
+    const FRAME_INTERVAL = 1000 / 40;
+    let lastFrame = -Infinity;
+
+    const loop = (now: number) => {
+      R.frame = requestAnimationFrame(loop);
+      if (now - lastFrame < FRAME_INTERVAL) return;
+      lastFrame = now;
       if (!R.paused) {
         if (R.mode === 'demo' || R.mode === 'live') {
           const perFrame = R.mode === 'demo' ? 2 : 1;
@@ -217,7 +225,6 @@ export default function DeltaVRibbon({ paused = false }: { paused?: boolean }) {
           drawRibbon(B);
         }
       }
-      R.frame = requestAnimationFrame(loop);
     };
     R.frame = requestAnimationFrame(loop);
 
