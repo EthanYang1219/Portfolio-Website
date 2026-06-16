@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
+import { motion, MotionConfig } from 'motion/react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import SelectedWork from './components/SelectedWork';
@@ -98,14 +98,23 @@ export default function App() {
   };
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
+      {/* Skip link — first focusable element, jumps past the nav to content */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:z-[200] focus:top-3 focus:left-3 focus:bg-paper-raised focus:text-ink focus:border focus:border-hairline focus:rounded-lg focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:shadow-lg"
+        data-cursor
+      >
+        Skip to content
+      </a>
+
       {/* Full-Page Interactive WebGL shader (Behind all nodes) */}
       <ShaderBackground />
 
       {/* Content wrapper with correct flow */}
       <Header currentSection={currentSection} />
 
-      <main className="relative z-10 w-full flex flex-col overflow-x-clip">
+      <main id="main-content" className="relative z-10 w-full flex flex-col overflow-x-clip">
         {/* Landing viewport */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -346,6 +355,6 @@ export default function App() {
 
       {/* Copyrights and Back-To-Top indicator */}
       <Footer />
-    </>
+    </MotionConfig>
   );
 }

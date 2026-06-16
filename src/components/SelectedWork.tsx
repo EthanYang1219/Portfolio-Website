@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } fr
 import { ArrowUpRight, Play, Terminal, Settings, BookOpen, Clock, Activity, Target } from 'lucide-react';
 import { Project } from '../types';
 import workF1Jpg from '../assets/images/work-f1.jpg';
-import vexDrivetrain from '../assets/images/vex-drivetrain.png';
+import vexDrivetrain from '../assets/images/vex-drivetrain.webp';
 import DeltaVRibbon from './DeltaVRibbon';
 
 interface SelectedWorkProps {

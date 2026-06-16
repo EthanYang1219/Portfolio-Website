@@ -140,6 +140,15 @@ html {
   html {
     scroll-behavior: auto;
   }
+  /* Near-instant CSS animations/transitions for users who ask for less motion.
+     (motion/react animations are handled separately via MotionConfig.) */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Custom Base Elements */

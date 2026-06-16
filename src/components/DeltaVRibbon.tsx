@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useReducedMotion } from 'motion/react';
 
 // Ported from the DeltaV climbing app's 3D "Ribbon" visualizer: a 2D-canvas
 // perspective renderer that draws the climber's hip path as a stability-coloured
@@ -12,6 +13,7 @@ export default function DeltaVRibbon({ paused = false }: { paused?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [recording, setRecording] = useState(false);
+  const prefersReduced = useReducedMotion();
   // mutable engine state, kept off React's render path
   const engine = useRef<any>(null);
 
@@ -197,6 +199,14 @@ export default function DeltaVRibbon({ paused = false }: { paused?: boolean }) {
       R.mode = live ? 'live' : 'demo';
     };
     R.startClimb(false); // open with the demo climb
+    if (prefersReduced) {
+      // reduced motion: show the full ribbon at rest — no reveal, no auto-orbit
+      R.points = [...R.path];
+      R.pathIdx = R.path.length;
+      R.mode = 'idle';
+      R.autoOrbit = false;
+      R.needsDraw = true;
+    }
 
     // Cap at ~40fps — the auto-orbit redraws the wireframe + ribbon every frame
     // forever, so throttling cuts its GPU/CPU cost with no perceptible change.
@@ -249,7 +259,7 @@ export default function DeltaVRibbon({ paused = false }: { paused?: boolean }) {
       canvas.removeEventListener('pointermove', onMove);
       canvas.removeEventListener('pointerup', onUp);
     };
-  }, []);
+  }, [prefersReduced]);
 
   // keep the engine's pause flag in sync (pauses when the card is offscreen)
   useEffect(() => { if (engine.current) engine.current.paused = paused; }, [paused]);
