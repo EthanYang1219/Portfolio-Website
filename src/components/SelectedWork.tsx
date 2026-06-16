@@ -45,12 +45,12 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
       title: 'DeltaV',
       meta: 'Climbing Companion · full-stack + AI',
       url: '#',
-      description: "A full-stack bouldering companion app that tracks training metrics, logs hold layouts, and maps climber center-of-mass telemetry.",
+      description: "A full-stack bouldering companion app that tracks training metrics, logs hold layouts, and maps climber routes.",
       gradient: 'linear-gradient(140deg, #e0b894, #b8431e)',
       type: 'phone',
       details: {
         role: 'Front-End Developer',
-        overview: 'DeltaV captures real-time climbing metrics by tracking a user\'s hip positioning—the critical baseline for calculating balance, wall proximity, and core stability during a dynamic climb.',
+        overview: 'DeltaV captures real-time climbing metrics by tracking a user\'s hip position via a wearable IMU ribbon for calculating balance, wall proximity, and core stability during a dynamic climb.',
         challenges: 'Translating raw IMU sensor tracking and casual canvas screen touches into clean, reliable path data without over-complicating the user interface.',
         highlights: [
           'Prototyped a wearable hardware sensor to capture live hip stability and tracking telemetry',
