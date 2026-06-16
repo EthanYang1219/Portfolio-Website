@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } fr
 import { ArrowUpRight, Play, Terminal, Settings, BookOpen, Clock, Activity, Target } from 'lucide-react';
 import { Project } from '../types';
 import workF1Jpg from '../assets/images/work-f1.jpg';
+import vexDrivetrain from '../assets/images/vex-drivetrain.png';
 import DeltaVRibbon from './DeltaVRibbon';
 
 interface SelectedWorkProps {
@@ -363,29 +364,34 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                     <svg viewBox="0 0 400 230" className="w-full h-full" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
                       <defs>
                         <linearGradient id="snakeBody" x1="0" y1="1" x2="1" y2="0">
-                          <stop offset="0" stopColor="#6e2a10" />
-                          <stop offset="0.5" stopColor="#cc4b1e" />
-                          <stop offset="1" stopColor="#ff5e26" />
+                          <stop offset="0" stopColor="#7a2410" />
+                          <stop offset="0.45" stopColor="#cc4b1e" />
+                          <stop offset="0.8" stopColor="#ff5e26" />
+                          <stop offset="1" stopColor="#e8a24e" />
                         </linearGradient>
+                        <pattern id="snakeScales" width="12" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(6)">
+                          <path d="M0 7 Q6 -1 12 7" fill="none" stroke="#e8c489" strokeWidth="1" />
+                        </pattern>
                       </defs>
-                      {/* body */}
-                      <path
-                        d="M 44 176 C 104 112, 138 214, 196 162 C 246 117, 290 104, 326 138 C 344 155, 356 126, 346 104"
-                        stroke="url(#snakeBody)" strokeWidth="18" strokeLinecap="round"
-                      />
-                      {/* scale sheen */}
-                      <path
-                        d="M 44 176 C 104 112, 138 214, 196 162 C 246 117, 290 104, 326 138 C 344 155, 356 126, 346 104"
-                        stroke="#ff9a6b" strokeWidth="2" strokeLinecap="round" strokeDasharray="1 11" opacity="0.5"
-                      />
-                      {/* head */}
-                      <ellipse cx="346" cy="103" rx="13" ry="9.5" transform="rotate(-58 346 103)" fill="#ff5e26" />
-                      <circle cx="350" cy="100" r="1.9" fill="#14110b" />
+
+                      {/* body: gradient base, then gold scale texture, then a faint scute highlight */}
+                      <path d="M 34 168 C 78 96, 120 220, 184 158 C 232 112, 268 210, 318 150 C 342 122, 356 150, 346 106"
+                        stroke="url(#snakeBody)" strokeWidth="23" strokeLinecap="round" />
+                      <path d="M 34 168 C 78 96, 120 220, 184 158 C 232 112, 268 210, 318 150 C 342 122, 356 150, 346 106"
+                        stroke="url(#snakeScales)" strokeWidth="21" strokeLinecap="round" opacity="0.55" />
+                      <path d="M 34 168 C 78 96, 120 220, 184 158 C 232 112, 268 210, 318 150 C 342 122, 356 150, 346 106"
+                        stroke="#ffd9a8" strokeWidth="2" strokeLinecap="round" strokeDasharray="1 13" opacity="0.5" />
+
+                      {/* ornate head */}
+                      <ellipse cx="346" cy="106" rx="17" ry="11.5" transform="rotate(-52 346 106)" fill="#cc4b1e" stroke="#e8c489" strokeWidth="1.4" />
+                      <path d="M 337 99 Q 346 92 357 98" fill="none" stroke="#e8c489" strokeWidth="1.2" />
+                      <ellipse cx="350" cy="101" rx="3.1" ry="2.2" transform="rotate(-52 350 101)" fill="#f4f1ea" stroke="#caa45f" strokeWidth="0.7" />
+                      <circle cx="350.5" cy="100.5" r="1" fill="#1a120a" />
                       {/* forked tongue */}
-                      <g stroke="#ff7a45" strokeWidth="1.6" strokeLinecap="round">
-                        <path d="M 351 92 L 356 80" />
-                        <path d="M 356 80 L 360 74" />
-                        <path d="M 356 80 L 353 73" />
+                      <g stroke="#ff5e26" strokeWidth="1.5" strokeLinecap="round">
+                        <path d="M 356 92 L 362 78" />
+                        <path d="M 362 78 L 366 71" />
+                        <path d="M 362 78 L 359 70" />
                       </g>
                     </svg>
 
@@ -529,30 +535,16 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                     {/* annotated sketch + notes */}
                     <div className="flex-1 grid grid-cols-[1.15fr_1fr] gap-3 pt-2.5 min-h-0">
                       <div className="relative flex flex-col min-h-0">
-                        <svg viewBox="0 0 160 120" className="w-full flex-1 min-h-0" fill="none" preserveAspectRatio="xMidYMid meet">
-                          <g stroke="#2a2620" strokeOpacity="0.4" strokeWidth="0.8" strokeDasharray="3 2">
-                            <path d="M52 22 V74 M52 74 H128 M52 74 L28 92" />
-                          </g>
-                          <g stroke="#2a2620" strokeWidth="1.4" strokeLinejoin="round">
-                            <rect x="28" y="40" width="76" height="52" />
-                            <path d="M28 40 L52 22 H128 L104 40" />
-                            <path d="M104 40 L128 22 V74 L104 92" />
-                          </g>
-                          <g stroke="#2a2620" strokeWidth="1.2">
-                            <circle cx="48" cy="80" r="7.5" />
-                            <circle cx="84" cy="80" r="7.5" />
-                          </g>
-                          <circle cx="48" cy="80" r="1.3" fill="#2a2620" />
-                          <circle cx="84" cy="80" r="1.3" fill="#2a2620" />
-                          <line x1="18" y1="80" x2="100" y2="80" stroke="#d2734c" strokeWidth="0.7" strokeDasharray="6 2 1 2" opacity="0.7" />
-                          <g stroke="#8a8170" strokeWidth="0.7">
-                            <line x1="28" y1="104" x2="104" y2="104" />
-                            <line x1="28" y1="100" x2="28" y2="108" />
-                            <line x1="104" y1="100" x2="104" y2="108" />
-                          </g>
-                          <text x="66" y="116" textAnchor="middle" fontSize="7" fill="#8a8170" fontFamily="monospace">356 mm</text>
-                        </svg>
-                        <span className="font-mono text-[0.5rem] uppercase tracking-wider text-[#8a8170] mt-0.5">Fig. 12 — drivetrain</span>
+                        {/* Real 604X drivetrain CAD drawing, multiply-blended so the
+                            white background drops out and only the line art sits on the paper */}
+                        <img
+                          src={vexDrivetrain}
+                          alt="Isometric CAD drawing of the 604X drivetrain"
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full flex-1 min-h-0 object-contain mix-blend-multiply"
+                        />
+                        <span className="font-mono text-[0.5rem] uppercase tracking-wider text-[#8a8170] mt-0.5">Fig. 12 — drivetrain (iso)</span>
                       </div>
 
                       <div className="flex flex-col gap-1.5 font-mono text-[0.6rem] text-[#4a463c] leading-snug min-w-0">
