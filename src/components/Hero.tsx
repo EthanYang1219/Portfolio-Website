@@ -134,11 +134,11 @@ export default function Hero() {
               <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
             
-            <a 
-              href="#contact" 
+            <a
+              href="#contact"
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
               }}
               className="btn-ghost font-semibold text-[0.92rem] text-ink relative py-2.5 px-4 cursor-pointer after:content-[''] after:absolute after:left-1/2 after:bottom-0 after:w-0 hover:after:w-full after:h-[1px] after:bg-ink after:-translate-x-1/2 after:transition-all after:duration-300"
               data-cursor

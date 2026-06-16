@@ -134,9 +134,16 @@ export default function Experience({ filteredSkill, onClearFilter }: ExperienceP
                       exp.role
                     )}
                   </h3>
-                  <span className="font-mono text-xs text-ink-faint flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5" /> {exp.when}
-                  </span>
+                  <div className="flex items-center gap-2.5">
+                    <span className="font-mono text-xs text-ink-faint flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5" /> {exp.when}
+                    </span>
+                    {exp.when.includes('Present') && (
+                      <span className="inline-flex items-center gap-1 font-mono text-[0.55rem] uppercase tracking-widest text-accent border border-accent/30 bg-accent-tint/10 rounded-full px-2 py-0.5 whitespace-nowrap">
+                        <span className="h-1 w-1 rounded-full bg-accent animate-pulse" /> Current
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-1 text-xs uppercase font-semibold text-accent-text tracking-wider mb-2">
