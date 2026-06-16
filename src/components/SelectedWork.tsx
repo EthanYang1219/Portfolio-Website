@@ -22,6 +22,9 @@ const projectSkills: Record<string, string[]> = {
   docs: ['Fusion 360', 'Onshape', 'Engineering Docs'],
 };
 
+// Projects still actively being built — shown with an "In progress" badge.
+const IN_PROGRESS = new Set(['deltav', 'python']);
+
 export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedWorkProps) {
   const [activeIdx, setActiveIdx] = useState<number>(0);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -302,11 +305,18 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                   }}
                 >
                   <div className="flex flex-col gap-1.5">
-                    <h3 className={`hw-title font-display font-medium text-2xl sm:text-3.5xl tracking-tight transition-colors duration-300 ${
-                      activeIdx === idx ? 'text-accent' : 'text-ink'
-                    }`}>
-                      {proj.title}
-                    </h3>
+                    <div className="flex items-center gap-2.5 flex-wrap">
+                      <h3 className={`hw-title font-display font-medium text-2xl sm:text-3.5xl tracking-tight transition-colors duration-300 ${
+                        activeIdx === idx ? 'text-accent' : 'text-ink'
+                      }`}>
+                        {proj.title}
+                      </h3>
+                      {IN_PROGRESS.has(proj.id) && (
+                        <span className="inline-flex items-center gap-1 font-mono text-[0.55rem] uppercase tracking-widest text-accent border border-accent/30 bg-accent-tint/10 rounded-full px-2 py-0.5">
+                          <span className="h-1 w-1 rounded-full bg-accent animate-pulse" /> In progress
+                        </span>
+                      )}
+                    </div>
                     <span className="hw-meta font-mono text-xs tracking-wider uppercase text-ink-faint">
                       {proj.meta}
                     </span>
@@ -646,6 +656,11 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
                     <span className="font-mono text-xs tracking-wider uppercase text-accent font-semibold flex items-center gap-1.5">
                       <Activity className="w-3.5 h-3.5 animate-pulse" /> {selectedProject.meta}
                     </span>
+                    {IN_PROGRESS.has(selectedProject.id) && (
+                      <span className="inline-flex items-center gap-1 font-mono text-[0.6rem] uppercase tracking-widest text-accent border border-accent/30 bg-accent-tint/10 rounded-full px-2 py-0.5">
+                        <span className="h-1 w-1 rounded-full bg-accent animate-pulse" /> In progress
+                      </span>
+                    )}
                   </div>
                 </div>
                 <button
