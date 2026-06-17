@@ -223,47 +223,50 @@ body::before {
   }
 }
 
-/* Testimonials vertical auto-scroll (single column). Mirrors the skills
-   marquee: gap-6 (1.5rem) → seam offset half-gap (0.75rem). */
-.tmarquee-track {
-  animation: tmarquee 28s linear infinite;
-}
-@keyframes tmarquee {
-  to {
-    transform: translateY(calc(-50% - 0.75rem));
-  }
-}
-/* Pause only where hover is real (touch :hover sticks and would freeze it) */
-@media (hover: hover) {
-  .tmarquee-group:hover .tmarquee-track {
-    animation-play-state: paused;
-  }
-}
-.tmarquee-mask {
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
-}
-/* Reduced motion: no scroll — show the set fully, drop the duplicate + mask */
-@media (prefers-reduced-motion: reduce) {
-  .tmarquee-track {
-    animation: none;
-  }
-  .tmarquee-group {
-    max-height: none !important;
-  }
-  .tmarquee-mask {
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-  .tmarquee-dup {
-    display: none;
-  }
-}
-
 /* Text effect characters */
 .hw-char {
   position: relative;
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
+}
+
+
+/* ── Scroll-reel testimonials: per-character rise + whole-block exit ────── */
+@keyframes scroll-reel-char-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes scroll-reel-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+/* Base state each character animates FROM (inline animation-delay staggers them) */
+.scroll-reel-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.6em);
+  animation: scroll-reel-char-rise 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.scroll-reel-exit {
+  animation: scroll-reel-exit 240ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+/* Reduced motion: no rise/exit — text simply swaps in place */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reel-char {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .scroll-reel-exit {
+    animation: none;
+  }
 }

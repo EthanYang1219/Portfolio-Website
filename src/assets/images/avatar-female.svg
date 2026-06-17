@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Anonymous portrait">
+  <defs>
+    <radialGradient id="f-bg" cx="50%" cy="34%" r="80%">
+      <stop offset="0%" stop-color="#1f1810"/>
+      <stop offset="60%" stop-color="#191309"/>
+      <stop offset="100%" stop-color="#14110b"/>
+    </radialGradient>
+    <linearGradient id="f-skin" x1="0" y1="0" x2="0.85" y2="1">
+      <stop offset="0%" stop-color="#ecd0aa"/>
+      <stop offset="100%" stop-color="#caa078"/>
+    </linearGradient>
+    <linearGradient id="f-hair" x1="0" y1="0" x2="0.9" y2="1">
+      <stop offset="0%" stop-color="#2c2419"/>
+      <stop offset="55%" stop-color="#1d1710"/>
+      <stop offset="100%" stop-color="#130d07"/>
+    </linearGradient>
+    <linearGradient id="f-top" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#cb6539"/>
+      <stop offset="100%" stop-color="#92401d"/>
+    </linearGradient>
+    <linearGradient id="f-rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff9568"/>
+      <stop offset="45%" stop-color="#ff5e26"/>
+      <stop offset="100%" stop-color="#ff5e26" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="f-soft" x="-25%" y="-25%" width="150%" height="150%"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#f-bg)"/>
+
+  <path fill="url(#f-top)" d="M74,512 C78,452 116,412 178,400 C204,393 230,402 256,404 C282,402 308,393 334,400 C396,412 434,452 438,512 Z"/>
+
+  <path fill="url(#f-hair)" d="M256,68 C200,68 158,106 152,172 C148,220 154,284 174,328 C190,360 322,360 338,328 C358,284 364,220 360,172 C354,106 312,68 256,68 Z"/>
+
+  <path fill="url(#f-skin)" d="M232,300 C232,330 231,346 228,360 L284,360 C281,346 280,330 280,300 Z"/>
+
+  <path fill="url(#f-hair)" d="M158,236 C150,290 152,346 166,392 C172,410 188,412 198,400 C204,372 202,340 196,308 C192,280 188,256 184,238 C176,232 166,232 158,236 Z"/>
+  <path fill="url(#f-hair)" d="M354,236 C362,290 360,346 346,392 C340,410 324,412 314,400 C308,372 310,340 316,308 C320,280 324,256 328,238 C336,232 346,232 354,236 Z"/>
+
+  <path fill="url(#f-skin)" d="M256,150 C296,150 326,184 326,226 C326,262 310,300 282,318 C273,326 264,330 256,330 C248,330 239,326 230,318 C202,300 186,262 186,226 C186,184 216,150 256,150 Z"/>
+
+  <ellipse cx="189" cy="252" rx="12" ry="17" fill="url(#f-skin)"/>
+  <ellipse cx="323" cy="252" rx="12" ry="17" fill="url(#f-skin)"/>
+
+  <path fill="url(#f-hair)" d="M256,150 C236,150 214,158 198,176 C190,186 186,200 188,214 C196,197 214,185 240,183 C248,171 252,159 256,150 Z"/>
+  <path fill="url(#f-hair)" d="M256,150 C276,150 298,158 314,176 C322,186 326,200 324,214 C316,197 298,185 272,183 C264,171 260,159 256,150 Z"/>
+
+  <path fill="none" stroke="url(#f-rim)" stroke-width="8" stroke-linecap="round" opacity="0.42" filter="url(#f-soft)" d="M256,70 C202,70 160,106 154,172 C150,216 156,280 172,322"/>
+  <path fill="none" stroke="url(#f-rim)" stroke-width="2.3" stroke-linecap="round" opacity="0.5" d="M256,70 C202,70 160,106 154,172 C150,216 156,280 172,322"/>
+  <path fill="none" stroke="url(#f-rim)" stroke-width="2.1" stroke-linecap="round" opacity="0.4" d="M178,402 C118,414 92,452 80,508"/>
+</svg>

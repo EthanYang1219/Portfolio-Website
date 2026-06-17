@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Anonymous portrait">
+  <defs>
+    <radialGradient id="m-bg" cx="50%" cy="34%" r="80%">
+      <stop offset="0%" stop-color="#1f1810"/>
+      <stop offset="60%" stop-color="#191309"/>
+      <stop offset="100%" stop-color="#14110b"/>
+    </radialGradient>
+    <linearGradient id="m-fig" x1="0" y1="0" x2="0.85" y2="1">
+      <stop offset="0%" stop-color="#4c4130"/>
+      <stop offset="100%" stop-color="#332a1c"/>
+    </linearGradient>
+    <linearGradient id="m-rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff9568"/>
+      <stop offset="45%" stop-color="#ff5e26"/>
+      <stop offset="100%" stop-color="#ff5e26" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="m-soft" x="-25%" y="-25%" width="150%" height="150%"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#m-bg)"/>
+
+  <path fill="url(#m-fig)" d="M256,70 C300,70 338,104 342,160 C344,196 336,232 318,258 C312,268 304,276 296,282 C297,300 297,316 301,330 C360,340 430,372 452,440 C462,470 466,492 468,512 L44,512 C46,492 50,470 60,440 C82,372 152,340 211,330 C215,316 215,300 216,282 C208,276 200,268 194,258 C176,232 168,196 170,160 C174,104 212,70 256,70 Z"/>
+  <path fill="url(#m-fig)" d="M250,78 L254,64 L270,78 Z"/>
+  <path fill="url(#m-fig)" d="M298,84 L312,70 L316,90 Z"/>
+
+  <path fill="none" stroke="url(#m-rim)" stroke-width="8" stroke-linecap="round" opacity="0.42" filter="url(#m-soft)" d="M256,72 C214,72 176,104 172,160 C170,196 178,232 194,256"/>
+  <path fill="none" stroke="url(#m-rim)" stroke-width="2.3" stroke-linecap="round" opacity="0.5" d="M256,72 C214,72 176,104 172,160 C170,196 178,232 194,256"/>
+  <path fill="none" stroke="url(#m-rim)" stroke-width="2.1" stroke-linecap="round" opacity="0.42" d="M211,332 C152,342 84,372 62,440"/>
+</svg>
