@@ -9,8 +9,7 @@ type Testimonial = {
   linkedin?: string;
 };
 
-// ⚠️ Two of these are still PLACEHOLDERS — swap in real quotes (and add a
-// `linkedin` URL to show the LinkedIn icon for that person).
+// Add a `linkedin` URL to any entry to show a LinkedIn icon on that card.
 const testimonials: Testimonial[] = [
   {
     quote:'For the eight years I have known Ethan, he has always been a diligent, outgoing, and personable friend whom I can depend on. I have many cherished memories together with him, but what stands out to me the most is his honesty and willingness to learn. While I may not necessarily see him in an academic/engineering context, his discipline, reliability, and curiosity make him a valued member of any team he is a part of.',
