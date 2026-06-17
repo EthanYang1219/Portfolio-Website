@@ -223,6 +223,43 @@ body::before {
   }
 }
 
+/* Testimonials vertical auto-scroll (single column). Mirrors the skills
+   marquee: gap-6 (1.5rem) → seam offset half-gap (0.75rem). */
+.tmarquee-track {
+  animation: tmarquee 28s linear infinite;
+}
+@keyframes tmarquee {
+  to {
+    transform: translateY(calc(-50% - 0.75rem));
+  }
+}
+/* Pause only where hover is real (touch :hover sticks and would freeze it) */
+@media (hover: hover) {
+  .tmarquee-group:hover .tmarquee-track {
+    animation-play-state: paused;
+  }
+}
+.tmarquee-mask {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+}
+/* Reduced motion: no scroll — show the set fully, drop the duplicate + mask */
+@media (prefers-reduced-motion: reduce) {
+  .tmarquee-track {
+    animation: none;
+  }
+  .tmarquee-group {
+    max-height: none !important;
+  }
+  .tmarquee-mask {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .tmarquee-dup {
+    display: none;
+  }
+}
+
 /* Text effect characters */
 .hw-char {
   position: relative;
