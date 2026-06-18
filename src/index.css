@@ -265,6 +265,21 @@ body::before {
   animation-fill-mode: forwards;
 }
 
+/* Author/meta block — gentle fade-up when a new testimonial enters */
+@keyframes scroll-reel-meta {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.scroll-reel-meta {
+  animation: scroll-reel-meta 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* Base state each character animates FROM (inline animation-delay staggers them) */
 .scroll-reel-char {
   display: inline-block;

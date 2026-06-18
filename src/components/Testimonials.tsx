@@ -88,7 +88,7 @@ export default function Testimonials() {
         {/* One featured testimonial at a time - counter-rotating scroll reel,
             clicks into place; arrows or left/right keys to navigate. */}
         <div className="flex justify-center">
-          <ScrollReelTestimonials testimonials={items} autoPlay autoPlayMs={5200} />
+          <ScrollReelTestimonials testimonials={items} autoPlay autoPlayMs={6000} />
         </div>
 
       </div>

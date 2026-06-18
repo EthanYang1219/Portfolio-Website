@@ -55,12 +55,12 @@ const EASE_INOUT = 'cubic-bezier(0.65,0,0.35,1)';
 const QUOTE_CLASSES =
   'm-0 font-display text-lg font-medium leading-[1.35] tracking-tight text-ink sm:text-[22px]';
 const AUTHOR_CLASSES =
-  'm-0 font-display text-[0.95rem] font-medium leading-tight tracking-tight text-ink';
+  'm-0 font-display text-[1.3rem] font-semibold leading-tight tracking-tight text-ink';
 const ROLE_CLASSES =
-  'font-mono text-[0.6rem] uppercase tracking-widest leading-tight text-ink-faint';
+  'font-mono text-[0.72rem] uppercase tracking-widest leading-snug text-ink-soft';
 /* LinkedIn pill — mirrors the Contact section's social links */
 const LINKEDIN_CLASSES =
-  'ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full border border-hairline bg-paper px-3.5 py-1.5 font-mono text-[0.7rem] uppercase tracking-wider text-ink-soft';
+  'inline-flex shrink-0 items-center gap-1.5 rounded-full border border-hairline bg-paper px-3.5 py-1.5 font-mono text-[0.7rem] uppercase tracking-wider text-ink-soft';
 
 const FEATURED_SHADOW =
   '0 1.008px 0.705px -0.563px rgba(0,0,0,0.35), 0 2.389px 1.672px -1.125px rgba(0,0,0,0.33), 0 4.357px 3.05px -1.688px rgba(0,0,0,0.32), 0 7.244px 5.07px -2.25px rgba(0,0,0,0.30), 0 11.698px 8.188px -2.813px rgba(0,0,0,0.27), 0 19.148px 13.404px -3.375px rgba(0,0,0,0.22), 0 32.972px 23.08px -3.938px rgba(0,0,0,0.14), 0 60px 42px -4.5px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.10)';
@@ -268,18 +268,6 @@ export function ScrollReelTestimonials({
     transition: mounted ? `transform ${SLIDE_MS}ms ${EASE_INOUT}` : 'none',
   });
 
-  // Lock the card height to the longest entry so it never jumps between a
-  // one-line quote and a four-line one.
-  const longest = React.useMemo(() => {
-    let quote = '';
-    let role = '';
-    for (const t of testimonials) {
-      if (t.quote.length > quote.length) quote = t.quote;
-      if ((t.role ?? '').length > role.length) role = t.role ?? '';
-    }
-    return { quote, role };
-  }, [testimonials]);
-
   const showProgress = autoPlay && count > 1 && !prefersReduced;
   const current = testimonials[displayIndex];
 
@@ -355,8 +343,17 @@ export function ScrollReelTestimonials({
       </div>
 
       {/* Content section */}
-      <div className="flex min-w-0 flex-1 flex-col justify-between self-stretch px-5 py-7 md:py-10">
-        <div className="flex flex-col gap-3">
+      <div className="relative flex min-w-0 flex-1 flex-col justify-between self-stretch px-5 py-7 md:px-7 md:py-10">
+        {/* Ghosted index numeral — complementary watermark filling the right */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-3 top-2 select-none font-display text-[5rem] font-semibold leading-none tabular-nums text-accent/[0.07] md:text-[7rem]"
+        >
+          {String(index + 1).padStart(2, '0')}
+        </span>
+
+        {/* Quote */}
+        <div className="relative z-[1] flex flex-col gap-3">
           {/* Quotation mark — larger, integrated as a soft accent */}
           <svg
             className="-mb-1 block h-12 w-12 shrink-0 text-accent/25"
@@ -367,120 +364,118 @@ export function ScrollReelTestimonials({
             <path d="M4.58 17.32C3.55 16.23 3 15 3 13.01c0-3.5 2.46-6.64 6.03-8.19l.9 1.38c-3.34 1.8-4 4.15-4.25 5.62.54-.28 1.24-.38 1.93-.31 1.8.17 3.23 1.65 3.23 3.49a3.5 3.5 0 0 1-3.5 3.5c-1.07 0-2.1-.49-2.75-1.18zm10 0C13.55 16.23 13 15 13 13.01c0-3.5 2.46-6.64 6.03-8.19l.9 1.38c-3.34 1.8-4 4.15-4.25 5.62.54-.28 1.24-.38 1.93-.31 1.8.17 3.23 1.65 3.23 3.49a3.5 3.5 0 0 1-3.5 3.5c-1.07 0-2.1-.49-2.75-1.18z" />
           </svg>
 
-          {/* Text stage — height locked to the LONGEST entry (invisible sizing
-              copy) so the card never grows or shrinks between quotes. Quote
-              pins to the top, the author/LinkedIn row to the bottom. */}
-          <div className="relative w-full max-w-[440px] overflow-hidden" aria-live="polite">
-            <div
-              aria-hidden="true"
-              className="invisible flex min-h-[180px] flex-col justify-between gap-[18px]"
-            >
-              <p className={QUOTE_CLASSES}>{longest.quote}</p>
-              <div className="flex min-h-9 items-center gap-2.5">
-                <div className="flex flex-col gap-1">
-                  <p className={AUTHOR_CLASSES}>Placeholder Name</p>
-                  <span className={ROLE_CLASSES}>{longest.role || 'role'}</span>
-                </div>
-                <span className={LINKEDIN_CLASSES}>
-                  <Linkedin className="h-3.5 w-3.5" />
-                  <span>LinkedIn</span>
-                  <ArrowUpRight className="h-3 w-3" />
-                </span>
-              </div>
-            </div>
-
-            <div
-              key={displayIndex}
+          {/* Text stage — height locked to the LONGEST quote (invisible sizing
+              copy) so the card never grows or shrinks between testimonials. */}
+          <div className="relative grid w-full max-w-[460px] overflow-hidden" aria-live="polite">
+            {/* Every quote stacked invisibly in one grid cell → the box sizes
+                to the TALLEST entry (not just the longest by character count). */}
+            {testimonials.map((t, i) => (
+              <p
+                key={i}
+                aria-hidden="true"
+                className={cn(QUOTE_CLASSES, 'invisible col-start-1 row-start-1 min-h-[150px]')}
+              >
+                {t.quote}
+              </p>
+            ))}
+            <p
+              key={`v-${displayIndex}`}
               className={cn(
-                'absolute inset-0 flex flex-col justify-between gap-[18px] will-change-[transform,opacity]',
+                QUOTE_CLASSES,
+                'col-start-1 row-start-1 self-start will-change-[transform,opacity]',
                 exiting && 'scroll-reel-exit'
               )}
             >
-              <p className={QUOTE_CLASSES}>
-                <Chars text={current.quote} startIndex={0} staggerMs={charStaggerMs} />
-              </p>
-              <div className="flex min-h-9 items-center gap-2.5">
-                <div className="flex min-w-0 flex-col gap-1">
-                  <p className={AUTHOR_CLASSES}>
-                    <Chars
-                      text={current.author}
-                      startIndex={current.quote.length + 6}
-                      staggerMs={charStaggerMs}
-                    />
-                  </p>
-                  {current.role && <span className={ROLE_CLASSES}>{current.role}</span>}
-                </div>
-                <a
-                  href={
-                    current.linkedin ??
-                    `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(current.author)}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${current.author} on LinkedIn`}
-                  className={cn(
-                    LINKEDIN_CLASSES,
-                    'transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
-                  )}
-                  data-cursor
-                >
-                  <Linkedin className="h-3.5 w-3.5" />
-                  <span>LinkedIn</span>
-                  <ArrowUpRight className="h-3 w-3 text-ink-faint" />
-                </a>
-              </div>
-            </div>
+              <Chars text={current.quote} startIndex={0} staggerMs={charStaggerMs} />
+            </p>
           </div>
         </div>
 
-        {/* Controls */}
-        <div className="mt-6 flex items-center gap-3 md:mt-0">
-          <span className="font-mono text-[0.7rem] tracking-[0.18em] text-ink-faint tabular-nums">
-            {String(index + 1).padStart(2, '0')}
-            <span className="px-1 text-ink-faint/50">/</span>
-            {String(count).padStart(2, '0')}
-          </span>
-          <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            onClick={() => paginate(-1)}
-            disabled={index === 0}
-            aria-label="Previous testimonial"
-            className="grid h-7 w-7 cursor-pointer place-items-center rounded-full border border-ink/15 bg-transparent p-0 text-ink transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:enabled:scale-[1.08] hover:enabled:border-accent hover:enabled:text-accent active:enabled:scale-[0.94] disabled:cursor-default disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            data-cursor
+        {/* Footer bar — author + LinkedIn (left), navigation cluster (right) */}
+        <div className="relative z-[1] mt-7 flex items-end justify-between gap-4">
+          <div
+            key={displayIndex}
+            className={cn(
+              'flex min-w-0 flex-col gap-1.5 min-h-[4.3rem]',
+              exiting ? 'scroll-reel-exit' : 'scroll-reel-meta'
+            )}
           >
-            <svg
-              className="h-3 w-3 opacity-80"
-              viewBox="0 0 12 12"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M7.5 2.5 3.5 6l4 3.5" />
-            </svg>
-          </button>
-          <button
-            type="button"
-            onClick={() => paginate(1)}
-            disabled={index === count - 1}
-            aria-label="Next testimonial"
-            className="grid h-7 w-7 cursor-pointer place-items-center rounded-full border border-ink/15 bg-transparent p-0 text-ink transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:enabled:scale-[1.08] hover:enabled:border-accent hover:enabled:text-accent active:enabled:scale-[0.94] disabled:cursor-default disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            data-cursor
-          >
-            <svg
-              className="h-3 w-3 opacity-80"
-              viewBox="0 0 12 12"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m4.5 2.5 4 3.5-4 3.5" />
-            </svg>
-          </button>
+            {/* Name + LinkedIn on the same line, left-aligned */}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <p className={AUTHOR_CLASSES}>{current.author}</p>
+              <a
+                href={
+                  current.linkedin ??
+                  `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(current.author)}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${current.author} on LinkedIn`}
+                className={cn(
+                  LINKEDIN_CLASSES,
+                  'transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
+                )}
+                data-cursor
+              >
+                <Linkedin className="h-3.5 w-3.5" />
+                <span>LinkedIn</span>
+                <ArrowUpRight className="h-3 w-3 text-ink-faint" />
+              </a>
+            </div>
+            {current.role && <span className={ROLE_CLASSES}>{current.role}</span>}
+          </div>
+
+          {/* Navigation cluster — counter + arrows */}
+          <div className="flex shrink-0 items-center gap-3">
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-[0.7rem] tracking-[0.18em] text-ink-faint tabular-nums">
+                {String(index + 1).padStart(2, '0')}
+                <span className="px-1 text-ink-faint/50">/</span>
+                {String(count).padStart(2, '0')}
+              </span>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => paginate(-1)}
+                  disabled={index === 0}
+                  aria-label="Previous testimonial"
+                  className="grid h-7 w-7 cursor-pointer place-items-center rounded-full border border-ink/15 bg-transparent p-0 text-ink transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:enabled:scale-[1.08] hover:enabled:border-accent hover:enabled:text-accent active:enabled:scale-[0.94] disabled:cursor-default disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  data-cursor
+                >
+                  <svg
+                    className="h-3 w-3 opacity-80"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M7.5 2.5 3.5 6l4 3.5" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => paginate(1)}
+                  disabled={index === count - 1}
+                  aria-label="Next testimonial"
+                  className="grid h-7 w-7 cursor-pointer place-items-center rounded-full border border-ink/15 bg-transparent p-0 text-ink transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:enabled:scale-[1.08] hover:enabled:border-accent hover:enabled:text-accent active:enabled:scale-[0.94] disabled:cursor-default disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  data-cursor
+                >
+                  <svg
+                    className="h-3 w-3 opacity-80"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m4.5 2.5 4 3.5-4 3.5" />
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
