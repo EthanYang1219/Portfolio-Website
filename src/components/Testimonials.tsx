@@ -40,6 +40,7 @@ const people: Person[] = [
     name: 'Jun Ma',
     role: 'Teammate - VEX Robotics Team 604X',
     gender: 'male',
+    linkedin: 'https://www.linkedin.com/in/haojunma1/'
   },
   {
     quote:
