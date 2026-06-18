@@ -249,6 +249,22 @@ body::before {
     transform: translateY(-12px);
   }
 }
+/* Auto-advance progress line — width fills over the dwell (duration set inline) */
+@keyframes scroll-reel-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.scroll-reel-progress {
+  transform: scaleX(0);
+  animation-name: scroll-reel-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
 /* Base state each character animates FROM (inline animation-delay staggers them) */
 .scroll-reel-char {
   display: inline-block;

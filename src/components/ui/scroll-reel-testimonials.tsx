@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Linkedin } from 'lucide-react';
+import { Linkedin, ArrowUpRight } from 'lucide-react';
 
 /* ----------------------------------------------------------------
  * ScrollReelTestimonials
@@ -58,6 +58,9 @@ const AUTHOR_CLASSES =
   'm-0 font-display text-[0.95rem] font-medium leading-tight tracking-tight text-ink';
 const ROLE_CLASSES =
   'font-mono text-[0.6rem] uppercase tracking-widest leading-tight text-ink-faint';
+/* LinkedIn pill — mirrors the Contact section's social links */
+const LINKEDIN_CLASSES =
+  'ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full border border-hairline bg-paper px-3.5 py-1.5 font-mono text-[0.7rem] uppercase tracking-wider text-ink-soft';
 
 const FEATURED_SHADOW =
   '0 1.008px 0.705px -0.563px rgba(0,0,0,0.35), 0 2.389px 1.672px -1.125px rgba(0,0,0,0.33), 0 4.357px 3.05px -1.688px rgba(0,0,0,0.32), 0 7.244px 5.07px -2.25px rgba(0,0,0,0.30), 0 11.698px 8.188px -2.813px rgba(0,0,0,0.27), 0 19.148px 13.404px -3.375px rgba(0,0,0,0.22), 0 32.972px 23.08px -3.938px rgba(0,0,0,0.14), 0 60px 42px -4.5px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.10)';
@@ -81,8 +84,8 @@ function Cell() {
 function Featured({ src, alt }: { src: string; alt?: string }) {
   return (
     <div
-      className="relative shrink-0 overflow-hidden rounded-xl bg-paper ring-1 ring-hairline"
-      style={{ width: CELL, height: CELL, boxShadow: FEATURED_SHADOW }}
+      className="relative shrink-0 overflow-hidden rounded-xl bg-paper ring-1 ring-accent/40"
+      style={{ width: CELL, height: CELL, boxShadow: `${FEATURED_SHADOW}, 0 0 26px -8px rgba(255,94,38,0.5)` }}
     >
       <img
         src={src}
@@ -103,7 +106,7 @@ function Featured({ src, alt }: { src: string; alt?: string }) {
       {/* crisp inner edge */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[4] rounded-xl ring-1 ring-inset ring-white/10"
+        className="pointer-events-none absolute inset-0 z-[4] rounded-xl ring-1 ring-inset ring-accent/20"
       />
     </div>
   );
@@ -166,6 +169,7 @@ export function ScrollReelTestimonials({
   const [exiting, setExiting] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
   const [paused, setPaused] = React.useState(false);
+  const [prefersReduced, setPrefersReduced] = React.useState(false);
   const animating = React.useRef(false);
   const dirRef = React.useRef<1 | -1>(1);
   const timeouts = React.useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -180,6 +184,14 @@ export function ScrollReelTestimonials({
       cancelAnimationFrame(raf);
       pending.forEach(clearTimeout);
     };
+  }, []);
+
+  React.useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setPrefersReduced(mq.matches);
+    sync();
+    mq.addEventListener?.('change', sync);
+    return () => mq.removeEventListener?.('change', sync);
   }, []);
 
   const goTo = React.useCallback(
@@ -256,6 +268,19 @@ export function ScrollReelTestimonials({
     transition: mounted ? `transform ${SLIDE_MS}ms ${EASE_INOUT}` : 'none',
   });
 
+  // Lock the card height to the longest entry so it never jumps between a
+  // one-line quote and a four-line one.
+  const longest = React.useMemo(() => {
+    let quote = '';
+    let role = '';
+    for (const t of testimonials) {
+      if (t.quote.length > quote.length) quote = t.quote;
+      if ((t.role ?? '').length > role.length) role = t.role ?? '';
+    }
+    return { quote, role };
+  }, [testimonials]);
+
+  const showProgress = autoPlay && count > 1 && !prefersReduced;
   const current = testimonials[displayIndex];
 
   return (
@@ -272,7 +297,7 @@ export function ScrollReelTestimonials({
         if (!e.currentTarget.contains(e.relatedTarget as Node)) setPaused(false);
       }}
       className={cn(
-        'relative flex w-full max-w-[1060px] flex-col items-stretch gap-2.5 overflow-hidden rounded-2xl border border-hairline bg-paper-raised outline-none focus-visible:ring-2 focus-visible:ring-accent md:min-h-[320px] md:flex-row',
+        'relative flex w-full max-w-[1060px] flex-col items-stretch gap-2.5 overflow-hidden rounded-2xl border border-hairline bg-paper-raised shadow-[0_30px_70px_-32px_rgba(0,0,0,0.75)] outline-none focus-visible:ring-2 focus-visible:ring-accent md:min-h-[320px] md:flex-row',
         className
       )}
     >
@@ -331,9 +356,10 @@ export function ScrollReelTestimonials({
 
       {/* Content section */}
       <div className="flex min-w-0 flex-1 flex-col justify-between self-stretch px-5 py-7 md:py-10">
-        <div className="flex flex-col gap-[9px]">
+        <div className="flex flex-col gap-3">
+          {/* Quotation mark — larger, integrated as a soft accent */}
           <svg
-            className="block h-10 w-10 text-accent/30"
+            className="-mb-1 block h-12 w-12 shrink-0 text-accent/25"
             viewBox="0 0 24 24"
             fill="currentColor"
             aria-hidden="true"
@@ -341,27 +367,32 @@ export function ScrollReelTestimonials({
             <path d="M4.58 17.32C3.55 16.23 3 15 3 13.01c0-3.5 2.46-6.64 6.03-8.19l.9 1.38c-3.34 1.8-4 4.15-4.25 5.62.54-.28 1.24-.38 1.93-.31 1.8.17 3.23 1.65 3.23 3.49a3.5 3.5 0 0 1-3.5 3.5c-1.07 0-2.1-.49-2.75-1.18zm10 0C13.55 16.23 13 15 13 13.01c0-3.5 2.46-6.64 6.03-8.19l.9 1.38c-3.34 1.8-4 4.15-4.25 5.62.54-.28 1.24-.38 1.93-.31 1.8.17 3.23 1.65 3.23 3.49a3.5 3.5 0 0 1-3.5 3.5c-1.07 0-2.1-.49-2.75-1.18z" />
           </svg>
 
-          {/* Text stage */}
-          <div
-            className="relative w-full max-w-[420px] overflow-hidden"
-            aria-live="polite"
-          >
-            {/* Invisible in-flow copy sizes the stage to the current entry */}
+          {/* Text stage — height locked to the LONGEST entry (invisible sizing
+              copy) so the card never grows or shrinks between quotes. Quote
+              pins to the top, the author/LinkedIn row to the bottom. */}
+          <div className="relative w-full max-w-[440px] overflow-hidden" aria-live="polite">
             <div
               aria-hidden="true"
-              className="invisible flex min-h-[150px] flex-col gap-[18px]"
+              className="invisible flex min-h-[180px] flex-col justify-between gap-[18px]"
             >
-              <p className={QUOTE_CLASSES}>{current.quote}</p>
-              <div className="flex min-h-9 flex-col justify-center gap-1">
-                <p className={AUTHOR_CLASSES}>{current.author}</p>
-                {current.role && <span className={ROLE_CLASSES}>{current.role}</span>}
+              <p className={QUOTE_CLASSES}>{longest.quote}</p>
+              <div className="flex min-h-9 items-center gap-2.5">
+                <div className="flex flex-col gap-1">
+                  <p className={AUTHOR_CLASSES}>Placeholder Name</p>
+                  <span className={ROLE_CLASSES}>{longest.role || 'role'}</span>
+                </div>
+                <span className={LINKEDIN_CLASSES}>
+                  <Linkedin className="h-3.5 w-3.5" />
+                  <span>LinkedIn</span>
+                  <ArrowUpRight className="h-3 w-3" />
+                </span>
               </div>
             </div>
 
             <div
               key={displayIndex}
               className={cn(
-                'absolute inset-x-0 top-0 flex flex-col gap-[18px] will-change-[transform,opacity]',
+                'absolute inset-0 flex flex-col justify-between gap-[18px] will-change-[transform,opacity]',
                 exiting && 'scroll-reel-exit'
               )}
             >
@@ -387,11 +418,15 @@ export function ScrollReelTestimonials({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${current.author} on LinkedIn`}
-                  title="View on LinkedIn"
-                  className="ml-auto grid h-9 w-9 shrink-0 place-items-center rounded-full border border-ink/15 text-ink-soft transition-[color,border-color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.08] hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  className={cn(
+                    LINKEDIN_CLASSES,
+                    'transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
+                  )}
                   data-cursor
                 >
-                  <Linkedin className="h-4 w-4" />
+                  <Linkedin className="h-3.5 w-3.5" />
+                  <span>LinkedIn</span>
+                  <ArrowUpRight className="h-3 w-3 text-ink-faint" />
                 </a>
               </div>
             </div>
@@ -399,7 +434,13 @@ export function ScrollReelTestimonials({
         </div>
 
         {/* Controls */}
-        <div className="mt-6 flex items-center gap-1.5 md:mt-0">
+        <div className="mt-6 flex items-center gap-3 md:mt-0">
+          <span className="font-mono text-[0.7rem] tracking-[0.18em] text-ink-faint tabular-nums">
+            {String(index + 1).padStart(2, '0')}
+            <span className="px-1 text-ink-faint/50">/</span>
+            {String(count).padStart(2, '0')}
+          </span>
+          <div className="flex items-center gap-1.5">
           <button
             type="button"
             onClick={() => paginate(-1)}
@@ -440,8 +481,30 @@ export function ScrollReelTestimonials({
               <path d="m4.5 2.5 4 3.5-4 3.5" />
             </svg>
           </button>
+          </div>
         </div>
       </div>
+
+      {/* Auto-advance progress line — fills over each dwell, resets on advance,
+          and pauses with the carousel on hover/focus. */}
+      {showProgress && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[3px] bg-hairline/40">
+          <div
+            key={index}
+            className="scroll-reel-progress h-full w-full origin-left bg-accent"
+            style={{
+              animationDuration: `${autoPlayMs}ms`,
+              animationPlayState: paused ? 'paused' : 'running',
+            }}
+          />
+        </div>
+      )}
+
+      {/* Corner accent tick (top-left) */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute left-0 top-0 h-7 w-7 rounded-tl-2xl border-l-2 border-t-2 border-accent/40"
+      />
     </div>
   );
 }
