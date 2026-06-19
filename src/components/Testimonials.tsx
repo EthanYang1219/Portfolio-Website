@@ -1,6 +1,8 @@
 import ScrollReelTestimonials, { type ScrollReelTestimonial } from './ui/scroll-reel-testimonials';
 import avatarMale from '../assets/images/avatar-male.svg';
 import avatarFemale from '../assets/images/avatar-female.svg';
+import photoRaymond from '../assets/images/raymond-feng.jpg';
+import photoSteven from '../assets/images/steven-zhang.jpg';
 
 type Gender = 'male' | 'female';
 
@@ -24,7 +26,7 @@ const people: Person[] = [
     name: 'Raymond Feng',
     role: 'Anatomy & Cell Biology - McGill University',
     gender: 'male',
-    // photo: headshot to be added
+    photo: photoRaymond,
   },
   {
     quote:
@@ -33,7 +35,7 @@ const people: Person[] = [
     role: 'Family Friend',
     gender: 'male',
     linkedin: 'https://www.linkedin.com/in/steven-zhang-742a3a329',
-    // photo: headshot to be added
+    photo: photoSteven,
   },
   {
     quote: 'Working with Ethan has been a pleasure.',
