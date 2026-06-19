@@ -45,8 +45,8 @@ export interface ScrollReelTestimonialsProps {
 }
 
 /* Geometry - middle column pitch between portrait centers:
- * 3 * (cell 121.33px + gap 8px) = 388px */
-const CELL = 121.33;
+ * 3 * (cell 150px + gap 8px) = 474px */
+const CELL = 150;
 const STEP = 3 * (CELL + 8);
 const EXIT_MS = 240; // old text removed / new text mounted
 const SLIDE_MS = 800; // column slide duration + interaction lock
@@ -80,7 +80,7 @@ function Cell() {
   );
 }
 
-/* Featured portrait tile with a warm sienna sheen overlay */
+/* Featured portrait tile (accent ring frame; no overlay on the image) */
 function Featured({ src, alt }: { src: string; alt?: string }) {
   return (
     <div
@@ -93,15 +93,6 @@ function Featured({ src, alt }: { src: string; alt?: string }) {
         loading="lazy"
         decoding="async"
         className="absolute inset-0 h-full w-full object-cover object-[center_30%]"
-      />
-      {/* warm diagonal sheen - keeps the tile on the site's palette */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[3] blur-[5px] mix-blend-overlay"
-        style={{
-          background:
-            'linear-gradient(214deg, rgba(255,94,38,0) 34%, rgba(255,94,38,0.55) 47%, rgba(255,184,130,0.45) 54%, rgba(255,94,38,0) 70%)',
-        }}
       />
       {/* crisp inner edge */}
       <div
@@ -292,7 +283,7 @@ export function ScrollReelTestimonials({
       {/* Reel section */}
       <div
         aria-hidden="true"
-        className="relative h-56 w-full shrink-0 self-stretch overflow-hidden md:h-auto md:w-[380px]"
+        className="relative h-56 w-full shrink-0 self-stretch overflow-hidden md:h-auto md:w-[466px]"
         style={{
           WebkitMaskImage:
             'linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)',
