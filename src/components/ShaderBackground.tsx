@@ -65,8 +65,8 @@ export default function ShaderBackground() {
         
         float t = u_time;
         float w = 0.0;
-        w += sin(p.x * 2.1 + t * 0.5 + sin(p.y * 1.5 - t * 0.35) * 1.25);
-        w += sin(p.y * 1.8 - t * 0.45 + sin(p.x * 1.1 + t * 0.28) * 1.15);
+        w += sin(p.x * 2.1 + t * 0.75 + sin(p.y * 1.5 - t * 0.35) * 1.25); 
+        w += sin(p.y * 1.8 - t * 0.5 + sin(p.x * 1.1 + t * 0.28) * 1.15);
         w += 1.2 * vnoise(p * 1.5 + vec2(t * 0.045, -t * 0.035) + cursorPull * 5.0);
         w = w / 2.2 + cursorPull * 1.5;
         
