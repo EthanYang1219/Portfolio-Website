@@ -1,93 +1,64 @@
 # Ethan Yang — Engineering Portfolio
 
-An editorial-grade, highly interactive portfolio website showcasing the intersection of mathematical physics modeling, real-time robotics controls (C++), mechanical chassis fabrication, and modern full-stack web architectures. 
+An editorial, highly interactive portfolio at the intersection of mathematical-physics modeling, real-time robotics controls (C++), mechanical chassis fabrication, and modern full-stack web architecture.
 
-Built from first principles utilizing **React 19**, **TypeScript**, **Tailwind CSS**, and **motion/react**, featuring live controls-engineering visualizations and hardware-accelerated animations.
+Built with **React 19**, **TypeScript**, **Tailwind CSS v4**, and **motion/react**, featuring live controls-engineering visualizations and hardware-accelerated animation. The site is **dark-only** and warm-toned (Fraunces / Manrope / JetBrains Mono on a charcoal-and-ember palette).
 
----
-
-## 🛠️ Performance Architecture & Features
-
-This portfolio is built to reflect the high-precision mindset of **Mathematical Physics** and **Competitive VEX/Formula SAE engineering**. It replaces flat, generic layouts with live, mathematical mockups:
-
-1. **100Hz PID Tuning Feedback Simulator**
-   * Implemented a real-time Proportional-Integral-Derivative (PID) linear feedback controller. High-resolution math updates the correction loops dynamically.
-   * Users can tap directly inside the graphical canvas to set a new variable destination setpoint ($r(t)$) and watch the simulated inertia settle with real-time derivative overshoot dampening.
-
-2. **Damped Organic WebGL Shader Backdrop**
-   * High-performance floating background utilizing custom, theme-aware Fragment and Vertex GLSL shaders.
-   * Tracks cursors with heavy physical dampening for subtle particle attraction, capped at `DPR = 1.5` to maintain constant `60 FPS` rendering without high CPU overhead.
-
-3. **Curriculum & Core Competency Timelines**
-   * Dynamic coordinate mappings linking continuous technical lists (C++, Onshape, composite layup) to active simulators.
-   * Interactive university academic profiles displaying honors calculus, vector manifolds, and linear factorization datasets.
-
-4. **Elastic Custom Mouse Pointer Interface**
-   * Low-inertia custom mouse cursor reflecting local hover states on high-utility components, fully respecting accessibility preferences (`prefers-reduced-motion`).
-
-5. **Responsive Typography & Grids**
-   * Pairing high-optical-contrast display typography (**Fraunces**) with versatile modern bodies (**Manrope**) and metadata modules (**JetBrains Mono**), styled within a warm ivory/charcoal paper palette.
+**Live:** https://ethanyang1219.github.io/Portfolio-Website/
 
 ---
 
-## 📂 Project Directory Structure
+## ✨ Interactive features
+
+1. **PID tuning simulator** — a real-time proportional-integral-derivative feedback loop rendered on a canvas in `SelectedWork`. Tap inside the plot to set a new setpoint and watch the simulated inertia settle with derivative overshoot damping. The loop pauses when scrolled offscreen.
+2. **DeltaV "ribbon" visualizer** (`DeltaVRibbon.tsx`) — a 2D-canvas, 3D-perspective climb-path renderer ported from the DeltaV climbing app (auto-orbit, drag to rotate, record a new climb), used as the DeltaV project's live mockup.
+3. **WebGL shader backdrop** (`ShaderBackground.tsx`) — a full-page, cursor-reactive GLSL background with a single warm dark palette, capped frame rate for low CPU.
+4. **Scroll-reel testimonials** (`Testimonials.tsx` + `components/ui/scroll-reel-testimonials.tsx`) — a counter-rotating portrait reel with one quote featured at a time, auto-advance, and labeled LinkedIn links.
+5. **Skills marquee + skill filter** — an endless ticker (`SkillsMarquee.tsx`) whose chips filter the work dashboard / experience timeline.
+6. **Experience & About** — chronological timelines (UW Formula Electric, VEX) with role links, and academic detail modules.
+7. **Custom CSS cursor & reduced-motion support** — a pure-CSS pointer (defined in `index.css`) and full `prefers-reduced-motion` handling across animations.
+
+---
+
+## 📂 Structure
 
 ```text
-├── assets/                     # Optimization assets & visuals
+├── .github/workflows/deploy.yml   # GitHub Pages deploy (build → upload dist/ → deploy)
+├── public/                        # static files served at the base path (og.png, 404.html, robots, sitemap, resume.pdf, icons)
 ├── src/
 │   ├── components/
-│   │   ├── About.tsx           # Academic curricula details & modules 
-│   │   ├── Contact.tsx         # Email copy connections & socials 
-│   │   ├── CustomCursor.tsx    # Low-inertia interactive focus mouse pointer
-│   │   ├── Experience.tsx      # Chronological timelines (UWFE Formula & VEX)
-│   │   ├── Footer.tsx          # Back-to-top controls & semantic attributes
-│   │   ├── Header.tsx          # Scroll-docking navigation & theme controller
-│   │   ├── Hero.tsx            # Giant displays, rotating tickers, & scroll tracking
-│   │   ├── SelectedWork.tsx    # PID feedback loop & python shell simulators
-│   │   ├── ShaderBackground.tsx# Custom low-level organic WebGL canvas renders
-│   │   └── SkillsMarquee.tsx   # Seamless wrapping endless ticker row
-│   ├── App.tsx                 # Core layout structures & routing intersection observers
-│   ├── index.css               # Tailored Tailwind theme variables & custom utilities
-│   ├── types.ts                # Strict types and data schemas for components
-│   └── main.tsx                # Mounting entry point
-├── package.json                # Dependencies configuration
-└── vite.config.ts              # Bundler optimization setups
+│   │   ├── ui/                    # reusable primitives (scroll-reel-testimonials, typewriter)
+│   │   ├── Hero.tsx  SelectedWork.tsx  Experience.tsx  About.tsx
+│   │   ├── Testimonials.tsx  SkillsMarquee.tsx  Contact.tsx
+│   │   ├── Header.tsx  Footer.tsx
+│   │   ├── ShaderBackground.tsx   # WebGL canvas backdrop
+│   │   └── DeltaVRibbon.tsx       # 2D-canvas climb-path visualizer
+│   ├── lib/utils.ts               # cn() — clsx + tailwind-merge
+│   ├── index.css                  # Tailwind v4 theme tokens (@theme) + custom utilities & cursor
+│   ├── types.ts                   # shared data schemas
+│   ├── App.tsx                    # composes the page sections; scroll/skill-filter wiring
+│   └── main.tsx                   # mount entry
+└── vite.config.ts                 # base: '/Portfolio-Website/' (load-bearing for the sub-path deploy)
 ```
 
 ---
 
-## 🚀 Local Implementation Guide
-
-To preview the portfolio locally, you can compile and start the development server using:
+## 🚀 Local development
 
 ```bash
-# Install package dependencies
-npm install
-
-# Run live development server (Localhost bounds)
-npm run dev
-
-# Compile optimized static bundle
-npm run build
-
-# Audit code syntax and check TypeScript compiler
-npm run lint
+npm install      # install dependencies
+npm run dev      # Vite dev server on :3000 (served at /Portfolio-Website/)
+npm run build    # production build → dist/
+npm run lint     # type-check (tsc --noEmit); no ESLint / test runner is configured
 ```
 
 ---
 
-## 🔗 Syncing Code to Your GitHub Repository
+## 🌐 Deployment
 
-Because the development environment runs on a secure container, you can sync these files to your external repository (e.g., `EthanYang1219/portfolio`) in two quick ways:
+Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds and publishes `dist/` to **GitHub Pages**. Because the site lives under a project sub-path:
 
-1. **Export to GitHub directly**:
-   * Click on the **Settings Gear Icon** in the top right of the Google AI Studio UI.
-   * Choose **Export** to connect yours with GitHub, which pushes the updated branch directly.
-2. **Download as ZIP**:
-   * Click on the **Settings Gear Icon** and download the entire workspace directory structure as a clean, structured `.zip` archive.
-   * Extract the ZIP directly into your local Git workspace and push:
-     ```bash
-     git add .
-     git commit -m "feat: migrate and upgrade portfolio to interactive React framework"
-     git push origin main
-     ```
+- `vite.config.ts` must keep `base: '/Portfolio-Website/'`, and
+- assets are imported as ES modules from `src/assets/images/` so Vite rewrites their URLs with the base.
+
+The UI is often authored in **Google AI Studio** and synced to this repo, so after an AI Studio push, diff `vite.config.ts` and `deploy.yml` — those have been reverted by syncs before.
