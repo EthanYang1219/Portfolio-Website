@@ -38,9 +38,9 @@ const people: Person[] = [
     photo: photoSteven,
   },
   {
-    quote: 'Working with Ethan has been a pleasure.',
+    quote: 'Ethan is someone who consistently performs at his absolute best, even under significant pressure. What stands out most is his positive and optimistic attitude toward every challenge he encounters, allowing him to stay focused and resilient under demanding situations.',
     name: 'Jun Ma',
-    role: 'Teammate - VEX Robotics Team 604X',
+    role: 'Teammate - VEX Robotics Team 604X - Engineering Student at University of Queens',
     gender: 'male',
     linkedin: 'https://www.linkedin.com/in/haojunma1/'
   },
