@@ -11,6 +11,15 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ShaderBackground from './components/ShaderBackground';
 
+// Shared scroll reveal: every section fades + gently rises in once, with the
+// hero name's easing. MotionConfig reducedMotion="user" disables it on request.
+const sectionFade = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: '0px 0px -100px 0px' },
+  transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] as const },
+};
+
 export default function App() {
   const [currentSection, setCurrentSection] = useState('top');
   const [activeFilteredSkill, setActiveFilteredSkill] = useState<string | null>(null);
@@ -27,7 +36,8 @@ export default function App() {
           const rect = element.getBoundingClientRect();
           // Highlight section when it occupies the majority of the top viewport bounds
           if (rect.top <= viewportHeight * 0.4 && rect.bottom >= viewportHeight * 0.3) {
-            setCurrentSection(sectionId);
+            // Hero maps to the 'Home' (#top) nav item so it highlights at the top
+            setCurrentSection(sectionId === 'hero' ? 'top' : sectionId);
             break;
           }
         }
@@ -116,67 +126,39 @@ export default function App() {
 
       <main id="main-content" className="relative z-10 w-full flex flex-col overflow-x-clip">
         {/* Landing viewport */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-120px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
+        <motion.div {...sectionFade}>
           <Hero />
         </motion.div>
 
         {/* Selected Projects with real control theory simulations.
             Gentle, early fade-up so it eases in as the hero dissolves rather
             than popping in after a gap. */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
-        >
+        <motion.div {...sectionFade}>
           <SelectedWork filteredSkill={activeFilteredSkill} onClearFilter={() => setActiveFilteredSkill(null)} />
         </motion.div>
 
         {/* Technical timeline */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-120px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
+        <motion.div {...sectionFade}>
           <Experience filteredSkill={activeFilteredSkill} onClearFilter={() => setActiveFilteredSkill(null)} />
         </motion.div>
 
         {/* Biography spotlight with credentials curricula drawer */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-120px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
+        <motion.div {...sectionFade}>
           <About />
         </motion.div>
 
         {/* Social proof */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-120px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
+        <motion.div {...sectionFade}>
           <Testimonials />
         </motion.div>
 
         {/* Skills endless marquee (Positioned beautifully as a divider before finale) */}
-        <SkillsMarquee onSkillClick={handleSkillClick} />
+        <motion.div {...sectionFade}>
+          <SkillsMarquee onSkillClick={handleSkillClick} />
+        </motion.div>
 
         {/* Contact sheet */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-120px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
+        <motion.div {...sectionFade}>
           <Contact />
         </motion.div>
       </main>
