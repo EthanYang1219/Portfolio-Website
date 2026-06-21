@@ -60,7 +60,7 @@ const ROLE_CLASSES =
   'font-mono text-[0.72rem] uppercase tracking-widest leading-snug text-ink-soft';
 /* LinkedIn pill — mirrors the Contact section's social links */
 const LINKEDIN_CLASSES =
-  'inline-flex shrink-0 items-center gap-1.5 rounded-full border border-hairline bg-paper px-3.5 py-1.5 font-mono text-[0.7rem] uppercase tracking-wider text-ink-soft';
+  'inline-flex shrink-0 items-center gap-1.5 rounded-full border border-hairline bg-paper px-3.5 py-2 sm:py-1.5 font-mono text-[0.7rem] uppercase tracking-wider text-ink-soft';
 
 const FEATURED_SHADOW =
   '0 1.008px 0.705px -0.563px rgba(0,0,0,0.35), 0 2.389px 1.672px -1.125px rgba(0,0,0,0.33), 0 4.357px 3.05px -1.688px rgba(0,0,0,0.32), 0 7.244px 5.07px -2.25px rgba(0,0,0,0.30), 0 11.698px 8.188px -2.813px rgba(0,0,0,0.27), 0 19.148px 13.404px -3.375px rgba(0,0,0,0.22), 0 32.972px 23.08px -3.938px rgba(0,0,0,0.14), 0 60px 42px -4.5px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.10)';
@@ -430,11 +430,11 @@ export function ScrollReelTestimonials({
                   onClick={() => paginate(-1)}
                   disabled={index === 0}
                   aria-label="Previous testimonial"
-                  className="grid h-7 w-7 cursor-pointer place-items-center rounded-full border border-ink/15 bg-transparent p-0 text-ink transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:enabled:scale-[1.08] hover:enabled:border-accent hover:enabled:text-accent active:enabled:scale-[0.94] disabled:cursor-default disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  className="grid h-11 w-11 sm:h-7 sm:w-7 cursor-pointer place-items-center rounded-full border border-ink/15 bg-transparent p-0 text-ink transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:enabled:scale-[1.08] hover:enabled:border-accent hover:enabled:text-accent active:enabled:scale-[0.94] disabled:cursor-default disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                   data-cursor
                 >
                   <svg
-                    className="h-3 w-3 opacity-80"
+                    className="h-4 w-4 sm:h-3 sm:w-3 opacity-80"
                     viewBox="0 0 12 12"
                     fill="none"
                     stroke="currentColor"
@@ -450,11 +450,11 @@ export function ScrollReelTestimonials({
                   onClick={() => paginate(1)}
                   disabled={index === count - 1}
                   aria-label="Next testimonial"
-                  className="grid h-7 w-7 cursor-pointer place-items-center rounded-full border border-ink/15 bg-transparent p-0 text-ink transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:enabled:scale-[1.08] hover:enabled:border-accent hover:enabled:text-accent active:enabled:scale-[0.94] disabled:cursor-default disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  className="grid h-11 w-11 sm:h-7 sm:w-7 cursor-pointer place-items-center rounded-full border border-ink/15 bg-transparent p-0 text-ink transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:enabled:scale-[1.08] hover:enabled:border-accent hover:enabled:text-accent active:enabled:scale-[0.94] disabled:cursor-default disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                   data-cursor
                 >
                   <svg
-                    className="h-3 w-3 opacity-80"
+                    className="h-4 w-4 sm:h-3 sm:w-3 opacity-80"
                     viewBox="0 0 12 12"
                     fill="none"
                     stroke="currentColor"
