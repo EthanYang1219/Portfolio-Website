@@ -203,9 +203,11 @@ body::before {
   animation: pmarquee 70s linear infinite;
 }
 
-/* Pause on hover only where hover is real. On touch screens :hover sticks
-   after a tap and would freeze the ticker permanently. */
-@media (hover: hover) {
+/* Pause on hover only on a true mouse device (hover + fine pointer). On touch
+   :hover sticks after a tap and would freeze the ticker permanently — and some
+   phones falsely report `hover: hover`, so the `pointer: fine` clause is what
+   actually keeps the ticker moving on mobile. */
+@media (hover: hover) and (pointer: fine) {
   .pmarquee-track:hover {
     animation-play-state: paused;
   }

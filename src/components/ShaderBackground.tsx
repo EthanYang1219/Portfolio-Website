@@ -148,10 +148,16 @@ export default function ShaderBackground() {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const w = Math.max(1, Math.floor(window.innerWidth * dpr));
       const h = Math.max(1, Math.floor(window.innerHeight * dpr));
-      // ResizeObserver(body) also fires when page content height changes
-      // (inline expands, the modal, the PID sim). Bail unless the viewport-
-      // derived size actually changed, to avoid needless canvas reallocations.
-      if (w === width && h === height) return;
+      // Bail unless the viewport size meaningfully changed, to avoid needless
+      // canvas reallocations. CRITICAL on mobile: the URL bar shows/hides while
+      // scrolling, jittering window.innerHeight by ~50-120px every frame — and
+      // reallocating the GL drawing buffer for that clears it (heavy flashing)
+      // and thrashes the GPU (stutters the whole page, incl. the skills ticker).
+      // So ignore height-only jitter; only resize on a width change or a large
+      // height delta (orientation / genuine resize). The CSS-stretched buffer
+      // during URL-bar transitions is imperceptible on an abstract gradient.
+      const HEIGHT_JITTER = 140;
+      if (w === width && Math.abs(h - height) < HEIGHT_JITTER) return;
       width = w;
       height = h;
 
