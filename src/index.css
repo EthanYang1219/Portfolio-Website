@@ -201,6 +201,9 @@ body::before {
   gap: 1.25rem;
   width: max-content;
   animation: pmarquee 70s linear infinite;
+  /* Keep the ticker on its own compositor layer so a busy GPU (e.g. the shader
+     redrawing during scroll) can't stall it mid-loop. */
+  will-change: transform;
 }
 
 /* Pause on hover only on a true mouse device (hover + fine pointer). On touch
@@ -210,6 +213,16 @@ body::before {
 @media (hover: hover) and (pointer: fine) {
   .pmarquee-track:hover {
     animation-play-state: paused;
+  }
+}
+
+/* Hard guarantee for touch devices: never pause, even if the device lies about
+   supporting hover. A coarse pointer can't deliberately hover to pause anyway,
+   so forcing `running` here is what actually keeps the ticker moving on phones. */
+@media (pointer: coarse) {
+  .pmarquee-track,
+  .pmarquee-track:hover {
+    animation-play-state: running !important;
   }
 }
 

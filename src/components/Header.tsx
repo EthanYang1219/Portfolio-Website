@@ -9,15 +9,39 @@ interface HeaderProps {
 export default function Header({ currentSection }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  // Hide the bar on downward scroll (reduces clutter + removes the
+  // backdrop-blur-over-shader repaint that flashes on mobile), reveal on the
+  // way up. rAF-throttled and direction-based so it doesn't fight the user.
+  const [isHidden, setIsHidden] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 24);
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    const update = () => {
+      const y = window.scrollY;
+      setIsScrolled(y > 24);
+      // Ignore tiny moves and the elastic over-scroll near the very top
+      if (Math.abs(y - lastY) > 6) {
+        setIsHidden(y > lastY && y > 120);
+        lastY = y;
+      }
+      ticking = false;
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Never hide the bar while the menu is open
+  const hidden = isHidden && !isMenuOpen;
 
   const navLinks = [
     { label: 'Home', href: '#top', idx: '00' },
@@ -31,9 +55,11 @@ export default function Header({ currentSection }: HeaderProps) {
   return (
     <>
       <header
-        className={`nav fixed top-0 inset-x-0 z-50 transition-[background-color,border-color] duration-500 border-b ${
+        className={`nav fixed top-0 inset-x-0 z-50 transition-[transform,background-color,border-color] duration-500 will-change-transform border-b ${
+          hidden ? '-translate-y-full' : 'translate-y-0'
+        } ${
           isScrolled
-            ? 'bg-paper/80 backdrop-blur-xl border-hairline'
+            ? 'bg-paper/85 backdrop-blur-md md:backdrop-blur-xl border-hairline'
             : 'bg-transparent border-transparent'
         }`}
       >

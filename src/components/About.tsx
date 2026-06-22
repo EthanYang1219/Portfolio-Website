@@ -29,6 +29,7 @@ export default function About() {
         {/* Header */}
         <div className="section-head reveal">
           <span className="section-no">03 — About</span>
+          <h2 className="sr-only">About Ethan Yang</h2>
         </div>
 
         {/* Modular Grid */}

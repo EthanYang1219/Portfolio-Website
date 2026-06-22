@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type CSSProperties } from 'react';
 
 export default function ShaderBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -241,10 +241,21 @@ export default function ShaderBackground() {
     };
   }, []);
 
+  // Promote the background to its own GPU layer and isolate it so page scroll
+  // never forces it to re-rasterize — this stops the mobile flicker where the
+  // shader repaints against scrolling content and the header's backdrop-blur.
+  const isolationStyle: CSSProperties = {
+    transform: 'translateZ(0)',
+    backfaceVisibility: 'hidden',
+    isolation: 'isolate',
+    contain: 'strict',
+  };
+
   return (
     <div
       className="shaderbg fixed inset-0 -z-10 w-full h-full pointer-events-none"
       aria-hidden="true"
+      style={isolationStyle}
     >
       <canvas ref={canvasRef} className="block w-full h-full" />
     </div>

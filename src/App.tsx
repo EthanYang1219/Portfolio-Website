@@ -11,13 +11,17 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ShaderBackground from './components/ShaderBackground';
 
-// Shared scroll reveal: every section fades + gently rises in once, with the
-// hero name's easing. MotionConfig reducedMotion="user" disables it on request.
+// Shared scroll reveal: every section fades + gently rises in as it enters the
+// viewport, and fades back out once you scroll past it (once:false reverts to
+// `initial` when out of view). `amount` triggers on a fraction of the section
+// being visible, which fires reliably on short mobile viewports where a
+// pixel-margin trigger often missed. MotionConfig reducedMotion="user" disables
+// it on request.
 const sectionFade = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '0px 0px -100px 0px' },
-  transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] as const },
+  viewport: { once: false, amount: 0.18 },
+  transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
 };
 
 export default function App() {

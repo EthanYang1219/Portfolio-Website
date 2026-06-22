@@ -25,24 +25,9 @@ const projectSkills: Record<string, string[]> = {
 // Projects still actively being built — shown with an "In progress" badge.
 const IN_PROGRESS = new Set(['deltav', 'python']);
 
-export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedWorkProps) {
-  const [activeIdx, setActiveIdx] = useState<number>(0);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [videoOpen, setVideoOpen] = useState(false);
-
-  // True when the active filter is a project skill (experience-only skills
-  // like Composite layup / Mentorship are handled by the Experience section)
-  const projectMatchesSkill = filteredSkill
-    ? Object.values(projectSkills).some((skills) => skills.includes(filteredSkill))
-    : false;
-
-  // PID Simulator States
-  const [pidSetpoint, setPidSetpoint] = useState<number>(50);
-  const [pidCurrent, setPidCurrent] = useState<number>(100);
-  const [pidPlotData, setPidPlotData] = useState<number[]>(new Array(60).fill(100));
-  const pidStateRef = useRef({ current: 100, errorSum: 0, lastError: 0 });
-
-  const projects: Project[] = [
+// Project data is static (no props/state) — defined once at module scope so the
+// ~18 renders/sec from the live PID loop don't rebuild this array each time.
+const PROJECTS: Project[] = [
   {
       id: 'deltav',
       title: 'DeltaV',
@@ -138,7 +123,28 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
         ]
       }
     }
-  ];
+];
+
+export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedWorkProps) {
+  const [activeIdx, setActiveIdx] = useState<number>(0);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [videoOpen, setVideoOpen] = useState(false);
+
+  // True when the active filter is a project skill (experience-only skills
+  // like Composite layup / Mentorship are handled by the Experience section)
+  const projectMatchesSkill = filteredSkill
+    ? Object.values(projectSkills).some((skills) => skills.includes(filteredSkill))
+    : false;
+
+  // PID Simulator States
+  const [pidSetpoint, setPidSetpoint] = useState<number>(50);
+  const [pidCurrent, setPidCurrent] = useState<number>(100);
+  const [pidPlotData, setPidPlotData] = useState<number[]>(new Array(60).fill(100));
+  const pidStateRef = useRef({ current: 100, errorSum: 0, lastError: 0 });
+  // Remembers what was focused before a modal opened, to restore on close
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
+
+  const projects = PROJECTS;
 
   // Pause the live simulations while the work section is scrolled offscreen
   // so the 55ms PID loop doesn't re-render the section the whole session
@@ -234,6 +240,28 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
     const clampedY = Math.max(10, Math.min(90, percentage));
     setPidSetpoint(clampedY);
   };
+
+  // Modal a11y (checklist 08 — keyboard nav): when the case-study or video
+  // modal is open, close it on Escape, lock background scroll so the page
+  // behind doesn't move, and restore focus to the trigger when it closes.
+  useEffect(() => {
+    if (!selectedProject && !videoOpen) return;
+    lastFocusedRef.current = document.activeElement as HTMLElement;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedProject(null);
+        setVideoOpen(false);
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+      lastFocusedRef.current?.focus?.();
+    };
+  }, [selectedProject, videoOpen]);
 
   return (
     <section className="section pt-[7vh] md:pt-[9vh]" id="work" ref={sectionRef}>
@@ -634,6 +662,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
             className="fixed inset-0 z-50 bg-[#17140d]/40 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
             role="dialog"
             aria-modal="true"
+            aria-labelledby="case-study-title"
           >
             {/* Dark back-overlay trigger */}
             <div className="absolute inset-0" onClick={() => setSelectedProject(null)} />
@@ -649,7 +678,7 @@ export default function SelectedWork({ filteredSkill, onClearFilter }: SelectedW
             >
               <div className="flex justify-between items-start mb-6">
                 <div className="flex flex-col gap-1">
-                  <h3 className="font-display text-3xl md:text-4xl text-ink tracking-tight font-medium">
+                  <h3 id="case-study-title" className="font-display text-3xl md:text-4xl text-ink tracking-tight font-medium">
                     {selectedProject.title}
                   </h3>
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
