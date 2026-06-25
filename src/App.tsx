@@ -10,17 +10,19 @@ import SkillsMarquee from './components/SkillsMarquee';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ShaderBackground from './components/ShaderBackground';
+import { activeNavIdFromEntries } from './lib/navHighlight';
 
-// Shared scroll reveal: every section fades + gently rises in as it enters the
-// viewport, and fades back out once you scroll past it (once:false reverts to
-// `initial` when out of view). `amount` triggers on a fraction of the section
-// being visible, which fires reliably on short mobile viewports where a
-// pixel-margin trigger often missed. MotionConfig reducedMotion="user" disables
-// it on request.
+// Shared scroll reveal: every section fades + gently rises in ONCE as it first
+// enters the viewport, then stays put (once:true). The old once:false reverted
+// each section to `initial` whenever it left the trigger band and re-animated on
+// re-entry — on mobile, tall sections plus the URL-bar reflow repeatedly crossed
+// the threshold, so content popped in and out (the "clunky" feel). `amount`
+// triggers on a fraction of the section being visible, which fires reliably on
+// short mobile viewports. MotionConfig reducedMotion="user" disables it on request.
 const sectionFade = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: false, amount: 0.18 },
+  viewport: { once: true, amount: 0.18 },
   transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
 };
 
@@ -28,42 +30,29 @@ export default function App() {
   const [currentSection, setCurrentSection] = useState('top');
   const [activeFilteredSkill, setActiveFilteredSkill] = useState<string | null>(null);
 
-  // Monitor scrolling to highlight correct headers (Invisible expensive items - checklist 08)
+  // Highlight the nav item for the section currently under a thin trigger line
+  // ~40% down the viewport. Using IntersectionObserver keeps this OFF the scroll
+  // path entirely — the old handler ran getBoundingClientRect on five sections
+  // every frame, and those forced-reflow reads, interleaved with the WebGL loop,
+  // were a source of mobile scroll jank. rootMargin '-40% 0px -60% 0px' collapses
+  // the root to a zero-height line at 40% from the top; whichever section
+  // straddles it is "current". (Hero maps to the 'Home' / #top nav item.)
   useEffect(() => {
-    const handleScrollIntersection = () => {
-      const sections = ['hero', 'work', 'experience', 'about', 'contact'];
-      const viewportHeight = window.innerHeight;
+    const sections = ['hero', 'work', 'experience', 'about', 'contact'];
+    const elements = sections
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
 
-      for (const sectionId of sections) {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          // Highlight section when it occupies the majority of the top viewport bounds
-          if (rect.top <= viewportHeight * 0.4 && rect.bottom >= viewportHeight * 0.3) {
-            // Hero maps to the 'Home' (#top) nav item so it highlights at the top
-            setCurrentSection(sectionId === 'hero' ? 'top' : sectionId);
-            break;
-          }
-        }
-      }
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const navId = activeNavIdFromEntries(entries);
+        if (navId) setCurrentSection(navId);
+      },
+      { rootMargin: '-40% 0px -60% 0px', threshold: 0 }
+    );
 
-    // rAF-throttle: the handler reads layout (getBoundingClientRect) for five
-    // sections, so coalesce scroll events to at most one read per frame
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        handleScrollIntersection();
-        ticking = false;
-      });
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    handleScrollIntersection();
-
-    return () => window.removeEventListener('scroll', onScroll);
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   // Skills that belong to the Experience timeline rather than a project
@@ -129,10 +118,11 @@ export default function App() {
       <Header currentSection={currentSection} />
 
       <main id="main-content" className="relative z-10 w-full flex flex-col overflow-x-clip">
-        {/* Landing viewport */}
-        <motion.div {...sectionFade}>
-          <Hero />
-        </motion.div>
+        {/* Landing viewport — NOT wrapped in sectionFade: Hero already owns its
+            own entrance animation AND a scroll-linked opacity fade (useTransform
+            on scrollY). Wrapping it drove the same subtree's opacity from two
+            independent systems at once, which fought and flashed near the top. */}
+        <Hero />
 
         {/* Selected Projects with real control theory simulations.
             Gentle, early fade-up so it eases in as the hero dissolves rather

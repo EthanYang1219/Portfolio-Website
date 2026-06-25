@@ -55,11 +55,11 @@ export default function Header({ currentSection }: HeaderProps) {
   return (
     <>
       <header
-        className={`nav fixed top-0 inset-x-0 z-50 transition-[transform,background-color,border-color] duration-500 will-change-transform border-b ${
+        className={`nav fixed top-0 inset-x-0 z-50 transition-[transform,background-color,border-color] duration-300 will-change-transform border-b ${
           hidden ? '-translate-y-full' : 'translate-y-0'
         } ${
           isScrolled
-            ? 'bg-paper/85 backdrop-blur-md md:backdrop-blur-xl border-hairline'
+            ? 'bg-paper/95 md:bg-paper/85 md:backdrop-blur-xl border-hairline'
             : 'bg-transparent border-transparent'
         }`}
       >

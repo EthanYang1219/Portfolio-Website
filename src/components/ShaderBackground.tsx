@@ -241,14 +241,19 @@ export default function ShaderBackground() {
     };
   }, []);
 
-  // Promote the background to its own GPU layer and isolate it so page scroll
-  // never forces it to re-rasterize — this stops the mobile flicker where the
-  // shader repaints against scrolling content and the header's backdrop-blur.
+  // Promote the background to its own GPU layer so page scroll never forces it
+  // to re-rasterize — this stops the mobile flicker where the shader repaints
+  // against scrolling content.
   const isolationStyle: CSSProperties = {
     transform: 'translateZ(0)',
     backfaceVisibility: 'hidden',
-    isolation: 'isolate',
-    contain: 'strict',
+    // `layout paint` keeps the background on its own compositor layer WITHOUT
+    // `size` containment. `contain: strict` bundles size containment, which on a
+    // fixed full-viewport layer made the isolated layer tear during the mobile
+    // URL-bar viewport reflow (flashing). translateZ(0) already establishes the
+    // stacking context, so a separate `isolation: isolate` is redundant and only
+    // adds another layer boundary (extra GPU layer pressure on mobile).
+    contain: 'layout paint',
   };
 
   return (
